@@ -1,0 +1,13 @@
+{
+  "id": "s3-compulsory-schooling",
+  "finding": "S3",
+  "effect": "Compulsory schooling now matters alongside free schooling. Each school level's access target (XvB) is the day-0 access times a law factor (G2A) built from two laws: compulsory_schooling (a compulsion term C, e.g. secondary .35 + 0.09 per year of leaving age above 12, so 16 gives .71 and 18 gives .89) and free_public_education (a provision term e: .96 at or above the level, .78 one step below, .45 otherwise). The game took the larger of the two, so under the default free secondary schooling (e = .96) the leaving age changed nothing at secondary level and at most +3.6% for primary. The patch multiplies the two instead, damping compulsion by a square root because enforcement is imperfect: factor = (e / e at day 0) x sqrt(C / C at day 0), still clamped to [0.65, 1.35]. Raising the leaving age from 16 to 17 now lifts the secondary access target about 6%, to 18 about 12% (lowering it to 14 cuts it about 14%); free-schooling changes act fully, as before when they dominated, and removing free secondary schooling now falls to the 0.65 floor where compulsion used to cushion it at 0.74. Where compulsion used to be the larger term (secondary schooling not free), its effect is now smaller: under free primary only, 16 to 18 gives +12% instead of +25%, and lowering the age to 14 costs 14% instead of 25%. Countries that start with a short compulsory period and free lower-secondary schooling (many low-income countries, leaving age 10-12) gain the most: 10 to 16 now lifts the secondary target to the +35% ceiling, where the original gave nothing. For primary schooling, where the game already let a longer compulsory period count a little (at most +3.6%), that effect is now its square root (16 to 18 gives +1.5% instead of +2.9%). Higher education has no compulsion term (C = .15 always), so only the free-level law moves it, as before. Seats are still limited by teachers, money and buildings, so enrolment follows the target only as capacity allows. England's 2013-15 participation-age rise lifted participation at 16-17 by about 5-10 points; the UK's 1972 rise to 16 brought nearly every 15-year-old into school. Day 0 unchanged (laws equal their day-0 values: factor 1). No new state. (Minified names in this text are those of build 26335289.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "tertiary_partial:4,tertiary_full:5}",
+      "find": "return Pe(Math.max(C(Q),w(Q))/Math.max(.2,Math.max(C(g),w(g))),.65,1.35)",
+      "replace": "return Pe(w(Q)/Math.max(.2,w(g))*Math.sqrt(C(Q)/Math.max(.15,C(g))),.65,1.35)"
+    }
+  ]
+}

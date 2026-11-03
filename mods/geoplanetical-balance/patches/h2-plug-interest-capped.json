@@ -1,0 +1,13 @@
+{
+  "id": "h2-plug-interest-capped",
+  "finding": "H2",
+  "effect": "Household plug offset against net interest income (option C, capped neutral). Each household group's net interest income C (financial income minus loan interest) is compared with its normal path w*g. Net-saver groups (w > 0): a rise above normal is clawed back as before; a fall below normal, from lower deposit rates or higher loan costs, is topped up at most back to normal (plug <= Q*g + w*g), so a net saver whose net interest turns negative pays every loan cost beyond that itself. Net-debtor groups (w <= 0): while net interest stays negative the plug no longer reacts to it, so rate hikes cost them and rate cuts or paying down debt save them (vanilla clawed the savings back; the extra plug money is bounded by |w|*g, about 346 bn a year worldwide); net interest above zero is still clawed back. Unchanged at day 0 (C = w, g = 1). In $_g, r = max(0, C) - max(0, w)*g instead of max(0, C - w*g). (Minified names in this text are those of build 26296134; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "household-income:baseline:",
+      "find": "?Math.max(0,C-e*g):0;return Math.max(0,Q*g-r)}",
+      "replace": "?Math.max(0,C)-Math.max(0,e)*g:0;return Math.max(0,Q*g-r)}"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "t1-fx-borrowing-limits",
+  "finding": "T1",
+  "effect": "Foreign-currency borrowing gets market limits. The player's borrow action (MLQ) is refused for 30 days after any foreign-currency borrowing by the country, and over any 365 days the country may borrow at most max(1%, 10% - 0.5% per rating notch) of nominal GDP (AAA 10%, BBB 6%, B 3%, CCC+ 2%; the market already closes at rating 17 and worse, so the 1% floor is never reached); the amount offered is clipped to the room left. Borrowing by the automatic reserve top-up (uLQ, used by AI countries and by the player on autopilot) is not limited but is recorded and counts toward the cap and cooldown. The monetary view marks the action unavailable (reasonId cooldown or annual_cap). State: sovereign.geobalFxBorrowing, a list of [day, amountBn] pruned to 365 days when written; absent in old saves (treated as empty). No state changes at day 0 (no borrowing has happened; views never write state); from day 0 the amount the view offers is clipped to the cap for countries rated 15 or worse, whose cap is below the game's 3%-of-GDP offer. Not covered (deferred, finding T1's second half): the foreign lender's cash still refills to 0.3 x GDP whenever drained (xNB@86981140, foreign_opening_liquidity), so the automatic top-up keeps an unlimited lender. (Minified names in this text are those of build 26296134; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "foreign_currency_bond_to_reserves",
+      "find": "function cxQ(A,B,Q){if(!o3(B))return{ok:!1,reason:\"market\"};let g=AA(Math.min(Math.max(0,Yt(Q)),Math.max(0,Yt(B.gdpNom))*ExQ),\"floor\");if(!(g>0))return{ok:!1,reason:\"amount\"};let C=axQ(A,B,g);if(!C.ok)return C;",
+      "replace": "function __geobalFxRoom(A,B){let s=A.finance?.sovereigns?.[B.key],d=A.day||0,l=Array.isArray(s?.geobalFxBorrowing)?s.geobalFxBorrowing:[],used=0,last=-1/0;for(let e of l){if(!Array.isArray(e)||!(e[0]<=d&&d-e[0]<365))continue;used+=Math.max(0,Number(e[1])||0),e[0]>last&&(last=e[0])}let r=Math.min(18,Math.max(0,Math.trunc(Number(B.rating)||0))),capBn=Math.max(0,Yt(B.gdpNom))*Math.max(.01,.1-.005*r);return{cooldown:d-last<30,daysLeft:Math.max(0,30-(d-last)),usedBn:used,capBn,roomBn:Math.max(0,capBn-used)}}function __geobalFxRecord(A,B,Q){let s=A.finance?.sovereigns?.[B.key];if(!s||!(Q>0))return;let d=A.day||0;s.geobalFxBorrowing=(Array.isArray(s.geobalFxBorrowing)?s.geobalFxBorrowing:[]).filter(e=>Array.isArray(e)&&e[0]<=d&&d-e[0]<365).concat([[d,Q]])}function cxQ(A,B,Q){if(!o3(B))return{ok:!1,reason:\"market\"};let __gbR=__geobalFxRoom(A,B);if(__gbR.cooldown)return{ok:!1,reason:\"cooldown\"};let g=AA(Math.min(Math.max(0,Yt(Q)),Math.max(0,Yt(B.gdpNom))*ExQ,__gbR.roomBn),\"floor\");if(!(g>0))return{ok:!1,reason:__gbR.roomBn>0?\"amount\":\"annual_cap\"};let C=axQ(A,B,g);if(!C.ok)return C;__geobalFxRecord(A,B,C.amountBn);"
+    },
+    {
+      "anchor": "foreign_currency_bond_conversion",
+      "find": "let C=axQ(A,B,g);if(!C.ok)return 0;PY(A,B);",
+      "replace": "let C=axQ(A,B,g);if(!C.ok)return 0;__geobalFxRecord(A,B,C.amountBn);PY(A,B);"
+    },
+    {
+      "anchor": "\"no_runway\"",
+      "find": "r=mJ(A,B),w=Q?AA(Math.min(Math.max(pJ(Q,UeA),e*.005),e*ExQ),\"floor\"):0,",
+      "replace": "r=mJ(A,B),__gbR=__geobalFxRoom(A,B),w=Q?AA(Math.min(Math.max(pJ(Q,UeA),e*.005),e*ExQ,__gbR.roomBn),\"floor\"):0,"
+    },
+    {
+      "anchor": "\"no_runway\"",
+      "find": "borrow:{available:!!Q&&o3(B)&&!!r&&w>0,reasonId:Q?o3(B)?null:\"market_closed\":\"no_runway\",",
+      "replace": "borrow:{available:!!Q&&o3(B)&&!!r&&w>0&&!__gbR.cooldown,reasonId:Q?o3(B)?__gbR.cooldown?\"cooldown\":__gbR.roomBn>0?null:\"annual_cap\":\"market_closed\":\"no_runway\","
+    }
+  ]
+}

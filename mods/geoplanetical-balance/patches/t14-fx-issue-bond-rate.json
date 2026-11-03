@@ -1,0 +1,13 @@
+{
+  "id": "t14-fx-issue-bond-rate",
+  "finding": "T14",
+  "effect": "A foreign-currency bond no longer sets the country's domestic bond rate. The sovereign issue step (Xi) wrote the clearing rate of every non-bilateral issue into country.bondRate, including foreign-currency issues (the player's foreign-currency borrowing and the automatic reserve top-up used by AI countries and the player's autopilot), so a dollar or euro rate stood in for the domestic yield until the month-end bond fixing (kxB) re-traded the latest domestic bond. Now the write is skipped when the issue currency differs from the sovereign record's currency (Q.currencyCode !== sovereign.currencyCode), the same test the game uses in the same function to mark the bond as foreign currency (terms.fx) and that the month-end fixing uses to leave foreign bonds out. Domestic issues still set the rate as before; bilateral loans still never do. Real: a sovereign's euro or dollar bond is priced off the foreign curve and does not change the yield of its own-currency debt. Readers of bondRate (among them the player's domestic issue quote owA, which prices the auction from it, the fallback rate of the automatic domestic issues, and the business user cost zLB that A3/C17 builds on) now see the domestic yield throughout the month. Measured (tests/t14.headless.mjs, Switzerland, seed 12345): in the original a 10 bn foreign-currency borrowing moved the bond rate from 0.535% to 3.70% and the next domestic franc issue then cleared at 3.70%; with the fix both stay at 0.535%. No saved state. Day 0 unchanged, measured: the full mod with and without this fix (seed 12345, no player action) has identical country state at day 0 and stays bit-identical for 6 months; no new foreign-currency bond was issued by anyone in that window, so in it the fix acted only on player borrowing. Minified names are those of build 26318758.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"sovereign_bond_issuance\"",
+      "find": "Q.bilateral||(B.bondRate=Q.clearingRatePct)",
+      "replace": "Q.bilateral||Q.currencyCode!==C.currencyCode||(B.bondRate=Q.clearingRatePct)"
+    }
+  ]
+}

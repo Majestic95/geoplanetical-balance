@@ -1,0 +1,18 @@
+{
+  "id": "p1-bill-deposit",
+  "finding": "P1",
+  "effect": "Withdrawing a government bill takes back only the part of its submission approval still in effect, and puts the law on hold for 30 days. Submitting a government bill moves approval at once by the game's deposit, clamp(0.45 x the law's approval change, -7, +7) (LBB via WnQ in the submission i9); the patch records the change actually applied (after the 0-100 clamp) on the bill as geobalDeposit (0 included). Since build 26346311 the game's withdrawal (VnQ) takes back max(0, the deposit recomputed at withdrawal) in full, however long ago the bill was submitted, and nothing for an unpopular bill. Approval relaxes toward its target by 6% a day (rate G2Q), so the deposit left n days after submission (the bill's day0) is deposit x 0.94^n; the patch takes back that remainder instead (a bill without a numeric day0, or dated after today, gives back the full recorded deposit). Submit-then-withdraw therefore nets -2 at any time, whatever the deposit's sign: no late dip of up to 7 points for a popular bill, no kept penalty for an unpopular one. The law goes on the game's own lawCooldown for 30 days (a failed vote already sets 180), shown with the existing cooldown badge and 'On hold until {date}' button. Bills without a recorded deposit (submitted before the mod) get the game's own give-back. AI governments never withdraw bills (VnQ is the player's verb), so the AI is unaffected; their bills also carry the recorded deposit, which nothing else reads. State: geobalDeposit (a number) on law procedures, saved with the procedure. Side effect: on autopilot, the AI's law-failure memory counts an active withdrawal cooldown like a failed vote. Day 0 unchanged (no bill exists). (Minified names in this text are those of build 26346311.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "politics.bill_submitted",
+      "find": "E===\"government\"&&(B.approval=yW(B.approval+H9Q(A,B,Q,D),0,100))",
+      "replace": "E===\"government\"&&(__gbA=>(B.approval=yW(B.approval+H9Q(A,B,Q,D),0,100),u.geobalDeposit=B.approval-__gbA))(B.approval)"
+    },
+    {
+      "anchor": "politics.bill_withdrawn",
+      "find": "e=C.sponsorKind===\"government\"?Math.max(0,H9Q(A,Q,B,C.target)):0;return Q.procedures.splice(g,1),Q.approval=yW(Q.approval-2-e,0,100),",
+      "replace": "__gbD=Number(C.geobalDeposit),__gbN=typeof C.day0===\"number\"?Math.max(0,(A.day||0)-C.day0):0,e=Number.isFinite(__gbD)?__gbD*Math.pow(.94,__gbN):C.sponsorKind===\"government\"?Math.max(0,H9Q(A,Q,B,C.target)):0;return Q.procedures.splice(g,1),Q.approval=yW(Q.approval-2-e,0,100),(Q.lawCooldown||={})[B]=Math.max(Number(Q.lawCooldown[B])||0,(A.day||0)+30),"
+    }
+  ]
+}

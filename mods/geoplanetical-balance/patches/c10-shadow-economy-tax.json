@@ -1,0 +1,14 @@
+{
+  "id": "c10-shadow-economy-tax",
+  "finding": "C10",
+  "effect": "A larger shadow economy lowers tax collection: collection efficiency (or) is multiplied by 1 - (shadow share of GDP - its day-0 share), from shadowMarket.byCountry[country]. The game bounds the share between 0.45x its day-0 value and 8% of GDP, so efficiency moves by at most a few percent; a shrinking shadow economy raises collection slightly. Not included: debiting shadow spending from households or GDP. Day 0 unchanged (the gap is 0); a country without shadow-market data is unchanged. (Minified names in this text are those of build 26296134; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "_corr0??",
+      "near": 600,
+      "find": "Q*=prA(B),CP(Q,.15,.99)}",
+      "replace": "Q*=prA(B),Q*=1-(s=>s?(Number(s.shareGDP)||0)-(Number(s.shareGDP0)||0):0)(A?.shadowMarket?.byCountry?.[B.key]),CP(Q,.15,.99)}"
+    }
+  ]
+}

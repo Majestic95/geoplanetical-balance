@@ -1,0 +1,14 @@
+{
+  "id": "c14-arrears-cap",
+  "finding": "C14",
+  "effect": "Large unpaid bills are no longer wiped out by count. Each month, when the world holds more than 10 open obligations per live company, household group and treasury (the game's cap, about 100,000 rows at the start), the game wrote off the oldest overdue rows whatever their size, so a large tax, wage or supplier debt could vanish, its creditor taking the loss, because many small bills existed elsewhere. Now that cap writes off only dust, rows below the game's own dust threshold (dustBn, 2e-6 bn = $2,000, the size its dust rule already writes off after 30 days overdue); larger debts stay owed until paid or until the game's 2-year prescription. To keep saves and the monthly payment pass bounded, a hard bound at 4 times the cap (40 rows per live entity) still applies: above it the smallest overdue rows go first, down to 90% of the bound, so the least money is written off (an explicit hardCap argument stays a hard cap). Measured in an unmodded first year on an earlier build (seed 12345, Switzerland): open rows rose from 0 to about 4,100 against a cap near 102,000, so the cap never fired; the change matters in long or crisis-heavy games. Day 0 unchanged (no open obligations at day 0). Saved state: no new fields; in such games the open-obligation set can hold up to 4 times as many rows as before. Real creditors do not lose a claim because the debtor owes other people too: unpaid debts end through payment, legal prescription or insolvency, while only trivial balances are written off administratively. Since build 26391432 the game first clears the obligations owed by liquidated or dissolved companies each month (closed payers), before these rules; C14 does not change that step.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"economic_obligation_cap\"",
+      "near": 400,
+      "find": "if(I>a){let c=I-Math.floor(.9*a),i=o.filter(u=>r[u.id]===u).slice(0,c);",
+      "replace": "if(I>a){let c=I-Math.floor(.9*a),i=o.filter(u=>r[u.id]===u&&u.remainingBn<Q).slice(0,c),h=g??4*a;if(I-i.length>h){let k=new Set(i);i=i.concat(o.filter(u=>r[u.id]===u&&!k.has(u)).sort((x,y)=>x.remainingBn-y.remainingBn||DXQ(x,y)).slice(0,I-i.length-Math.floor(.9*h)))}"
+    }
+  ]
+}

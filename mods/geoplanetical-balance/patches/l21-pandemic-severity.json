@@ -1,0 +1,13 @@
+{
+  "id": "l21-pandemic-severity",
+  "finding": "L21",
+  "effect": "A new coronavirus pandemic is now about as deadly as SARS-CoV-2 was in 2020. When the campaign's new-pandemic rule is on (off by default), each emergent pathogen draws its traits from its family's ranges; the infection fatality ratio by age band is severeShare x fatality. For the coronavirus family (the one named SARS-CoV-{n} / COVID-{yy}) the ranges gave over-65s 0.1-0.72% and adults 0.003-0.03%, 5 to 20 times below the 2020 virus (about 3-4% for over-65s averaged over the band and about 0.1% for ages 20-64, O'Driscoll et al. 2021, Levin et al. 2020; WHO counts 14.9 million excess deaths in 2020-21). The patch raises adults to severeShare 1-2% x fatality 4-8% (IFR 0.04-0.16%) and over-65s to 8-12% x 25-35% (IFR 2-4.2%); children are unchanged (about 0.001%). These severe shares match observed hospitalisation of infected people (about 1-2% of adults, 8-12% of over-65s, Salje et al. 2020) and in-hospital death rates (about 5-8% and 25-35%), so hospital load rises with them and saturation (the game's x2.5 untreated fatality) can now occur as it did in 2020. Transmission, immunity, vaccines and every other family are unchanged. Day 0 unchanged; a pathogen already drawn in a save keeps its traits. (Minified names in this text are those of build 26335289.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "naming:{virus:\"SARS-CoV-{n}\"",
+      "find": "severeShare:[[5e-4,.002],[.003,.01],[.02,.06]],fatality:[[.005,.01],[.01,.03],[.05,.12]]",
+      "replace": "severeShare:[[5e-4,.002],[.01,.02],[.08,.12]],fatality:[[.005,.01],[.04,.08],[.25,.35]]"
+    }
+  ]
+}

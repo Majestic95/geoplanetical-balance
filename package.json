@@ -1,0 +1,13 @@
+{
+  "name": "geoplanetical-balance",
+  "private": true,
+  "engines": {
+    "node": ">=22.15"
+  },
+  "description": "Geoplanetical Balance: a mod for Geoplanetical (research notes, mod sources and tests); runs on the Geoplanetical Mod Loader",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "acorn": "8.14.0",
+    "geoplanetical-modloader": "file:../geoplanetical-modloader"
+  }
+}

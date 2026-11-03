@@ -1,0 +1,13 @@
+{
+  "id": "l2-health-labour-hours",
+  "finding": "L2",
+  "effect": "Untreated illness now costs working hours. The health model's labour-hours index (hGg, health.laborHoursIndex, which becomes healthLaborFactor and multiplies every sector's supply) was 1 - (s - s0)/(260 x 100,000), where s is the month's weighted untreated and waiting cases per 100,000 people (sickDaysPer100kYear) and s0 its day-0 value; s is in the tens to hundreds, so even a collapse of health care moved hours by about 0.00002, far inside the game's own [0.94, 1.015] clamp, and the channel did nothing. The patch measures the rise in untreated illness against all illness at day 0: hours = 1 - 0.06 x (s - s0) / N0, where N0 is the day-0 need of the four care lines with the same weights as s (primary 1.4, maternal 2.5, emergency 3, hospital 5). So a collapse that leaves almost all care unmet costs about 6% of hours (the game's floor), and a rise of the untreated share by 10 points of all illness costs about 0.6%, whatever the country's starting level; a rich country with little untreated care and a poor one with much lose the same hours for the same extra untreated burden, as sickness absence follows the absolute burden. Better access than at day 0 adds back up to the existing +1.5% ceiling. The hospital line's epidemic part (its epidemic need, the excess over the calm-year anchor, times its unmet rate, weight 5) is left out in both directions, because the epidemic model already moves the acutely sick in and out of work (epidemicPresence in p6Q): a winter wave costs no extra hours here, and a quiet month adds none back. The behavioural-health and gambling deductions in the same formula are unchanged. Sickness absence is about 3-5% of working time in OECD countries and rises with long waits and untreated illness. Day 0 unchanged (s = s0, computed by the same formula in iJ). No new state. (Minified names in this text are those of build 26335289.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "B.avoidableDeathsPer100kYear=B.seed.avoidableDeaths0Per100kYear*B.mortalityRiskIndex",
+      "find": "B.laborHoursIndex=bC(1-(c-B.seed.sickDays0Per100kYear)/(260*1e5)",
+      "replace": "B.laborHoursIndex=bC(1-(__gbN=>__gbN>0?.06*(c-$g(B.epidemicHospitalNeedPer100k)*$g(B.lines.hospital.unmetRate)*5-B.seed.sickDays0Per100kYear)/__gbN:0)(Gs.reduce((__gbI,__gbU)=>__gbI+$g(B.lines[__gbU].need0Per100k)*(__gbU===\"hospital\"?5:__gbU===\"emergency\"?3:__gbU===\"maternal\"?2.5:1.4),0))"
+    }
+  ]
+}

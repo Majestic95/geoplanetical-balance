@@ -1,0 +1,18 @@
+{
+  "id": "p2-law-habituation",
+  "finding": "P2",
+  "effect": "Amending a law no longer restores its full approval effect. The game fades each changed law's approval effect as voters get used to it: habituation h (0-1, per law, lawHabituation) grows 2.3% of the gap each month while the law differs from its day-0 setting (hEQ), and the law's weight in approval is importance x (1 - h) (j8). The original commit ($Lg) deleted h whenever a law changed, so a tiny amendment to a popular law gave back its full effect. Now a commit keeps h x max(0, 1 - |position change| / 100), where the position is the game's own 0-100 law score (PQ, the scale it uses for debate length and for each law's move in j8): a 5-point amendment keeps 95% of the habituation, a 50-point reform keeps half, a full swing keeps none. h is still cleared, as before, when the law returns to its day-0 setting (the monthly pass would clear it anyway) or moves across its day-0 position (a change in the other direction is new to voters). A law changed for the first time has no habituation, so it behaves as in the original game. The adoption preview (KwA, used by the law screen's forecast and per-group effects) applies the same rule, so the shown approval change matches what happens. Applies to every country, AI included. Real-world behaviour: people stay used to a policy through small amendments; only a large change feels new. No new state (lawHabituation is already saved). Day 0 unchanged: no law has habituation until the first month ends. (Minified names in this text are those of build 26318758.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "law-runtime:commit_unchanged",
+      "find": "B.lawHabituation&&delete B.lawHabituation[e.id]",
+      "replace": "B.lawHabituation&&__geobalHabCarry(B.lawHabituation,B,e.id,D,o)"
+    },
+    {
+      "anchor": "legislation-model:complete_political_state_required",
+      "find": "function xDA(A,B,Q){let g=A.lawHabituation?{...A.lawHabituation}:void 0;return g&&delete g[B],",
+      "replace": "function __geobalHabCarry(H,C,I,P,N){if(H[I]==null){delete H[I];return}let L=TQ(I),h=Number(H[I]),Z=C?.laws0?.[I];if(!L||!Number.isFinite(h)||Z==null||rr(N,Z)){delete H[I];return}let p=YQ(L,P,C),n=YQ(L,N,C),z=YQ(L,Z,C),k=1-Math.abs(n-p)/100;if(!(k>0)||(p-z)*(n-z)<0){delete H[I];return}H[I]=Math.min(1,Math.max(0,h))*Math.min(1,k)}function xDA(A,B,Q){let g=A.lawHabituation?{...A.lawHabituation}:void 0;return g&&__geobalHabCarry(g,A,B,A.laws?.[B],ig(Q)),"
+    }
+  ]
+}

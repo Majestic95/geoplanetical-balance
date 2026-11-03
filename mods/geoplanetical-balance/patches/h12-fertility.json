@@ -1,0 +1,14 @@
+{
+  "id": "h12-fertility",
+  "finding": "H12",
+  "effect": "Fertility's within-country response to income depends on where the country stands in the demographic transition (target tfr0 + r + family term, r = k x ln(gdpCap / gdpCap0)): k = -0.9 children per log unit of real GDP per head where the day-0 fertility rate is 3 or more, -0.1 where it is 2 or less, linear between (the original game used -1.05 everywhere; mod 0.1.0 used -0.30 everywhere). Countries in the transition still lose fertility steeply as income grows (Korea, Iran and Bangladesh lost 3-4 children while income tripled or quadrupled), while rich low-fertility countries barely respond. The slope is keyed on the day-0 rate (tfr0) so it does not feed back on itself. Not included: a short-run pro-cyclical term (births dipping with unemployment). Day 0 unchanged (the log ratio is 0 at genesis). (Minified names in this text are those of build 26296134; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"demographics-cohorts.json\"",
+      "near": 3000,
+      "find": "r=-1.05*kXA(A)",
+      "replace": "r=-(.1+.8*Math.max(0,Math.min(1,(Number(g.tfr0)||0)-2)))*kXA(A)"
+    }
+  ]
+}

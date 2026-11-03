@@ -1,0 +1,37 @@
+{
+  "id": "k4-adviser-unmet-demand",
+  "finding": "K4",
+  "effect": "The industrial adviser and the AI's choice of sector now see demand that goes unmet. The market settlement (etg) records delivered quantity as consumption (we.cons) and the shortfall separately (we.unmet), but the candidate scoring (IoB) read consumption only, so orders that could not be supplied (construction projects waiting for steel, for example) vanished from the good's domestic need, and a country exporting a good while its own buyers went short was told it 'already exports more than it imports', so funding it to replace imports 'would do little'. Now (1) domestic need is measured against demand, delivered plus unmet (the measure the game's own DiB already uses), so a shortage raises the score of the good in the adviser and in the AI's sector choice (CyQ); (2) a new signal, the unmet share of demand, is passed to the verdict (F_g); (3) when more than 2% of demand goes unmet (fill rate below 98%, the game's own threshold for its shortage warnings), the import-substitution objective is no longer marked a poor fit as already a net exporter, imports already low or imports limited, since producing more at home does serve the unmet demand. Import dependence stays imports over delivered consumption, as the advice text states. The shortage itself is unchanged: it comes from construction capacity (K1/K2), not from exports (K3 measured and not confirmed: the trade solve already gives home buyers their non-tradable share and lets them bid without freight). Nothing changes for a good with no unmet demand. Measured (seed 12345, unmodded): at day 0, 382 of about 21,000 country-goods have more than 2% of demand unmet (0.15% of demand by value, mostly North Korea's sanctioned goods); after two to three months about 1,200 (0.4% by value), many of them military goods (missile systems, naval vessels) wholly unmet in many countries, which now score higher where the country can build them. Day-0 state is unchanged (ratings, bank ratios, revenues: the patch changes only the adviser's scores and verdicts), so no re-calibration is needed; the AI's sector choices can differ from the first month where a good is short. No saved state: both fields are already saved, and the scores are recomputed on each call. In reality an industrial planner looks at orders that cannot be filled, not only at deliveries, and a shortage is the clearest signal that capacity is short.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"capacity_idle\"",
+      "near": 2500,
+      "find": "D=Math.max(0,lC(B.we.cons?.[r])),",
+      "replace": "D=Math.max(0,lC(B.we.cons?.[r])),$k4=Math.max(0,lC(B.we.unmet?.[r])),"
+    },
+    {
+      "anchor": "\"capacity_idle\"",
+      "near": 2500,
+      "find": "I=D>Gt?iE((D-w)/D,0,1):0",
+      "replace": "I=D+$k4>Gt?iE((D+$k4-w)/(D+$k4),0,1):0"
+    },
+    {
+      "anchor": "\"capacity_idle\"",
+      "near": 2500,
+      "find": "signals:{domesticNeed:I,",
+      "replace": "signals:{shortage:D+$k4>Gt?$k4/(D+$k4):0,domesticNeed:I,"
+    },
+    {
+      "anchor": "\"capacity_idle\"",
+      "near": 2500,
+      "find": "consumption:D,imports:o,",
+      "replace": "consumption:D,unmet:$k4,imports:o,"
+    },
+    {
+      "anchor": "\"already_net_exporter\"",
+      "find": "B===\"import_substitution\"?D&&e<.2?",
+      "replace": "B===\"import_substitution\"?lC(g.shortage)>.02?0:D&&e<.2?"
+    }
+  ]
+}

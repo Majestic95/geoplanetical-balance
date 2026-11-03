@@ -1,0 +1,13 @@
+{
+  "id": "c1-corporate-investment",
+  "finding": "C1",
+  "effect": "Ordering a company to invest (player verb finance.startCorporateInvestment, called without a decisionSource): a privately controlled company (ownership.controlled is not true) must pass the game's own profitability test (requireProfitable, as the AI's investments already do) and may have only one funded expansion project at a time (reason active_project). State-controlled companies can still be directed as before. AI investment goes through the same verb with decisionSource set (corporate_market_signal) and is left exactly as in the unmodified game. Player path only: day 0, the AI and saves unchanged. At day 0 every sector is profitable, so the profitability rule binds only once returns fall. Player-visible part: the profitability rule (the game's own UI already hides the invest button while a project is funded, so the one-at-a-time rule only binds non-UI callers). A refused order shows the game's generic \"could not be executed\" message: there is no locale text for project_return. (Minified names in this text are those of build 26296134; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"contributionsBn\"",
+      "find": "validate(A,B,Q){let g=A.finance?.companies?.[Q.companyId];if(!g||g.headquartersCountryKey!==B?.key)return{ok:!1,reason:\"company\"};let C=n1A(A,Q);return C.ok?!0:C},apply(A,B,Q){return FHQ(A,{type:\"country\",id:B.key},Q)}",
+      "replace": "validate(A,B,Q){let g=A.finance?.companies?.[Q.companyId];if(!g||g.headquartersCountryKey!==B?.key)return{ok:!1,reason:\"company\"};if(!Q.decisionSource&&g.ownership?.controlled!==!0&&Object.values(A.finance.projects||{}).some(k=>k.companyId===g.id&&k.status===\"funded\"&&(k.purpose||\"expansion\")===\"expansion\"))return{ok:!1,reason:\"active_project\",companyId:g.id};let C=n1A(A,Q.decisionSource||g.ownership?.controlled===!0?Q:{...Q,requireProfitable:!0});return C.ok?!0:C},apply(A,B,Q){let g=A.finance?.companies?.[Q.companyId];return FHQ(A,{type:\"country\",id:B.key},Q.decisionSource||g?.ownership?.controlled===!0?Q:{...Q,requireProfitable:!0})}"
+    }
+  ]
+}

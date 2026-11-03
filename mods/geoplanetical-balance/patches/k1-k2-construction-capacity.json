@@ -1,0 +1,62 @@
+{
+  "id": "k1-k2-construction-capacity",
+  "finding": "K1/K2",
+  "effect": "Construction capacity now binds the player's orders (K1) and power plants and transport works (K2), not just AI public facilities and AI industrial routes. The game measures a country's yearly room for new projects as its construction capacity x 1.1, minus construction used outside projects, minus the yearly pace of the open order book (KeQ), and stretches an AI order that does not fit to the months the room needs, up to 3x its schedule, or refuses it (NPA, construction_backlog). Before, that check ran only for AI public facilities (hqA, source ai) and AI or corporate production routes (WQQ): the player could order up to 500 facility units at full speed, and plants (Z7A, SZA via the plant quote HeQ), single transport projects (d8) and road, motorway and rail programmes (axA/gjB) had only the investment-budget gate (spend per month <= GDP x the investment share / 1200, em), which a small economy can meet with a programme its builders cannot deliver; their materials were then rationed through fill rates and slowed every other project. Now: (1) the player's public facility quote (Xy, also the planner view) and order, and the player's own production routes (when started; their quote still shows the normal schedule), are stretched the same way but never refused: an order needing more than 3x is given 3x (the AI's limit, Skg), as is an order placed with no room left; the facility quote shows the months the project will take. (2) Plants and plant expansions (in the plant quote HeQ), single transport projects (when started, d8: their quote, Tt, still shows the normal schedule) and road/rail programmes (in their quote, axA; the programme is checked on the sum of its projects' yearly pace and each project is stretched by the same factor) are checked with the construction quantity of their civil works: cost x the construction share of their material basket (normalised, as the material orders compute it, mG/VK) / the country's construction price. Plants, the player's and the AI's, are stretched and never refused (at most 3x): the AI's energy planner tests each source with a one-unit plant (WVg), so a refusal would shut a country out of every thermal source while its builders are busy. AI transport projects and programmes that need more than 3x are refused with construction_backlog; the player's are stretched, at most 3x. The player's plant quote (buildQuote) and the plant-start notice show the stretched months; a coal plant whose stretched schedule ends after the coal deadline is refused as coal_deadline, as an unstretched one would be. Projects with no civil works in their basket (wind, solar, storage, interconnectors) are unchanged. A stretched project spends less per month, so the investment-budget gate is checked on the stretched schedule. Unchanged: countries at war (NPA's exemption), the AI's pause on new public facilities (ZZA), AI facility and route rules, projects already open, day 0 (no project is created at genesis). Real-world behaviour: absorption capacity binds governments (IMF public investment management work: scaling up public investment faster than domestic construction can absorb raises costs and delays rather than delivering faster). The capacity quantity is priced at the owner's construction price (the order book uses the procurement market's, which differs only where it was reassigned). (Minified names in this text are those of build 26318758.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "[\"construction\",\"cement\",\"sand_aggregates\"]",
+      "near": 800,
+      "find": "function ulA(A,B,Q,g){if(!(Q>0)||!(g>0)||!B||B.atWar)return g;let{roomY:C}=a4Q(A,B);if(!(C>0))return null;let e=Math.ceil(12*Q/C);return e<=g?g:e<=g*bbg?e:null}",
+      "replace": "function ulA(A,B,Q,g){if(!(Q>0)||!(g>0)||!B||B.atWar)return g;let{roomY:C}=a4Q(A,B);if(!(C>0))return null;let e=Math.ceil(12*Q/C);return e<=g?g:e<=g*bbg?e:null}function __geobalK12Qty(A,B,Q,g){let C=0;for(let r in g||{})C+=Number(g[r])||0;let e=Number(g?.construction)||0,r=Number(tc(A,B?.key,\"construction\"))||0;return C>0&&e>0&&r>0&&Q>0?Q*e/C/r:0}function __geobalK12Months(A,B,Q,g,C){if(!C)return ulA(A,B,Q,g);if(!(Q>0)||!(g>0)||!B||B.atWar)return g;let{roomY:e}=a4Q(A,B),r=e>0?Math.ceil(12*Q/e):1/0;return r<=g?g:Math.min(r,g*bbg)}"
+    },
+    {
+      "anchor": "\"construction.public_facility_started\"",
+      "near": 2500,
+      "find": "E=e.months,t=o/E,",
+      "replace": "E=A.playerControlsGovernment?.(B)?__geobalK12Months(A,B,__geobalK12Qty(A,B,o,{construction:1}),e.months,!0):e.months,t=o/E,"
+    },
+    {
+      "anchor": "\"industry.route.started\"",
+      "near": 2500,
+      "find": "if((Q.decisionSource===\"corporate_market_signal\"||Q.decisionSource!==\"player\"&&String(B.key)!==String(A.playerKey))&&!g.renewalTargets&&!PlA.has(g.goodId)&&g.basket?.construction>0){let E=g.totalCost*g.basket.construction/Math.max(1e-9,AQ(\"construction\")*ag(A,\"construction\")),t=ulA(A,B,E,g.months);",
+      "replace": "if(!g.renewalTargets&&!PlA.has(g.goodId)&&g.basket?.construction>0){let E=g.totalCost*g.basket.construction/Math.max(1e-9,AQ(\"construction\")*ag(A,\"construction\")),t=__geobalK12Months(A,B,E,g.months,!(Q.decisionSource===\"corporate_market_signal\"||Q.decisionSource!==\"player\"&&String(B.key)!==String(A.playerKey)));"
+    },
+    {
+      "anchor": "\"coal_deadline\"",
+      "near": 800,
+      "find": "if(!C.available)return{ok:!1,reason:C.reason,quote:C,technology:C.technology};let e=A4Q(A,B,Q,C.months);",
+      "replace": "if(!C.available)return{ok:!1,reason:C.reason,quote:C,technology:C.technology};{let k=__geobalK12Months(A,B,__geobalK12Qty(A,B,C.cost,n9[Q]),C.months,!0);if(k==null)return{ok:!1,reason:\"construction_backlog\",quote:C};k!==C.months&&(C={...C,months:k})}let e=A4Q(A,B,Q,C.months);"
+    },
+    {
+      "anchor": "projectType:\"surface_program\",targetId:null",
+      "near": 5500,
+      "find": "let e=C.costBn/C.months,{availableMonthlyBn:r,committedMonthlyBn:w}=Zy(A,g);",
+      "replace": "let k=__geobalK12Months(A,g,__geobalK12Qty(A,g,C.costBn,xwA(A,{kind:\"transport\",transportPlan:C.plan,projectType:C.projectType,targetId:C.targetId})),C.months,!!A.playerControlsGovernment?.(g));if(k==null)return JB(\"construction_backlog\",{quote:C});let e=C.costBn/k,{availableMonthlyBn:r,committedMonthlyBn:w}=Zy(A,g);"
+    },
+    {
+      "anchor": "projectType:\"surface_program\",targetId:null",
+      "near": 5500,
+      "find": "monthsTotal:C.months,monthsLeft:C.months,paid:0,phase:\"construction\",deliveryApplied:!1};return D.provinceKeys=",
+      "replace": "monthsTotal:k,monthsLeft:k,paid:0,phase:\"construction\",deliveryApplied:!1};return D.provinceKeys="
+    },
+    {
+      "anchor": "projectType:\"surface_program\",targetId:null",
+      "near": 2500,
+      "find": "let t=E.reduce((P,v)=>P+v.quote.costBn,0),a=E.reduce((P,v)=>P+v.quote.costBn/v.quote.months,0),",
+      "replace": "{let P=0,v=E.reduce((d,h)=>Math.max(d,h.quote.months),0);for(let d of E)d.quote.months>0&&(P+=__geobalK12Qty(A,e,d.quote.costBn,xwA(A,{kind:\"transport\",projectType:\"surface_program\",transportPlan:d.quote.plan}))*v/d.quote.months);let l=__geobalK12Months(A,e,P,v,!!A.playerControlsGovernment?.(e));if(l==null)return JB(\"construction_backlog\");l>v&&(E=E.map(d=>({...d,quote:{...d.quote,months:Math.ceil(d.quote.months*l/v)}})))}let t=E.reduce((P,v)=>P+v.quote.costBn,0),a=E.reduce((P,v)=>P+v.quote.costBn/v.quote.months,0),"
+    },
+    {
+      "anchor": "\"construction.province_not_found\"",
+      "near": 400,
+      "find": "costBn:Q.cost,months:Q.months},Z3())}",
+      "replace": "costBn:Q.cost,months:A.construction?.at?.(-1)?.id===g?A.construction.at(-1).monthsTotal:Q.months},Z3())}"
+    },
+    {
+      "anchor": "fusionHe3DemonstratorQuote(B=this.player)",
+      "near": 400,
+      "find": "buildQuote(B,Q=1,g=this.player){return dX(this,B,Q,g)}",
+      "replace": "buildQuote(B,Q=1,g=this.player){let q=dX(this,B,Q,g);if(q&&q.available&&g){let k=__geobalK12Months(this,g,__geobalK12Qty(this,g,q.cost,n9[B]),q.months,!0);k!==q.months&&(q={...q,months:k})}return q}"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "t4-capital-inflows",
+  "finding": "T4",
+  "effect": "Private capital inflows fade smoothly as a country's rating worsens instead of stopping at notch 17. For a country with net private inflows (privateFinancingPct > 0), inflows are scaled by L(rating) / L(day-0 rating), with L(r) = 1 / (1 + exp((r - 16.5) / 1.5)), capped at 1.5x for upgrades; the day-0 rating is stored in the game's own day-0 external-financing record (externalFinancing0.geobalRating0) at genesis right after the game sets the day-0 rating (EYQ, both genesis paths), and backfilled on the monthly reserve pass (F6Q) for saves made without the mod; inflows only read it, so views never write state. A downgrade from 14 to 17 now cuts inflows by about half (the original rule: from all to nothing at 17). Countries that start at rating 17 or worse (no market access at day 0), defaulted countries and net-outflow countries keep the original rule; the market-access gate on rollover and bond issuance (Ni) is unchanged. Not included: the real-interest-rate gap. Day 0 unchanged (factor 1 at the day-0 rating). (Minified names in this text are those of build 26296134; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"economic T0 checkpoint transport absent before seal\"",
+      "near": 1000,
+      "find": "B.rating=Math.max(0,Math.min(19,Math.round(B.ratingScore))),",
+      "replace": "B.rating=Math.max(0,Math.min(19,Math.round(B.ratingScore))),B.externalFinancing0&&(B.externalFinancing0.geobalRating0=B.rating),"
+    },
+    {
+      "anchor": "\"budgetCashAccountId\"",
+      "near": 5600,
+      "find": "return o3(A)?B:Math.min(0,B)}",
+      "replace": "let r=qr(A?.rating),r0=qr(A?.externalFinancing0?.geobalRating0,r),L=x=>1/(1+Math.exp((x-16.5)/1.5));if(!(B>0)||A?.defaulted||!(r0<17))return o3(A)?B:Math.min(0,B);return B*Math.min(1.5,L(r)/L(r0))}"
+    },
+    {
+      "anchor": "\"external_current_account_reserve_change\"",
+      "near": 1000,
+      "find": "g.externalFinancing0||XVA(A,g,C);",
+      "replace": "g.externalFinancing0||XVA(A,g,C);g.externalFinancing0&&(g.externalFinancing0.geobalRating0??=qr(g.rating));"
+    }
+  ]
+}

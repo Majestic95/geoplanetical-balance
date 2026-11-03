@@ -1,0 +1,19 @@
+{
+  "id": "m4-cb-independence-credibility",
+  "finding": "M4",
+  "effect": "Central-bank independence, once lost, comes back over years. In the daily macro step (s2Q) the credibility target is multiplied by 0.55 while the government controls the central bank (cbAuto false) and by 1 otherwise, so restoring independence (xDQ) put the target back at once; and because the daily step only sees the state at tick time, taking control to set a rate and restoring independence on the same day cost nothing at all while the set rate decays only slowly toward the bank's rule. Now the factor returns from 0.55 to 1 in a straight line over 3 years (1,095 days) after the last day of government control, counted from the last daily step that saw control or from the day independence was restored, whichever is later; under control it stays 0.55 as before, and the anchor still follows its target at the game's own speeds (falls at 0.9, rises at 0.3 a year of the gap). The day-0 baseline the target is measured against (_orth0, taken at the first daily step) is now always taken as an independent bank: in the original, control taken before the first step of a new game went into the baseline and then cost nothing for the whole game. Real independence is judged on its track record: a government that has overridden its central bank is priced as if it may do so again until years of non-interference have passed. Effect, with the other credibility terms held fixed (function test): a same-day take-and-restore now costs about as much credibility as a year of control (the anchor bottoms at 77% of its ceiling about 1.5 years later, 92% after 6 years; the original: no cost), toggling every month ends where permanent control does (56% vs 55% after 6 years), and a year of control followed by restoration recovers more slowly (70% instead of 85% of the ceiling 2 years after restoring). End to end (tests/m4.headless.mjs, China, seed 12345): a same-day take-and-restore on day 1 leaves the anchor at 94.0% of anchor0 on day 61 and 91.5% on day 91, against 99.99% without this patch. No restore cooldown is needed: restoring early never beats staying independent. Countries using an adopted strong currency (dollarized) keep factor 1 as in the original. State: country.geobalCbControlDay, written by the daily step while under control and by the restore action; absent means never controlled since the mod was loaded (factor 1, the original). Day 0 unchanged: every country starts with cbAuto true (measured at boot, the 16 countries whose law makes the bank government-controlled included), so the field is absent, the factor is 1 and the baseline is the original one bit for bit (x / 1). AI countries never call the take or restore actions; a law that makes a bank independent again now also returns its ceiling gradually. Not done: scaling the penalty by how far policy departs from the bank's rule (the first half of finding M4). Minified names are those of build 26318758.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"finance.cb_independence_restored\"",
+      "find": "function XsQ(A){let B=A.player;return B.cbAuto?!1:(B.cbAuto=!0,",
+      "replace": "function __geobalCbFactor(A,B){let c=B?.geobalCbControlDay,d=A?.day||0;return B?._dollarized||B?.ccy?.dollarized||typeof c!=\"number\"||!Number.isFinite(c)||c>d?1:Math.min(1,.55+.45*(d-c)/1095)}function XsQ(A){let B=A.player;return B.cbAuto?!1:(B.cbAuto=!0,B.geobalCbControlDay=A.day||0,"
+    },
+    {
+      "anchor": "\"macro.quarterly_report\"",
+      "near": 3500,
+      "find": "c=(B.cbAuto!==!1?1:.55)*(.55+.3*I+.15*Zd(a/3,0,1))*(.7+.3*n);B._orth0==null&&(B._orth0=c)",
+      "replace": "__gbF=B.cbAuto!==!1?__geobalCbFactor(A,B):(B.geobalCbControlDay=A.day||0,.55),c=__gbF*(.55+.3*I+.15*Zd(a/3,0,1))*(.7+.3*n);B._orth0==null&&(B._orth0=c/__gbF)"
+    }
+  ]
+}

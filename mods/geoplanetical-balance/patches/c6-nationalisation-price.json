@@ -1,0 +1,14 @@
+{
+  "id": "c6-nationalisation-price",
+  "finding": "C6",
+  "effect": "Removes the nationalisation/privatisation price cliff at zero profit: sector value = max(operating profit x multiple, 0.35 x productive capital) instead of profit x multiple when profit is positive and 0.35 x capital otherwise. A sector earning barely above zero is now worth at least its asset floor, so a demand dip no longer lets the state buy it for a fraction of its assets; sectors whose earnings value exceeds 35% of their capital are priced as before. The floor also binds for profitable sectors with low earnings relative to capital: about 14% of country-sector aggregates at day 31 (all profitable), priced up to about 30% higher, total value about +1.2% (critic's reconstruction). Applies to player and AI transfers, buy and sell. Net-debt adjustment and profit smoothing are deferred (see QUESTIONS.md). No day-0 or saved-state effect. (Minified names in this text are those of build 26296134; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "valuationMultiple",
+      "near": 2500,
+      "find": "valueBn:e>0?AA(e*r):AA(.35*Math.max(0,kt(C.productiveCapitalBn)))",
+      "replace": "valueBn:AA(Math.max(e*r,.35*Math.max(0,kt(C.productiveCapitalBn))))"
+    }
+  ]
+}

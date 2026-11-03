@@ -1,0 +1,20 @@
+{
+  "id": "a3-c17-corporate-user-cost",
+  "finding": "A3/C17",
+  "effect": "Business investment prices capital off firms' own borrowing cost instead of the sovereign yield alone. The corporate nominal rate is (1 - w) x the lending rate (policy + 2.4, floor 0.25, as the game's banks lend) + w x the sovereign yield (the sovereign-bank nexus), with w = 0.3 in normal times rising to 0.8 as the yield climbs from 1 to 5 points above the policy rate: in sovereign stress firms' borrowing costs track the sovereign almost one-for-one (the sovereign ceiling: Italy and Spain 2011-12, Greece). Mod 0.1.0 used a fixed 0.3; a baseline it stored is carried over continuously (c0 shifted by the weight difference on the first step, marked v 2), so loading such a save does not jump. The first year runs as in the original game (the policy rates the game starts from settle upward through year 1, which would otherwise cut investment worldwide). On the first business-capital step from day 365, each country stores its real sovereign rate s1 and real corporate rate c0 (geobalUserCost0); from then on the user-cost rate is max(0, s1 + corporate now - c0): continuous at the switch, then it moves with the corporate rate. A later sovereign default (yield + 26 points) raises it by about 20 points instead of 26 (mod 0.1.0: about 8); a policy rate rise of 1 point in normal times raises it by 0.7. The game's own baseline realRate0 is unchanged (captured on day 31 as before). The 0% real floor stays (the save validator rejects a negative stored baseline). Falls back to the original where a country has no policy rate. Day 0 unchanged: the corporate rate and its stress weight act only from the day-365 switch, so day-0 investment is as in the original game. (Minified names in this text are those of build 26296134; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"business-structures:catalog\"",
+      "near": 4000,
+      "find": "function BTB(A){let B=Number(A?.bondRate),Q=Number(A?.inflExp);return",
+      "replace": "function __geobalRealRates(A){let B=Number(A?.bondRate),Q=Number(A?.inflExp),P=Number(A?.policyRate);if(!Number.isFinite(B)||!Number.isFinite(Q))return null;let H=A?.policyRate!=null&&Number.isFinite(P),L=Math.max(.25,P+2.4),w=.3+.5*Math.max(0,Math.min(1,(B-P-1)/4));return{s:(B-Q)/100,c:((H?(1-w)*L+w*B:B)-Q)/100,c1:((H?.7*L+.3*B:B)-Q)/100}}function __geobalC0(U,R){return U.v===2?U.c0:U.c0+R.c-R.c1}function BTB(A){let U=A?.geobalUserCost0,R=U&&__geobalRealRates(A);if(R)return Math.max(0,U.s1+R.c-__geobalC0(U,R));let B=Number(A?.bondRate),Q=Number(A?.inflExp);return"
+    },
+    {
+      "anchor": "\"CGE omitted its transport allocation receipt\"",
+      "near": 1500,
+      "find": "B&&(eTB(r,g),rTB(r,g),kuA(r));",
+      "replace": "B&&(eTB(r,g),rTB(r,g),kuA(r),g>=365&&(R=>{if(!R)return;let U=r.geobalUserCost0;U==null?r.geobalUserCost0={s1:Math.max(0,R.s),c0:R.c,v:2}:U.v!==2&&(U.c0=__geobalC0(U,R),U.v=2)})(__geobalRealRates(r)));"
+    }
+  ]
+}

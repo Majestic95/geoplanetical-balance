@@ -1,0 +1,20 @@
+{
+  "id": "e4-war-repair-cost",
+  "finding": "E4",
+  "effect": "War and sabotage damage to power plants now costs money to repair. When a plant is hit, its owner's treasury pays the added damage x capacity (GW) x the game's own capital cost for that technology (GC capex, e.g. nuclear 6 bn$/GW) x the local build-cost multiplier (t7A), as a treasury expense (purpose war_repair, booked through the same payment the game uses for plant decommissioning). The treasury pays as the game's other payments do (borrowing for a shortfall when it can); if it cannot (e.g. in default), it pays the cash it has and the repair takes longer: each hit adds the unpaid share of the repair time for the damage it caused, and the total never exceeds twice the game's repair time for the plant's damage. A fully destroyed 1.4 GW reactor costs its owner about 8 bn$ instead of nothing. The money leaves the economy (no construction firm receives it): war destroys value. Oil and gas fields are not charged (the game has no capital cost for them). Day 0 unchanged (no damage at start). (Minified names in this text are those of build 26296134; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"plants.structure\"",
+      "near": 3800,
+      "find": "function voQ(A,B,Q=.5,g=\"war\",C=null){",
+      "replace": "function __geobalWarRepair(A,B,d,gw,r){let O=A?.countries?.get?.(B.owner),c=uC[B.src];if(!O||!c||!(d>0)||!(gw>0))return null;let k=AA(Math.max(0,Number(c.capex)||0)*d*gw*fdA(A,O,B.src));if(!(k>0))return null;let o={purposeId:\"war_repair\",kind:\"war_repair_payment\",refs:{plantId:B.id}},P=k0(A,O,k,o);P?.ok||(P=k0(A,O,k,{...o,allowPartial:!0}));let u=P?.ok?Math.max(0,Math.min(1,(Number(P.shortfallBn)||0)/k)):1;u>0&&(B._warRepairDay=Math.min(B._warRepairDay+Math.ceil(u*IiA(d)),(A.day||0)+2*IiA(r)));return{costBn:k,paidBn:P?.ok?Number(P.amountBn)||0:0}}function voQ(A,B,Q=.5,g=\"war\",C=null){"
+    },
+    {
+      "anchor": "\"plants.structure\"",
+      "near": 3500,
+      "find": "let D=Math.max(0,Number(B.capacityGW)||0);return{id:B.id,damage:r,",
+      "replace": "let D=Math.max(0,Number(B.capacityGW)||0);__geobalWarRepair(A,B,r-e,D,r);return{id:B.id,damage:r,"
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "id": "geoplanetical-balance",
+  "name": "Geoplanetical Balance",
+  "version": "0.2.0",
+  "description": "All Geoplanetical Balance improvements in one mod: corrects inaccurate or broken parts of the economic model, starting with household and financial-system fixes. Single player.",
+  "builds": [
+    "26391432"
+  ],
+  "patches": [
+    "patches/h2-plug-interest-capped.json",
+    "patches/t1-fx-borrowing-limits.json",
+    "patches/c1-corporate-investment.json",
+    "patches/e13-carbon-base.json",
+    "patches/t2-fx-drift.json",
+    "patches/h12-fertility.json",
+    "patches/a6-tax-base-tiers.json",
+    "patches/t4-capital-inflows.json",
+    "patches/c10-shadow-economy-tax.json",
+    "patches/c6-nationalisation-price.json",
+    "patches/a1-approval-loss-aversion.json",
+    "patches/a3-c17-corporate-user-cost.json",
+    "patches/e4-war-repair-cost.json",
+    "patches/a5-c9-privatisation-efficiency.json",
+    "patches/d1-d2-rating-within-country.json",
+    "patches/e10-power-subsidy.json",
+    "patches/c14-arrears-cap.json",
+    "patches/p1-bill-deposit.json",
+    "patches/p2-law-habituation.json",
+    "patches/p3-snap-election-guards.json",
+    "patches/m6-devaluation-credibility.json",
+    "patches/m4-cb-independence-credibility.json",
+    "patches/t14-fx-issue-bond-rate.json",
+    "patches/w3-conquest-debt-succession.json",
+    "patches/k4-adviser-unmet-demand.json",
+    "patches/k1-k2-construction-capacity.json",
+    "patches/g1-g9-tax-collection.json",
+    "patches/l2-health-labour-hours.json",
+    "patches/s3-compulsory-schooling.json",
+    "patches/l21-pandemic-severity.json"
+  ],
+  "changes": [
+    {
+      "group": "Economy and business",
+      "items": [
+        "The state can no longer order private firms into loss-making investments, and each private firm takes one ordered expansion at a time.",
+        "After the first year, business investment follows firms' own borrowing cost rather than only the government's; in a sovereign debt crisis firms' costs rise almost as much as the government's.",
+        "Privatising a state-owned sector can make it more productive than it was at the start.",
+        "A sector's purchase or sale price never falls below 35% of its capital, so it no longer costs next to nothing when profits are near zero (some low-earning sectors cost more).",
+        "Large unpaid bills are no longer written off just because many small bills are open elsewhere: only trivial amounts are, and larger debts stay owed until paid or two years overdue (a much higher safety limit remains for extreme cases).",
+        "The industrial adviser and AI governments now count orders that go unfilled: a good in short supply at home scores higher, and is no longer called a poor fit for replacing imports when more than 2% of its demand goes unfilled.",
+        "Your public works, industrial projects, power plants and transport works now count against your country's construction capacity: a programme too large for your builders is slowed (up to three times its normal schedule) rather than refused; a coal plant stretched past the coal deadline is still refused. AI power plants are slowed the same way, and AI transport works that would need more than three times their schedule are not started."
+      ]
+    },
+    {
+      "group": "Money, debt and currency",
+      "items": [
+        "Your manual foreign-currency borrowing is limited to once a month, with a yearly cap set by your credit rating.",
+        "Foreign-currency borrowing no longer replaces your country's domestic bond rate with the foreign rate.",
+        "Exchange rates drift on changes in a country's trade balance since the start, not on its starting surplus or deficit.",
+        "Private foreign investment fades gradually as a credit rating falls, instead of stopping all at once.",
+        "After the first year, recessions, inflation (sharply above 10%) and high debt lower credit ratings and booms raise them; debt counts from 60% of GDP, or 90% for reserve-currency and currency-union countries; the sudden debt-crisis trigger at 170% of GDP is gone.",
+        "Devaluing your pegged currency now costs monetary credibility, more for each repeat within three years, and you must wait 180 days between devaluations.",
+        "After the government takes control of the central bank, even for a day, its credibility ceiling returns over three years once independence is restored, instead of at once."
+      ]
+    },
+    {
+      "group": "Taxes and energy",
+      "items": [
+        "Tax bases change smoothly as income per head grows, instead of jumping at fixed thresholds.",
+        "A growing shadow economy now reduces how much tax is collected.",
+        "Every country's carbon tax base now follows its power-sector emissions, so cleaner power means less carbon revenue.",
+        "Raising the electricity subsidy now lowers industry's production costs, and cutting it raises them; before, firms only gained or lost cash while their costs, prices and output ignored the subsidy."
+      ]
+    },
+    {
+      "group": "Households and population",
+      "items": [
+        "Households in debt now feel interest rates: rate rises cost them and rate cuts help them, where the game used to cancel the effect out quietly.",
+        "Birth rates fall with rising income mainly in countries still having large families; in low-fertility countries income barely moves them."
+      ]
+    },
+    {
+      "group": "Government and politics",
+      "items": [
+        "Approval reacts more to downturns than to booms (about twice as much in a typical country), within realistic limits, and after the first year elections punish recessions.",
+        "Withdrawing a bill takes back only the part of its announcement boost that is still in effect (the game took back the full boost even weeks later), and the law cannot be proposed again for 30 days.",
+        "A small amendment to a law no longer restores its full effect on approval; voters stay used to it unless the change is large.",
+        "You can no longer call a snap legislative election within a year of the last one or in the final six months of a term, and a caretaker government must wait 60 days, timing rules AI governments already follow."
+      ]
+    },
+    {
+      "group": "War",
+      "items": [
+        "War and sabotage damage to power plants must now be paid for by the owner's treasury; unpaid repairs take longer.",
+        "Conquering a whole country now hands its government debt and its unpaid bills to other countries to the conquerors along with its treasury, instead of wiping them out at the creditors' expense."
+      ]
+    },
+    {
+      "group": "Public services",
+      "items": [
+        "Clearing a tax office's backlog of returns no longer raises tax collection by up to a quarter for good; a fast tax office now adds under 1%.",
+        "Better tax collection no longer cuts the administration budget.",
+        "When sick people go untreated, the economy now loses working hours, up to about 6% if health care collapses.",
+        "Raising the school leaving age now raises secondary school enrolment as teachers, money and schools allow (about 12% more for 16 to 18; more where compulsory schooling was short).",
+        "With new pandemics switched on, a coronavirus pandemic is now about as deadly as COVID-19 was in 2020."
+      ]
+    }
+  ]
+}
