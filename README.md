@@ -21,13 +21,17 @@ Not affiliated with the developers of Geoplanetical.
 
 ## Installing
 
-1. Download the Geoplanetical Mod Loader (0.9.0 or later) and unzip it anywhere.
-2. Copy both folders from this repository's `mods` folder (`geoplanetical-balance` and
-   `geoplanetical-balance-wording`) into the loader's `mods` folder.
-3. Run `GeoplaneticalModLoader.exe`. The first time, it sets up its copy of game 1.1.5 (it explains each step and
-   asks first). Check that both mods are switched on, and click **Play**.
-4. The loader asks you to confirm the balance mod the first time: it changes the game's simulation, and such a mod's
-   code runs with the same access to your PC as any program you install.
+1. Get the [Geoplanetical Mod Loader](https://github.com/Majestic95/geoplanetical-modloader/releases/latest)
+   (0.10.0 or later): download `GeoplaneticalModLoader-<version>.zip` and unzip it anywhere.
+2. Run `GeoplaneticalModLoader.exe`. The first time, it offers to get game 1.1.5, the version these mods are made
+   for: click **Yes, get it with Steam** and follow the steps on screen (one paste into Steam's console). Your
+   normal Steam game is not changed.
+3. On this page, click **Code**, then **Download ZIP**. Drop the downloaded zip onto the loader's window (no need
+   to unzip it). The loader adds both mods: **Geoplanetical Balance** and **Geoplanetical Balance: wording**.
+4. Leave both switched on and click **Play**. The first time, the loader asks you to confirm Geoplanetical Balance:
+   it changes the game's simulation, so its code runs with the same access to your PC as any program you install.
+
+Single player only. To update, drop the new zip the same way: it replaces the old version.
 
 The frozen game keeps its own saves, apart from your Steam game's, and Steam Cloud does not back them up. A save made
 with the mods needs them to load correctly: load it through the loader with both mods switched on. Saves from game
