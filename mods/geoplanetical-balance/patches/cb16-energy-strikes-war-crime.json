@@ -1,0 +1,32 @@
+{
+  "id": "cb16-energy-strikes-war-crime",
+  "finding": "CB16",
+  "effect": "Sustained strikes on a country's energy now count as a war crime. The accountability ledger (gHt) counted only occupation killing, deportation, nuclear first use and lethal repression; strikes on power plants and energy fields (uKe) gave only a relations penalty. Now each strike that lands on a power plant, or on an oil, gas, coal or uranium field, is counted per striker and victim (the plant's or field's owner) in the war's conduct record (cBe, which every landed strike reaches); strikes on metal mines (iron, copper, rare earths, cobalt, nickel) do not count. Once a month, before the ledger reads the war (s1r), a striker that hit the victim's energy that month is charged when the victim's unserved electricity share stands more than 20 points above where it was when the war's strike campaign began (campaign.outage0, the same baseline the war screen uses). With several strikers that month, in one war or several, the excess is split by their strike counts, so the 20-point bar is per country; with several wars the highest of their baselines is used. The charge is the victim's population times the striker's share of the excess, booked as people affected under a new kind, civilian_infrastructure, which the ledger weighs like displaced people (one hundredth of a death) and files as war crimes, the same UN dossier kind as occupation killing. Example: 30 points of excess in a country of 37 million books 11 million people affected, 0.11 million on the ledger's death scale, well above the monthly bar of about 2,000. At 20 points or below, or in a month with no strike on that victim, nothing is booked. Real basis: the ICC's arrest warrants of March and June 2024 for strikes on Ukraine's electricity grid. Reach: the game resolves individual strikes only in wars fought on the map, which are the player's wars (wars between AI countries are fought in aggregate and land no strike on a plant), so the charge falls on the countries in the player's wars: the player, the enemy, and either side's allies fighting in that war. The outage is the month just sealed (the grid's monthly window closes before the accountability step). Limits: strikes in a war's last partial month are not charged when the war ends before the month closes; strikes made before the war's campaign baseline exists are not charged; the split counts strikes, not their damage; a striker that hits an already blacked-out grid is charged on the outage others caused; outages from fuel shortages or sanctions count only when the striker also hit the victim's energy that month. No day-0 effect (no strike counts at day 0). New saved state: three numbers per striker and victim in the war's conduct record (geobalStrikes, geobalStrikesSeen, geobalEnergyHarmM), which the game's war validator keeps as they are.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "domestic_lethal_repression:\"crimes_against_humanity\"",
+      "near": 200,
+      "find": "gHt=Object.freeze({occupation_killing:\"war_crimes\",",
+      "replace": "gHt=Object.freeze({civilian_infrastructure:\"war_crimes\",occupation_killing:\"war_crimes\","
+    },
+    {
+      "anchor": "domestic_lethal_repression:\"crimes_against_humanity\"",
+      "near": 600,
+      "find": "[\"nuclearM\",\"nuclear_first_use\",\"deathsM\"]])",
+      "replace": "[\"nuclearM\",\"nuclear_first_use\",\"deathsM\"],[\"geobalEnergyHarmM\",\"civilian_infrastructure\",\"displacedM\"]])"
+    },
+    {
+      "anchor": "strikeLedger||={fromDay:e.day||0",
+      "near": 500,
+      "find": "function cBe(e,t,a,r){",
+      "replace": "function __geobalStrikeCount(e,t,a,r){if(!t||!a||!r)return;let f=r.targetType===\"field\"?e.fields?.get(r.targetId):null,o=r.targetType===\"plant\"?e.plants?.get(r.targetId)?.owner:f&&[\"oil\",\"gas\",\"coal\",\"uranium\"].includes(f.resource)?f.owner:null;if(!o||o===a)return;let p=lN(t,a,o);p.geobalStrikes=Iy(p.geobalStrikes)+1}function __geobalEnergyHarm(e,W){let b={};for(let t of W){let z=t?.campaign?.outage0;if(!O3(t.conduct))continue;for(let s of Object.keys(t.conduct).sort(b_)){let w=t.conduct[s];if(O3(w))for(let v of Object.keys(w).sort(b_)){let p=w[v];if(s===v||!O3(p))continue;let n=Iy(p.geobalStrikes)-Iy(p.geobalStrikesSeen);n>0&&(p.geobalStrikesSeen=Iy(p.geobalStrikes),O3(z)&&(b[v]||=[]).push([p,n,z[v]]))}}}for(let v of Object.keys(b).sort(b_)){let c=e.countries.get(v),l=b[v].filter(f=>f[2]!=null);if(!c||!l.length)continue;let x=Math.max(0,hl(c).unservedShare-Math.max(...l.map(f=>Iy(f[2])))),q=b[v].reduce((u,f)=>u+f[1],0);for(let[p,n]of l){let h=x*n/q;h-.2>1e-9&&(p.geobalEnergyHarmM=Iy(p.geobalEnergyHarmM)+Math.max(0,Iy(c.pop))*h)}}}function cBe(e,t,a,r){__geobalStrikeCount(e,t,a,r);"
+    },
+    {
+      "anchor": "protesterDeathsM)>0",
+      "near": 300,
+      "find": "for(let i of a)xve(e,i);",
+      "replace": "__geobalEnergyHarm(e,a);for(let i of a)xve(e,i);"
+    }
+  ]
+}

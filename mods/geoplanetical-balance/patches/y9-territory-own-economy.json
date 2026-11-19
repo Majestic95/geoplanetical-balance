@@ -1,0 +1,26 @@
+{
+  "id": "y9-territory-own-economy",
+  "finding": "Y9",
+  "effect": "A territory's anger now reads its own economy. The regional cause model (y0B through GhQ) took unemployment, its baseline and civil liberties from the first living sovereign, so Puerto Rico's grievance followed US unemployment and Greenland followed Denmark, though each territory has its own economy, laws and baseline. For a question with a polity, those now come from the polity; war still comes from the sovereign. The question panel (N2C) uses the same inputs so it shows the same causes. Questions with no polity are unchanged. Causes are measured against the actor's own baseline, which the game records with the same function (kzA, uBA), so they start at 0. Cached unmodded series show territories with their own moving unemployment (Greenland rises while Denmark falls); their liberties were not measured. Expected effect: territories' grievance follows their own conditions, which may be noisier in small economies; size not measured. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.) On game 1.1.5 (build 26734764) the game itself replaces the economy cause with the territory's own living conditions where the territory has social-group data (kpt); civil liberties and their baseline still came from the sovereign, and unemployment still does where that data is missing, so the patch keeps both and passes the game's new inputs through.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "atWar0===!1",
+      "near": 600,
+      "find": "function Mpt(e,t,a=0,r={}){let o=e?.domestic?.baseline||{},n=Math.max(0,v0(e?.unemployment)-v0(o.unemployment,e?.unemployment))",
+      "replace": "function Mpt(e,t,a=0,r={}){let __geobalE=r.economyActor||e,o=__geobalE?.domestic?.baseline||{},n=Math.max(0,v0(__geobalE?.unemployment)-v0(o.unemployment,__geobalE?.unemployment))"
+    },
+    {
+      "anchor": "trendAnchorPrev=",
+      "near": 700,
+      "find": "s={civilLiberties:Yb(n,\"civil_liberties\"),...kpt(e,o)}",
+      "replace": "s=(__geobalP=>({civilLiberties:Yb(__geobalP,\"civil_liberties\"),economyActor:__geobalP,...kpt(e,o)}))(o.polityKey&&e.countries.get(o.polityKey)||n)"
+    },
+    {
+      "anchor": "trendAnchorPrev||",
+      "near": 1000,
+      "find": "n=o?pIa(Mpt(o,t,r,{civilLiberties:Yb(o,\"civil_liberties\"),...kpt(e,t)})):[]",
+      "replace": "n=o?pIa((__geobalP=>Mpt(o,t,r,{civilLiberties:Yb(__geobalP,\"civil_liberties\"),economyActor:__geobalP,...kpt(e,t)}))(t.polityKey&&e.countries.get(t.polityKey)||o)):[]"
+    }
+  ]
+}

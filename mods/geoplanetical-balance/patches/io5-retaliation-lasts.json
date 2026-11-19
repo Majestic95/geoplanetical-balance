@@ -1,0 +1,14 @@
+{
+  "id": "io5-retaliation-lasts",
+  "finding": "IO5",
+  "effect": "Trade retaliation now lasts as long as the tariff it answers. W8C gave a retaliation clause 730 days; at expiry the clause ended, but the dispute stayed retaliated and only action_due disputes get a new response (N8C), so a breaching tariff was free from year three. Real rebalancing lasts as long as the measure. The clause now has no end date. The exit already exists: repealing the offending act settles the dispute (wp), r4g marks the clause as having lost its basis, and x8C repeals it. A null end date is accepted by the clause builder, normaliser, activity test, tariff table, validator and expiry pass. Clauses in an existing save keep their dates. Expected effect: disputes that reach retaliation keep costing the breaching country after two years, so long-run trade among such pairs is lower. Day 0 unchanged: no dispute exists. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "legalBasis:\"retaliation\",causeDisputeId",
+      "near": 100,
+      "find": "durationDays:oGo,legalBasis:\"retaliation\"",
+      "replace": "durationDays:null,legalBasis:\"retaliation\""
+    }
+  ]
+}

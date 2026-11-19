@@ -1,0 +1,14 @@
+{
+  "id": "x3-lunar-metal-earth-price",
+  "finding": "X3",
+  "effect": "Refined lunar metal brought back to Earth is valued at an Earth commodity price, USD 10 000 a tonne (about titanium sponge; iron, aluminium and silicon are cheaper), instead of USD 80 million a tonne, in the value of a return cargo (qCa, the value the AI weighs against a return flight's cost; it flew metal home whenever that value was twice the flight cost). On Earth the metal saves no launch mass, so it is worth what the same metal costs from a terrestrial producer. Using the metal keeps the game's value (design decision, 2026-11-18: 'separate the two'): a module order still credits 0.08 bn per tonne of the stock it uses, up to 20 % of its cost (w3t and the module quote are unchanged), so an order uses the same tonnage as before and the stock is not swept for a token credit. Helium-3 and Mars deposits keep their own prices; converting metal into research credits is unchanged. Real-world basis: titanium sponge trades at roughly USD 10 000 a tonne, steel and aluminium far less (USGS Mineral Commodity Summaries); in-space resources are valued for the launch mass they replace, which applies only off Earth. No day-0 effect (no metal stock at day 0). No new state. Minified names are those of build 26734764.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "?null:\"no-cargo\",goods:Object.freeze(",
+      "near": 600,
+      "find": "function qCa(e,t,a={}){let r=Math.min(Math.max(0,xe(a.helium3)),AEe(e)),o=Math.max(0,xe(a.refined_space_metals)),n=0;for(let i of a5)xe(a[i])>0&&(n+=HKe(e,t?.key,i,a[i]));return(r>0?r*l2e(e,null,t):0)+o*w3t+n}",
+      "replace": "function qCa(e,t,a={}){const __geobalEarthMetalPerT=1e-5;let r=Math.min(Math.max(0,xe(a.helium3)),AEe(e)),o=Math.max(0,xe(a.refined_space_metals)),n=0;for(let i of a5)xe(a[i])>0&&(n+=HKe(e,t?.key,i,a[i]));return(r>0?r*l2e(e,null,t):0)+o*__geobalEarthMetalPerT+n}"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "p6-approval-reaches-votes",
+  "finding": "P6",
+  "effect": "Unpopular governments now lose votes for it. A government's vote share moved with voters' satisfaction and growth, but approval itself reached elections only through the regional pattern, which is normalised to national shares, so wars, defaults, epidemics and other non-economic shocks moved approval and barely moved votes. Real incumbents are punished at the polls for these. goA, the election input that A1 opened to losses, now also carries approval against its level at the end of the first year, the reference A1 uses for growth: 0.05 per point, within +/-2. On A1's scale that is about +0.4% of the governing parties' appeal per point above the reference and -0.6% per point below it, so approval 20 points down costs about 12% of their appeal (a 30% party falls to about 27 before shares renormalise). The first year is unchanged. A government near zero approval at the reference can only gain from this term. The size is a tuning choice. Part of the economic signal is also in satisfaction, so this counts it twice at a small weight (see P7). Expected effect: governments that lost approval lose elections more often. Day 0 unchanged. New state: one saved number per country (geobalApprovalRef365), set at the first evaluation after a year. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.) On game 1.1.5 (build 26734764) the approval anchor is reset when the approval model version changes, and each voter group's support adds law, budget and trust terms to its satisfaction; this term is unchanged and its size is to be re-measured against them.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": ".unservedSinceT0Share,domestic:",
+      "near": 400,
+      "find": "return(e?.day|0)<365?Math.max(0,a-r):Math.max(-3,a-r)}",
+      "replace": "return(e?.day|0)<365?Math.max(0,a-r):Math.max(-3,a-r)+(Number.isFinite(t?.geobalApprovalRef365)?Math.max(-2,Math.min(2,(Rr(t.approval)-t.geobalApprovalRef365)*.05)):0)}"
+    },
+    {
+      "anchor": ".geobalGrowthRef365==null",
+      "near": 200,
+      "find": "(t._apprAnchor==null||t._apprModel!==HOe)&&(t._apprAnchor=Rr(t.approval)-r,t._apprModel=HOe)",
+      "replace": "(e.day|0)>=365&&t.geobalApprovalRef365==null&&(t.geobalApprovalRef365=Rr(t.approval)),(t._apprAnchor==null||t._apprModel!==HOe)&&(t._apprAnchor=Rr(t.approval)-r,t._apprModel=HOe)"
+    }
+  ]
+}

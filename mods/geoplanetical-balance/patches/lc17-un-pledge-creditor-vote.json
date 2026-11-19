@@ -1,0 +1,26 @@
+{
+  "id": "lc17-un-pledge-creditor-vote",
+  "finding": "LC17",
+  "effect": "A UN vote pledge no longer outlives the vote it matched. The letter says \"same vote as you\", but the match was tested only when accepted: the player could win a yes pledge, then vote no, and the AI stayed bound with no cost to the player. Now (1) C6B also returns the creditor, and iMQ honours a pledge unless the creditor's stored vote on that resolution differs, comparing the stored vote only (c6B), never computing it, so two countries pledged to each other cannot recurse; (2) in settlement (e6B), a pledge whose debtor voted otherwise while the creditor also left the promised vote lapses, rather than counting as broken and costing the debtor trust. A creditor who has not voted leaves the pledge binding, as today. Expected effect: only pledges whose requester changes its mind; no penalty to the AI for that. Day 0 unchanged. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"pledge_kept\":\"pledge_broken\"",
+      "near": 1000,
+      "find": "return r[0]?{engagementId:r[0].id,vote:r[0].promisedVote}:null",
+      "replace": "return r[0]?{engagementId:r[0].id,vote:r[0].promisedVote,creditorKey:r[0].creditorCountryKey}:null"
+    },
+    {
+      "anchor": "\"pledge_kept\":\"pledge_broken\"",
+      "near": 500,
+      "find": "let i=r.get(n.debtorCountryKey),s=i===n.promisedVote;",
+      "replace": "let i=r.get(n.debtorCountryKey),s=i===n.promisedVote;if(!s&&r.has(n.creditorCountryKey)&&r.get(n.creditorCountryKey)!==n.promisedVote){n.status=\"lapsed\",n.settledDay=LLa(e.day);continue}"
+    },
+    {
+      "anchor": "\"condemnation\"?.45:",
+      "near": 400,
+      "find": "let o=G6t(e,a.id,t.key);if(o)return o.vote;",
+      "replace": "let o=G6t(e,a.id,t.key);if(o&&(Z6t(a,o.creditorKey)==null||Z6t(a,o.creditorKey)===o.vote))return o.vote;"
+    }
+  ]
+}

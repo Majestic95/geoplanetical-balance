@@ -1,0 +1,13 @@
+{
+  "id": "p23-head-of-government-choice",
+  "finding": "P23",
+  "effect": "After a legislative election, the head of government is now the leading party's top-ranked figure on its bench who is allowed another term, as the game's own party-candidate rule chooses for every other office. Before, when power changed hands the pick fell to the party's adult member with the lowest id (the 'same role first' sort only matches a sitting prime minister, who is excluded), and term limits were not checked, so a term-limited incumbent of the winning party stayed in office. Same filters as before otherwise (alive, adult, the party's member, not the head of state or the outgoing head of government). No day-0 effect: it runs only when a government is formed after an election.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "salience:{econ:1,social:1,gov:1,nat:1,",
+      "find": "if(B0(t,r)===a){let s=e.people?.get?.(o);if(s&&s.alive!==!1&&xn(t)?.status!==\"caretaker\")return s}let n=new Set([mt(t,\"head_of_state\"),mt(t,\"head_of_gov\")]),i=Ia(t,r)?.role||null;return[...e.people?.values?.()||[]].filter(s=>s.alive!==!1&&s.countryKey===t.key&&s.party===a&&!n.has(s.id)&&l8(e,s)).sort((s,l)=>+(l.role===i)-+(s.role===i)||K(String(s.id),String(l.id)))[0]||null}",
+      "replace": "let __gbE=Ve(t,r),__gbO=s=>!__gbE||O7(t,__gbE,s.id).eligible;if(B0(t,r)===a){let s=e.people?.get?.(o);if(s&&s.alive!==!1&&xn(t)?.status!==\"caretaker\"&&__gbO(s))return s}let n=new Set([mt(t,\"head_of_state\"),mt(t,\"head_of_gov\")]),i=Ia(t,r)?.role||null,__gbB=new Map((t.partyBench?.[a]||[]).map((s,l)=>[s,l]));return[...e.people?.values?.()||[]].filter(s=>s.alive!==!1&&s.countryKey===t.key&&s.party===a&&!n.has(s.id)&&l8(e,s)&&__gbO(s)).sort((s,l)=>+(l.role===i)-+(s.role===i)||(__gbB.get(s.id)??1/0)-(__gbB.get(l.id)??1/0)||K(String(s.id),String(l.id)))[0]||null}"
+    }
+  ]
+}

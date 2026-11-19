@@ -1,0 +1,14 @@
+{
+  "id": "io22-retaliation-tariffable-goods",
+  "finding": "IO22",
+  "effect": "An AI country's trade retaliation can now go through when the exporter's largest sales to it are services. The AI ranked everything the other side sells it, tourism included, and the clause then lost any good that cannot carry a tariff; with tourism on top the clause had no goods left and the game refused it, silently, so the dispute stayed open and nothing ever happened. Measured on the unmodded game: Norway against a Swiss tariff, refused for that reason. The list now holds tariffable goods only. Expected effect: more AI retaliation against service exporters, and only where a good that can carry a tariff exists. How often this fired before was not counted. Day 0 unchanged. No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "legalBasis:\"retaliation\",causeDisputeId:",
+      "near": 1000,
+      "find": "score:i*l/(rGo+yGo(t,s))}}).filter(n=>n.value>0)",
+      "replace": "score:i*l/(rGo+yGo(t,s))}}).filter(n=>n.value>0&&jXe.includes(n.goodId))"
+    }
+  ]
+}

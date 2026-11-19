@@ -1,0 +1,20 @@
+{
+  "id": "z17-prevention-budget",
+  "finding": "Z17",
+  "effect": "The prevention panel showed a wildfire error for flood, cyclone, earthquake and tsunami budgets too; the message now names no hazard. English and French only; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"climate.disaster.error.invalid_budget\":\"Budget incendie invalide.",
+      "near": 40,
+      "find": "\"climate.disaster.error.invalid_budget\":\"Budget incendie invalide.\"",
+      "replace": "\"climate.disaster.error.invalid_budget\":\"Budget invalide.\""
+    },
+    {
+      "anchor": "\"climate.disaster.error.invalid_budget\":\"Invalid wildfire budget.",
+      "near": 40,
+      "find": "\"climate.disaster.error.invalid_budget\":\"Invalid wildfire budget.\"",
+      "replace": "\"climate.disaster.error.invalid_budget\":\"Invalid budget.\""
+    }
+  ]
+}

@@ -1,0 +1,221 @@
+{
+  "id": "geoplanetical-balance",
+  "name": "Geoplanetical Balance",
+  "version": "0.4.0",
+  "description": "All Geoplanetical Balance improvements in one mod: corrects inaccurate or broken parts of the economic model, starting with household and financial-system fixes. Single player.",
+  "builds": [
+    "26734764"
+  ],
+  "patches": [
+    "patches/h2-plug-interest-capped.json",
+    "patches/t1-fx-borrowing-limits.json",
+    "patches/c1-corporate-investment.json",
+    "patches/e13-carbon-base.json",
+    "patches/t2-fx-drift.json",
+    "patches/h12-fertility.json",
+    "patches/a6-tax-base-tiers.json",
+    "patches/t4-capital-inflows.json",
+    "patches/c10-shadow-economy-tax.json",
+    "patches/c6-nationalisation-price.json",
+    "patches/a1-approval-loss-aversion.json",
+    "patches/a3-c17-corporate-user-cost.json",
+    "patches/e4-war-repair-cost.json",
+    "patches/a5-c9-privatisation-efficiency.json",
+    "patches/d1-d2-rating-within-country.json",
+    "patches/e10-power-subsidy.json",
+    "patches/c14-arrears-cap.json",
+    "patches/p1-bill-deposit.json",
+    "patches/p2-law-habituation.json",
+    "patches/p3-snap-election-guards.json",
+    "patches/m6-devaluation-credibility.json",
+    "patches/m4-cb-independence-credibility.json",
+    "patches/t14-fx-issue-bond-rate.json",
+    "patches/w3-conquest-debt-succession.json",
+    "patches/k4-adviser-unmet-demand.json",
+    "patches/k1-k2-construction-capacity.json",
+    "patches/g1-g9-tax-collection.json",
+    "patches/l2-health-labour-hours.json",
+    "patches/l21-pandemic-severity.json",
+    "patches/n2-iran-opec-exemption.json",
+    "patches/i2-intel-staff-cap.json",
+    "patches/i3-joint-dismantle-branch.json",
+    "patches/x7-concession-expiry-return.json",
+    "patches/p23-head-of-government-choice.json",
+    "patches/o1-secularisation-income.json",
+    "patches/ps1-sickness-claims-index.json",
+    "patches/vw2-bloc-poles-current.json",
+    "patches/ax11-defence-authority.json",
+    "patches/lc16-law-support-per-party.json",
+    "patches/lc17-un-pledge-creditor-vote.json",
+    "patches/io5-retaliation-lasts.json",
+    "patches/y8-independent-un-member.json",
+    "patches/y9-territory-own-economy.json",
+    "patches/y10-counter-needs-offer.json",
+    "patches/pm5-employer-law-pressure.json",
+    "patches/pm4-amendment-threshold.json",
+    "patches/p11-default-anger-fades.json",
+    "patches/p12-campaign-swing.json",
+    "patches/lc2-peace-appeal.json",
+    "patches/lc6-ally-attacks-ally.json",
+    "patches/p6-approval-reaches-votes.json",
+    "patches/p5-w6-war-opinion.json",
+    "patches/w8-ai-war-spending.json",
+    "patches/sm2-contested-output.json",
+    "patches/vw1-energy-view-refresh.json",
+    "patches/hp6-migrant-spending.json",
+    "patches/p15-no-seats-minority.json",
+    "patches/p16-ai-mandate-real-date.json",
+    "patches/g6-social-delivery-cap.json",
+    "patches/l5-health-all-groups.json",
+    "patches/m10-deflation-floor.json",
+    "patches/io22-retaliation-tariffable-goods.json",
+    "patches/np1-caretaker-deadlock.json",
+    "patches/n1-un-sanctions-all-members.json",
+    "patches/n12-equity-ban-dividends.json",
+    "patches/p20-snap-presidential-guards.json",
+    "patches/x3-lunar-metal-earth-price.json",
+    "patches/x5-lunar-solar-latitude.json",
+    "patches/cb8-warhead-yield-reliability.json",
+    "patches/sc20-landing-superiority.json",
+    "patches/v24-migration-clamp.json",
+    "patches/ax8-harsh-expulsion.json",
+    "patches/sm7-legal-drug-tax-response.json",
+    "patches/x2-helium3-mine-rate.json",
+    "patches/z8-disaster-capital-share.json",
+    "patches/z13-volcano-rest-of-world.json",
+    "patches/ff8-reform-loans.json",
+    "patches/lc7-aid-excludes-enemies.json",
+    "patches/cb16-energy-strikes-war-crime.json",
+    "patches/lc1-alliance-relation-bar.json"
+  ],
+  "changes": [
+    {
+      "group": "Game 1.1.5 (build 26734764)",
+      "items": [
+        "Ported to game 1.1.5.",
+        "Three fixes are dropped because the game now makes them itself: students leaving the labour force when schooling expands (S2), the school leaving age raising enrolment under free schooling (S3), and single road and rail projects, airports, ports and their upgrades paid over their months rather than from cash on hand (K11; the game now does it for every country)."
+      ]
+    },
+    {
+      "group": "Economy and business",
+      "items": [
+        "The state can no longer order private firms into loss-making investments, and each private firm takes one ordered expansion at a time.",
+        "After the first year, business investment follows firms' own borrowing cost rather than only the government's; in a sovereign debt crisis firms' costs rise almost as much as the government's.",
+        "Privatising a state-owned sector can make it more productive than it was at the start.",
+        "A sector's purchase or sale price never falls below 35% of its capital, so it no longer costs next to nothing when profits are near zero (some low-earning sectors cost more).",
+        "Large unpaid bills are no longer written off just because many small bills are open elsewhere: only trivial amounts are, and larger debts stay owed until paid or two years overdue (a much higher safety limit remains for extreme cases).",
+        "The industrial adviser and AI governments now count orders that go unfilled: a good in short supply at home scores higher, and is no longer called a poor fit for replacing imports when more than 2% of its demand goes unfilled.",
+        "Your public works, industrial projects, power plants and transport works now count against your country's construction capacity: a programme too large for your builders is slowed (up to three times its normal schedule) rather than refused; a coal plant stretched past the coal deadline is still refused. AI power plants are slowed the same way, and AI transport works that would need more than three times their schedule are not started.",
+        "Disasters now cut output by about 40% of the share of capital destroyed, more in industry, energy, mining, utilities and construction (oil fields and mines included) than in farming, services and finance.",
+        "Large volcanic eruptions (VEI 5 to 7) now happen about as often as the historical record shows, including Pinatubo-sized eruptions that cool the climate."
+      ]
+    },
+    {
+      "group": "Money, debt and currency",
+      "items": [
+        "Your manual foreign-currency borrowing is limited to once a month, with a yearly cap set by your credit rating.",
+        "Foreign-currency borrowing no longer replaces your country's domestic bond rate with the foreign rate.",
+        "Trade retaliation now lasts as long as the tariff it answers, rather than ending after two years.",
+        "Exchange rates drift on changes in a country's trade balance since the start, not on its starting surplus or deficit.",
+        "Private foreign investment fades gradually as a credit rating falls, instead of stopping all at once.",
+        "After the first year, recessions, inflation (sharply above 10%) and high debt lower credit ratings and booms raise them; debt counts from 60% of GDP, or 90% for reserve-currency and currency-union countries; the sudden debt-crisis trigger at 170% of GDP is gone.",
+        "Devaluing your pegged currency now costs monetary credibility, more for each repeat within three years, and you must wait 180 days between devaluations.",
+        "After the government takes control of the central bank, even for a day, its credibility ceiling returns over three years once independence is restored, instead of at once.",
+        "Prices can no longer slide into endless deflation: expected inflation stops at -5% a year. Before, some countries fell towards -99% a year.",
+        "A ban on investing in a country no longer withholds the dividends its companies are owed; it only stops new share purchases.",
+        "A currency reform now cuts household loans, and their monthly repayments, by the same share as household savings, instead of leaving debts whole and handing the difference to banks."
+      ]
+    },
+    {
+      "group": "Taxes and energy",
+      "items": [
+        "Tax bases change smoothly as income per head grows, instead of jumping at fixed thresholds.",
+        "A growing shadow economy now reduces how much tax is collected.",
+        "Every country's carbon tax base now follows its power-sector emissions, so cleaner power means less carbon revenue.",
+        "Raising the electricity subsidy now lowers industry's production costs, and cutting it raises them; before, firms only gained or lost cash while their costs, prices and output ignored the subsidy.",
+        "Iran is exempt from OPEC+ production quotas, as in reality, so cartel cuts fall on the other members (new games).",
+        "Opening the Energy screen no longer changes what a new well costs or where a plant goes; the screen shows each province's power as of the last update, which runs monthly and whenever territory changes hands.",
+        "Taxing legal drugs now cuts legal sales and sends buyers to illegal sellers, as the gambling levy already does; cutting the levy brings them back."
+      ]
+    },
+    {
+      "group": "Households and population",
+      "items": [
+        "Richer countries without a state religion now slowly become less religious over the years, as surveys show; before, income had no effect on religious change.",
+        "Households in debt now feel interest rates: rate rises cost them and rate cuts help them, where the game used to cancel the effect out quietly.",
+        "Birth rates fall with rising income mainly in countries still having large families; in low-fertility countries income barely moves them.",
+        "Migrants' spending now moves with them: a country that gains people gains their spending, and one that loses people loses it.",
+        "A rare population-accounting error during migration no longer stops the game; the move is capped at the people actually there."
+      ]
+    },
+    {
+      "group": "Government and politics",
+      "items": [
+        "Approval reacts more to downturns than to booms (about twice as much in a typical country), within realistic limits, and after the first year elections punish recessions.",
+        "Withdrawing a bill takes back only the part of its announcement boost that is still in effect (the game took back the full boost even weeks later), and the law cannot be proposed again for 30 days.",
+        "A small amendment to a law no longer restores its full effect on approval; voters stay used to it unless the change is large.",
+        "You can no longer call a snap legislative election within a year of the last one or in the final six months of a term, and a caretaker government must wait 60 days, timing rules AI governments already follow.",
+        "After an election that changes the government, the winning party's top-ranked figure becomes head of government, instead of an arbitrary party member.",
+        "After the first year, an unpopular government loses votes for it, whatever the cause, and a popular one gains some.",
+        "Employers judge a minimum wage against local income, so a small rise in a weak-currency country no longer sets off an investment strike.",
+        "Religion laws now need the majority your constitution sets for amendments, not 60% everywhere.",
+        "Anger over a sovereign default fades over the years, though some remains until the default ends.",
+        "Election campaigns now move a party's vote by a few points rather than by up to two-fifths of its share.",
+        "A peace appeal can now be accepted: a close partner in a long, tiring war may listen.",
+        "A party answers once when you ask for its support on a law; you can no longer ask again through each of its members.",
+        "A country that promised to vote with you at the UN is released if you then vote differently, at no cost to it.",
+        "A territory that wins independence becomes a UN member.",
+        "A territory's anger now follows its own unemployment and civil liberties, not those of the country that governs it.",
+        "A government with no powers left to offer a region can no longer calm a referendum petition with a counter-offer: it must accept or refuse.",
+        "A government with no seats in parliament now pays the full minority penalty, not the smallest one.",
+        "AI governments now judge early elections from the real date of the last election, so the first year of a game no longer blocks them all.",
+        "AI countries can now retaliate in a trade dispute against a partner that sells them services as well as goods; before, the attempt failed silently when it picked only services.",
+        "If your government is left caretaker with a hung parliament within a year of a dissolution (after losing a no-confidence vote, or after a snap election that gives no majority), you can call an election once it has been caretaker for 60 days, as AI countries can, instead of waiting out the year. The date the refusal notice gives can be up to a month early while the 60 days have not started counting (they start at the next monthly review).",
+        "You cannot call a snap presidential election in your mandate's first year or in the six months before the scheduled vote, the same rule as for parliament; the first year counts from when you took office, even if the term is lengthened later.",
+        "Multilateral aid no longer goes to countries the donor is at war with or sanctions; that share goes to other countries in need.",
+        "AI countries accept a defensive alliance at relations of 40 instead of 60. Relations settle near 45 even between close friends, so new AI alliances had stopped forming within a year; closely aligned countries facing a threat can now still sign later in the game."
+      ]
+    },
+    {
+      "group": "War",
+      "items": [
+        "War and sabotage damage to power plants must now be paid for by the owner's treasury; unpaid repairs take longer.",
+        "A war's cost in public opinion now depends on your role: attackers pay most, and a country attacked during play gets a rally that fades over months.",
+        "AI countries in active fighting raise defence spending faster, and further when their people are under occupation; the extra effort fades over a long war.",
+        "An insurgency that spreads now costs its country output, after the first year.",
+        "An ally that attacks another ally is no longer attacked by the rest of the alliance; other members stay out, or at most give access, at no cost to their treaty standing. A member that also has its own defence pact with the victim still honours it.",
+        "A state that lacks control of its own defence or foreign policy can no longer declare war on you, as it already could not on other countries; a nuclear strike already launched still starts a war.",
+        "Conquering a whole country now hands its government debt and its unpaid bills to other countries to the conquerors along with its treasury, instead of wiping them out at the creditors' expense.",
+        "The world's leading powers are now worked out from the current economy each day, so opening a screen or reloading a save no longer changes which AI countries may join a war or how they weigh military support.",
+        "Nuclear warheads now do damage by their size and reliability: a first-generation 15-kiloton bomb kills far fewer people than a 300-kiloton thermonuclear warhead, and some warheads fail.",
+        "Beach landings now need real superiority: about 2.5 times the defenders without air control and about 1.4 times with full air superiority, instead of sometimes winning while outnumbered.",
+        "The harshest AI occupiers (unaccountable one-party or military regimes with brutal leaders, under no sanctions coalition, facing open hostility) can expel the occupied population; it remains exceedingly rare.",
+        "In your wars (the only ones where the game resolves individual strikes), sustained strikes on power plants or oil, gas, coal and uranium fields count as a war crime when they leave more than a fifth of the target country's electricity demand unserved beyond where it stood when the strike campaign began; this applies to you, your enemy and either side's allies in that war, and the case goes to the UN like other war crimes."
+      ]
+    },
+    {
+      "group": "Intelligence and space",
+      "items": [
+        "An intelligence service can no longer run more agents on missions than it has by moving its branch allocation after launching them.",
+        "A joint operation to dismantle a foreign cell now uses the covert branch, as the same mission does when run alone.",
+        "A lunar site concession that runs past its deadline now hands the site back, as it already did when fulfilled or cancelled.",
+        "Adopted UN Security Council sanctions bind every UN member except the target, not only the Council members that voted for them; your country joins only if you voted yes. Countries bound only because of this rule (every member that did not vote yes) are released when the war behind an aggression resolution ends.",
+        "Refined lunar metal brought back to Earth counts as worth an Earth commodity price (about USD 10 000 a tonne, not USD 80 million) when the AI decides whether a return flight pays; using the metal in module orders keeps the game's value.",
+        "Lunar solar output is capped by latitude: about half of rated power away from the poles, more near them.",
+        "A lunar helium-3 mine now yields about 5.5 kg a month, the output of real mining designs, instead of 40 kg."
+      ]
+    },
+    {
+      "group": "Public services",
+      "items": [
+        "Clearing a tax office's backlog of returns no longer raises tax collection by up to a quarter for good; a fast tax office now adds under 1%.",
+        "Better tax collection no longer cuts the administration budget.",
+        "When sick people go untreated, the economy now loses working hours, up to about 6% if health care collapses.",
+        "A small shortage of care no longer nearly doubles the sick-pay bill in a rich country: the bill now follows how much illness goes untreated compared with all illness, and there better access no longer cuts it sharply for free.",
+        "With new pandemics switched on, a coronavirus pandemic is now about as deadly as COVID-19 was in 2020.",
+        "Social benefits can no longer be delivered far above what the budget pays for them (cap 105%).",
+        "Every social group now cares about health care, not only retirees and health workers."
+      ]
+    }
+  ]
+}

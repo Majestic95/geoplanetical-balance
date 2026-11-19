@@ -1,0 +1,14 @@
+{
+  "id": "lc1-alliance-relation-bar",
+  "finding": "LC1",
+  "effect": "An AI country now accepts a defensive alliance at relations of 40, not 60. Relations start at alignment x 80 but settle toward alignment x 45 plus aid (8% of the gap a month), so the bar of 60 stopped being reachable within a year for any pair without aid: even fully aligned countries settle at 45. On 1.1.5 the bar is read in three places, all through this one setting (relations.allyAcceptRelation): the AI's threat-driven partner search (TNo, called by BNo) and the acceptance check (MAe), used for AI-to-AI pacts, AI offers to the player and proposeAlliance. The country inspector reads the same setting (Ayr sends it as allianceAcceptance.relationMin), so its 'close' badge for a country willing to ally moves to 40 with the rule. The player's own treaty dialog never read it and is unchanged. At 40, a pair without aid needs alignment of about 0.89 or more to stay eligible once relations settle (30 would have opened it from about 0.67); 40 was chosen to play it safe and watch what changes in human playtests. The other tests stay as they are: mutual alignment of at least 0.2, the treaty evaluation (f8a / gde), the alliance cap per country (Ndr) and no war with the partner. Real basis: alliances form between aligned states facing a shared threat (the Pakistan-Saudi pact of September 2025), not only in a state's first months. Day-0 effect: more AI pacts can form in the first months, among closely aligned pairs facing a threat; the starting values themselves do not change. No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "allyBreakAlign:-.4,allyAcceptRelation:",
+      "near": 200,
+      "find": "allyAcceptRelation:60,allyAcceptAlign:-.1,",
+      "replace": "allyAcceptRelation:40,allyAcceptAlign:-.1,"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "p12-campaign-swing",
+  "finding": "P12",
+  "effect": "Campaigns no longer swing a party's vote by a third. IDB multiplied support by exp(score / 100), clamped to +/-0.35, so with attainable scores of about 40 for an AI party in a close race, 30% could become about 42.6% before shares are renormalised. Measured campaign effects are a few points. The campaign score now counts a fifth as much, so a score of 40 adds about 8% of a party's share (30% becomes about 32.5%) and more spending still helps up to the cap of 50. Promises (at most 8) and a party's credibility (at most 6) keep their old weight, and the clamp is 0.24 to fit all three (10 + 8 + 6), so a poll with no campaign is unchanged and extra campaigning always counts. Also makes the game's campaign tip true, that campaigning settles close races (PM13). The size is a tuning choice. Expected effect: elections follow satisfaction and the economy more and campaign spending less. Day 0 unchanged: no campaign runs. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "organization?.credibility==null?.5",
+      "near": 200,
+      "find": "o=t+a+(r-.5)*12;return Math.max(0,e.support||0)*Math.exp(Iu(o/100,-.35,.35))",
+      "replace": "o=t/5+a+(r-.5)*12;return Math.max(0,e.support||0)*Math.exp(Iu(o/100,-.24,.24))"
+    }
+  ]
+}

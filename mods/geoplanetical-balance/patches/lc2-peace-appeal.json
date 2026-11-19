@@ -1,0 +1,14 @@
+{
+  "id": "lc2-peace-appeal",
+  "finding": "LC2",
+  "effect": "A peace appeal can now be accepted. The score was -0.42 plus up to 0.35 for a long war, 0.3 for exhaustion, 0.22 for a close partner and up to 0.06, so reaching 0.5 needed exhaustion of about 97 even in the best case, and the acceptance lines were close to dead text. The base is now -0.15, so a close partner in a long, tiring war can accept, and at extreme exhaustion in a long war a neutral partner sometimes can, while a young war with little exhaustion still refuses. The pressure an accepted appeal applies stays modest and decays (half-life 90 days). The base is a tuning choice. Expected effect: player appeals sometimes work in long wars; AI wars are not directly changed. Day 0 unchanged. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"long_war\":\"war_young\"",
+      "near": 200,
+      "find": "d=-.42+l+u+o*.22+i,p=[",
+      "replace": "d=-.15+l+u+o*.22+i,p=["
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "a5-c9-privatisation-efficiency",
+  "finding": "A5/C9",
+  "effect": "Privatising can raise a sector's efficiency above its day-0 level, and the gain reaches production. The efficiency target is (1 - f x share^2) / (1 - f x share0^2) without the cap of 1, bounded by the fully private level 1 / (1 - f x share0^2) (f = the game's sector factor: 0.22 tech/ict/knowledge, 0.16 trade/services, 0.12 industry, 0 health/education/public). The three later clamps to 1 are raised to 1.3, above the highest possible ceiling (1.28): the stored efficiency (qaQ), the per-sector map the economy reads (MrA, which now also passes values above 1), and the production factor; the save validator for the sector ownership record (AQB) accepts the same bound, so a gain survives save and reload; the player's ownership quote shows the current efficiency with the same bound. A tech sector 60% state-owned at day 0 gains up to about 8.6% output from full privatisation, approached at the game's own adjustment speed; nationalisation costs as before. Applies to AI privatisations too. Day 0 unchanged (share = share0 gives 1, and the map holds no entry for a factor of 1). (Minified names in this text are those of build 26296134; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "company-ownership:missing:",
+      "find": "let o=Math.min(1,KDt(e,t)/KDt(e,a));return M6(o-Math.max(0,ad(r)),EPr(e),1)}",
+      "replace": "let o=KDt(e,t)/KDt(e,a);return M6(o-Math.max(0,ad(r)),EPr(e),Math.max(1,1/KDt(e,a)))}"
+    },
+    {
+      "anchor": "\"economy.sector_ownership_changed\"",
+      "near": 1500,
+      "find": "n.efficiency=ETe(_u(n.efficiency,1)+(s-_u(n.efficiency,1))*F4o,0,1)",
+      "replace": "n.efficiency=ETe(_u(n.efficiency,1)+(s-_u(n.efficiency,1))*F4o,0,1.3)"
+    },
+    {
+      "anchor": "\"economy.sector_ownership_changed\"",
+      "near": 1500,
+      "find": "r<1&&(t[a]=r)}Object.keys(t).length?e.we.ownershipSectorEfficiency=t",
+      "replace": "r!==1&&(t[a]=r)}Object.keys(t).length?e.we.ownershipSectorEfficiency=t"
+    },
+    {
+      "anchor": "\"world-economy:realized-input-cost-receipt-missing\"",
+      "near": 5000,
+      "find": "E=n?1:Br(Number.isFinite(e.ownershipSectorEfficiency?.[ii[t]])?e.ownershipSectorEfficiency[ii[t]]:1,0,1)",
+      "replace": "E=n?1:Br(Number.isFinite(e.ownershipSectorEfficiency?.[ii[t]])?e.ownershipSectorEfficiency[ii[t]]:1,0,1.3)"
+    },
+    {
+      "anchor": "\"claims_registry_full\"",
+      "near": 2500,
+      "find": "efficiencyNow:ETe(_u(l.efficiency,1),0,1)",
+      "replace": "efficiencyNow:ETe(_u(l.efficiency,1),0,1.3)"
+    },
+    {
+      "anchor": "\"scarPermanent\"",
+      "near": 500,
+      "find": "s===\"efficiency\"&&o[s]>1)&&a(",
+      "replace": "s===\"efficiency\"&&o[s]>1.3)&&a("
+    }
+  ]
+}

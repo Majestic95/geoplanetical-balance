@@ -1,0 +1,14 @@
+{
+  "id": "vw2-bloc-poles-current",
+  "finding": "VW2",
+  "effect": "Opening a screen no longer changes which countries count as bloc poles. The four poles (UAB) were cached for 365 days from whoever asked first. The Inspector and Diplomacy views ask through _blocOf, and the tick asks when deciding who may join a war (alQ -> wlQ -> owA, where role \"pole\" makes a country eligible), so opening a screen set the date the list was taken and the date it next refreshed; a reload also restarted the year because the cache is not saved. The list is sorted by live GDP, so a different date can give different poles and a different war-join decision. The patch keeps the list only for the same game day, so it is a pure function of that day's state. Views run only between days (viewSnapshot and domainCall settle the pending day first, subscribeView and status skip view building while a day runs, and GLA restores the published day on each yield), and the tick reads after its own day++, so a view's list never reaches the tick. Expected effect: the AI's war joins and military-support decisions (dwQ, fwQ, through owA) read the same list with or without screens opened and across a reload; poles follow GDP ranks rather than running up to a year late, which can change both near a rank boundary. Known limit: reads on the same game day share one list. The tick is not exposed, because it reads after its own day++; if a player command reads the poles (not confirmed), it could see a list from earlier that day. That window was a year and is now a day; closing it would mean rebuilding the list on every read, which the Diplomacy view does per country. Day 0 unchanged: the list is computed from the same state. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": ".poleSearchPool",
+      "near": 400,
+      "find": "e.day-t.day<365)return t.poles",
+      "replace": "(e.day||0)===t.day)return t.poles"
+    }
+  ]
+}

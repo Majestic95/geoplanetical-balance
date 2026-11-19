@@ -1,0 +1,14 @@
+{
+  "id": "lc16-law-support-per-party",
+  "finding": "LC16",
+  "effect": "A whole party can no longer be asked again for support on a law through its bench. The already-asked rule (lwC) was per person, and each bench member was a new roll around the forecast, while a yes commits the entire party's line. For lawSupport the check now matches the target's party, so a party answers once on a law from one asker; a person with no recorded party keeps the per-person rule. Other letter types are unchanged. Expected effect: the player's chance of winning a party's support on a law becomes one roll. Day 0 unchanged. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "[\"embassyOpening\",\"sanctionRelief\"].includes(",
+      "near": 400,
+      "find": "n.from.personId===t.personId&&n.to.personId===a.personId&&m4e(n)===o",
+      "replace": "n.from.personId===t.personId&&(r===\"lawSupport\"&&a.partyId?n.to.partyId===a.partyId:n.to.personId===a.personId)&&m4e(n)===o"
+    }
+  ]
+}

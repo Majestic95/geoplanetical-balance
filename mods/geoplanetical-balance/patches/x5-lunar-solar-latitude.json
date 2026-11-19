@@ -1,0 +1,14 @@
+{
+  "id": "x5-lunar-solar-latitude",
+  "finding": "X5",
+  "effect": "A lunar region's solar factor (the average share of a solar array's rated output) is now capped by latitude: at most 0.5 below 85 degrees, as a sun-tracking array that sees the sun half of each 29.5-day lunar cycle, rising to 0.96 at the pole, where crater rims see the sun 80-96 % of the time (Glaser et al. 2014; Mazarico et al. 2011). The game's own figure is kept when it is lower. Before, factors were 0.58-0.92 everywhere (mean 0.74), so an equatorial base ran on solar as if the 354-hour lunar night did not exist. The cap is set where each region's resources are built, so production, the AI's site choice and the region panel all use it. Storage for the lunar night is not modelled (a design decision, recorded on the X5 row of proposals/README.md). No effect on Earth or Mars (Mars has its own solar factor); no day-0 effect (no lunar site at day 0). No new state: the capped factor is rebuilt from the Moon's region data whenever resources are built.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"space body definition id required\"",
+      "find": "solarFactor:Number(a.solarFactor)||0,",
+      "replace": "solarFactor:Math.min(Number(a.solarFactor)||0,(__gbL=>__gbL<=85?.5:Math.min(.96,.5+(__gbL-85)*.092))(Math.abs(Number(e.c?.[0])||0))),",
+      "near": 600
+    }
+  ]
+}

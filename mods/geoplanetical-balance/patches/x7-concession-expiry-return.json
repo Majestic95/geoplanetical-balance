@@ -1,0 +1,13 @@
+{
+  "id": "x7-concession-expiry-return",
+  "finding": "X7",
+  "effect": "A lunar site concession that runs past its deadline now hands the site back to its previous operator (or its legal owner), as a concession already does when it is fulfilled or cancelled. Before, the monthly expiry pass marked the contract failed but left the concessionaire operating the site for good. No day-0 effect; a save already holding an expired concession keeps its operator until the site changes hands again.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"space.contract.expired\"",
+      "find": "let o=xP(e,a.buyerRef)?BVe(e,a):0;a.reservationId&&hu(e,a.reservationId),",
+      "replace": "let o=xP(e,a.buyerRef)?BVe(e,a):0;if(a.kind===\"concession\"){let s=e.space.sites.get(a.concessionSiteId);s&&(s.operatorId=a.previousOperatorId||s.legalOwnerOperatorId)}a.reservationId&&hu(e,a.reservationId),"
+    }
+  ]
+}

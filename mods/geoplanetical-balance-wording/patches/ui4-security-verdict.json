@@ -1,0 +1,20 @@
+{
+  "id": "ui4-security-verdict",
+  "finding": "UI4",
+  "effect": "The security screen's verdict compared each stage of the criminal justice chain with the country's own start (balanced while every stage is under 1.1 times its starting load), but called that “under control” and “nothing is overwhelmed”, while the alerts below it use fixed limits (for example a court delay of 18 months). A country with slow courts from the start therefore read “under control” beside “Court backlog”. The verdict (this entry; its help is ui4-security-verdict-help) and its help now say what they measure: no stage much busier than at the start, with the alerts on fixed limits. Interface text only (the game's interface bundle cannot carry a code change); English and French; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"security.verdict.balanced\":\"Cha\\xEEne p\\xE9nale sous contr\\xF4le\"",
+      "near": 40,
+      "find": "\"security.verdict.balanced\":\"Cha\\xEEne p\\xE9nale sous contr\\xF4le\"",
+      "replace": "\"security.verdict.balanced\":\"Aucun maillon nettement plus charg\\xE9 qu'au d\\xE9part\""
+    },
+    {
+      "anchor": "\"security.verdict.balanced\":\"Criminal justice system under control\"",
+      "near": 40,
+      "find": "\"security.verdict.balanced\":\"Criminal justice system under control\"",
+      "replace": "\"security.verdict.balanced\":\"No stage much busier than at the start\""
+    }
+  ]
+}

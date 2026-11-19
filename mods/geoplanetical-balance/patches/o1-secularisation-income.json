@@ -1,0 +1,13 @@
+{
+  "id": "o1-secularisation-income",
+  "finding": "O1",
+  "effect": "Secularisation now responds to income, as its formula intends. The income index read GDP per head (kept in thousand USD) as if it were in dollars, so every country sat at the 500 floor, below the formula's USD 1 200 start, and the index was 0 everywhere: about 200 of 213 countries had no secular drift and many drifted slowly towards their favoured faith instead. With the unit fixed, the index runs from 0 at USD 1 200 a head to 1 at USD 70 000: at USD 85 000 a head the yearly pull towards no religion, by the country's seeded religion-law stage, becomes 0.24 % of believers at stage 0 (France, Japan: was 0.02 %), 0.18 % at stage 1 (was -0.04 %, a slow revival) and 0.10 % at stage 2 (was -0.12 %); a faith the state favours drifts at 55 % of that; these remain below the roughly 1 % a year that Pew and national surveys report for the US, UK, Canada and Australia; countries with a state religion stay near zero or keep their revival, and countries under USD 1 200 a head are unchanged. Day-0 religion shares are unchanged (seeded without this pull); the shares move from the first month.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "Math.log10(7e4)-Math.log10(1200)",
+      "find": "let t=Math.max(500,ia(e?.gdpCap,ia(e?.gdpIncome,12e3)));",
+      "replace": "let t=Math.max(500,Number.isFinite(Number(e?.gdpCap))?Number(e.gdpCap)*1e3:ia(e?.gdpIncome,12e3));"
+    }
+  ]
+}

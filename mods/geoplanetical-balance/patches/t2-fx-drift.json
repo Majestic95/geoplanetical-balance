@@ -1,0 +1,14 @@
+{
+  "id": "t2-fx-drift",
+  "finding": "T2",
+  "effect": "Floating and managed exchange rates drift on the change in the current account since the start, not on its level: the drift term uses caPct - caPct0, where caPct0 is the currency's current-account share the first time it is priced, stored on the sovereign record of the currency's anchor country at that time (sovereign.geobalCaPct0[code]) and found there afterwards whichever member anchors the currency later (a union whose largest member changes keeps its baseline; the save keeps only a fixed list of currency fields, so the currency itself cannot hold it). Structural day-0 surpluses (Switzerland) and deficits (US, UK) no longer push the currency forever; changes after day 0 still move it as before. Day 0 unchanged (no pricing has run); pegs and boards unaffected. (Minified names in this text are those of build 26296134; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"external_current_account_reserve_change\"",
+      "near": 3500,
+      "find": "I=pv(h.caPct||0,-12,12)*.45",
+      "replace": "I=pv((h.caPct||0)-((I,c)=>{for(let k in I)if(I[k]?.geobalCaPct0?.[h.code]!=null)return I[k].geobalCaPct0[h.code];let s=I?.[QC(e,h)];return s?((s.geobalCaPct0||={})[h.code]=c):(h.geobalCaPct0??=c)})(e.finance?.sovereigns,h.caPct||0),-12,12)*.45"
+    }
+  ]
+}

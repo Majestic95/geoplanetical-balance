@@ -1,0 +1,14 @@
+{
+  "id": "pm4-amendment-threshold",
+  "finding": "PM4",
+  "effect": "Constitutional-amendment laws now use the country's own amendment rule. The vote threshold in rBB was the context's amendmentPct, then a constitution field nothing sets, then 60%. Only reforms passed a value, so religion laws needed 60% everywhere: too little where the constitution requires two thirds, too much where it is flexible. The fallback is now the game's own rule table (oIB: flexible 50%, qualified two thirds, otherwise 60%), so the forecast, the vote and the AI's check all read the same figure, and reforms are unchanged. Not changed: referendum countries still have no referendum for these laws; that is a separate choice. Expected effect: religion and freedom-of-worship laws become harder to pass under two-thirds constitutions and easier under flexible ones. Day 0 unchanged. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "amendment.supermajorityPct",
+      "near": 120,
+      "find": "{type:\"supermajority\",pct:a.amendmentPct||e.amendment&&e.amendment.supermajorityPct||.6}",
+      "replace": "{type:\"supermajority\",pct:a.amendmentPct||e.amendment&&e.amendment.supermajorityPct||kbt({constitution:e}).pct}"
+    }
+  ]
+}

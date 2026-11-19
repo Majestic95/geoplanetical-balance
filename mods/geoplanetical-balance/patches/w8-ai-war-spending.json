@@ -1,0 +1,20 @@
+{
+  "id": "w8-ai-war-spending",
+  "finding": "W8",
+  "effect": "AI countries now raise defence spending in earnest at war. The AI's defence budget closed 2.4 to 4.5% of the gap to its target a month (half-life 15 to 28 months), whether or not it was at war, and its target had no term for survival, so an invaded state drifted up a few points of GDP over years where Ukraine went from about 3% to about 30% within a year. While actually fighting (the game's active-hostilities flag, so not in a ceasefire or armistice) the budget now closes the gap up to about three times faster (quarterly rate up to 25% plus competence, against 7%), and the target rises by 2 points of GDP plus 60 points per unit of population occupied, at most 15: a country with a tenth of its people occupied aims about 8 points higher. Both extras halve every three years of the most recent war the country is actively fighting (ceasefires keep a war's start date and do not reset it), so a long war settles back instead of sustaining itself; a new war, even a small one, brings the effort back. A war already years old at the start counts those years. Peace returns to the old pace. The game's own ceiling on the line still applies. The sizes are a tuning choice, nearer Russia's about 3 to 7% than Ukraine's about 30%, which this cap cannot reach by itself. Expected effect: invaded AI states fight harder and spend more, with more deficits and debt; a default risk is possible and is on the watch list. Day 0: seeded wars start moving from the first month. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "aiBudgetAnchor||=",
+      "near": 200,
+      "find": "m=p.budgetGdpPct+u-p.desireGdpPct,f=.07+c.competence*.06,",
+      "replace": "m=p.budgetGdpPct+u-p.desireGdpPct+(l.activeHostilities?__geobalW8(e,l).target:0),f=.07+(l.activeHostilities?__geobalW8(e,l).pace:0)+c.competence*.06,"
+    },
+    {
+      "anchor": "forcePlan?.strategy",
+      "near": 300,
+      "find": "function Tko(e,t,a){",
+      "replace": "function __geobalW8(A,B){let Q=0,g=0;for(let r of B.provs||[]){let w=Number(r.__pop)||0;g+=w,r.__occupier&&r.__occupier!==B.key&&(Q+=w)}let C=1/0;for(let r of eh(A,B.key)){if(!n_(r)||!Oo(r,B.key))continue;C=Math.min(C,Math.max(0,(Number(A.day)||0)-(Number(r.startDay)||0))+(Number(r.preT0DurationDays)||0))}let e=C===1/0?1:Math.pow(.5,C/1095);return{target:Math.min(15,2+60*Q/Math.max(1e-9,g))*e,pace:.18*e}}function Tko(e,t,a){"
+    }
+  ]
+}

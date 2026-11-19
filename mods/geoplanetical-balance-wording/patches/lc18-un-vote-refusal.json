@@ -1,0 +1,20 @@
+{
+  "id": "lc18-un-vote-refusal",
+  "finding": "LC18",
+  "effect": "The refusal told the player to vote first, but voting is not required: the list is empty when no resolution is open, the only ones open target the other country, or either country has no Council seat. English and French only; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"lf.gate.noSubject.unVoteMatch\":\"Votez d\\u2019abord sur une r\\xE9solution ouv",
+      "near": 40,
+      "find": "\"lf.gate.noSubject.unVoteMatch\":\"Votez d\\u2019abord sur une r\\xE9solution ouverte \\xE0 l\\u2019ONU.\"",
+      "replace": "\"lf.gate.noSubject.unVoteMatch\":\"Aucune r\\xE9solution ouverte pour cette demande, ou l\\u2019un de vous n\\u2019a pas de si\\xE8ge au Conseil.\""
+    },
+    {
+      "anchor": "\"lf.gate.noSubject.unVoteMatch\":\"Vote on an open UN resolution first.",
+      "near": 40,
+      "find": "\"lf.gate.noSubject.unVoteMatch\":\"Vote on an open UN resolution first.\"",
+      "replace": "\"lf.gate.noSubject.unVoteMatch\":\"No open resolution to ask about, or one of you has no Council seat.\""
+    }
+  ]
+}

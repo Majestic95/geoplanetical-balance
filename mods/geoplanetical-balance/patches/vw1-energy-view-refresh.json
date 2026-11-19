@@ -1,0 +1,20 @@
+{
+  "id": "vw1-energy-view-refresh",
+  "finding": "VW1",
+  "effect": "Opening the Energy screen no longer changes later results. _playerProvinces ran bR the first time it was called after a reset, which rewrites __power (capacity, owner, load share) on the player's provinces. __power goes into the drill cost of a real project (UK) and ranks plant sites (FeB in hhg and T4Q). Whoever called first set the data: open the screen on day 5 and a drill order on day 20 used day 5's split, while with no screen the order refreshed it on day 20. The data also differed by which country a machine played. The patch moves the refresh to where the data goes out of date for a reason other than the month passing: (1) _playerProvinces only filters and caches; (2) _FA, the step every territorial change and territory restore ends with, refreshes __power for the countries it touched, so a conquered province has its new owner's data at once, for AI countries too, and a straight run agrees with a reload after a transfer. The monthly tick (aggregateProvincePower in qcB), plant changes (o2) and load (UQB -> o2) keep maintaining it. Expected effect: drill costs and plant siting no longer depend on the screen; the Energy panel shows the split as of the last refresh, so population moves within a month appear at the month's end. Left as it is: a reload between monthly refreshes recomputes the split from the current population, in the unmodded game too (T18 family); the reload check should confirm this. The size of the gap was not measured. Day 0 unchanged. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "_playerProvinces(){",
+      "near": 300,
+      "find": ".filter(t=>Oi(t,this.playerKey)),$$(this,this.player,this._playerProvs)),this._playerProvs}",
+      "replace": ".filter(t=>Oi(t,this.playerKey))),this._playerProvs}"
+    },
+    {
+      "anchor": "._weCountries=null,",
+      "near": 200,
+      "find": "e._playerProvs=null,r>0&&f2a(e),",
+      "replace": "e._playerProvs=null,r>0&&[...t].forEach(__geobalK=>{let __geobalC=e.countries?.get?.(__geobalK);__geobalC?.energy&&e.plants&&$$(e,__geobalC,__geobalC.provs||[])}),r>0&&f2a(e),"
+    }
+  ]
+}

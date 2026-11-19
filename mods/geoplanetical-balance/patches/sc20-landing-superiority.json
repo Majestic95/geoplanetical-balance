@@ -1,0 +1,14 @@
+{
+  "id": "sc20-landing-superiority",
+  "finding": "SC20",
+  "effect": "An opposed beach landing now needs real superiority. The landing check compares the attacker's land power in the landing force with the power of the defenders who can reach the beach within the assault window, each weighted by a factor and by air control (attack x (1 + 0.35 x air superiority), defence x (1 - 0.25 x air superiority)), plus naval shore fire. The game weighted the attack by 0.6 and the defence by 0.8, so a landing won with 1.33 times the defenders' power without air control and with only 0.74 times under full air superiority: an outnumbered force could take a defended beach. The attack factor is now 0.4 and the defence factor 1: 2.5 times the defenders without air control, about 1.4 times with full air superiority, before shore fire. The same check decides whether the AI's planners attempt a landing, so AI landings against defended coasts become rarer; failure costs are unchanged. Real-world behaviour: amphibious doctrine plans for about 3 to 1 at the landing point, and opposed landings at parity mostly failed (Gallipoli 1915, Dieppe 1942). No day-0 effect (no landing at day 0). No new state. The defender's coastal-guard AI (Yja) reads the same landing check through the same factors (its threat estimate and its defence), so it now judges a defended coast safer and reinforces coasts less often, consistently with the harder landings.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "assaultDays:3,shoreFire:Object.freeze({destroyer:12,corvette:3})",
+      "near": 200,
+      "find": "Object.freeze({attackFactor:.6,defenseFactor:.8,assaultDays:3,",
+      "replace": "Object.freeze({attackFactor:.4,defenseFactor:1,assaultDays:3,"
+    }
+  ]
+}

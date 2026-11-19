@@ -1,0 +1,27 @@
+{
+  "id": "p16-ai-mandate-real-date",
+  "finding": "P16",
+  "effect": "AI governments now date their last election from the real date, not from the start of the game. Every date before day 0 was floored at day 0, so in the first year every AI government read its last election as the day the game began and could not dissolve parliament, whenever it was really elected, and the end-of-term check ran from the same wrong date. Expected effect, predicted from the code and checked in the batch run: a few more early elections in the first year, where the AI's other conditions are met, and none in the last 180 days of a term. Day 0 unchanged. No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"no_dissolution_power\"",
+      "near": 1200,
+      "find": "function AWo(e,t){",
+      "determinismOk": "Date arithmetic on the game's day number only, the same as the game's own month helper; no clock is read.",
+      "replace": "function __geobalMonthsRaw(A,B){let Q=new Date(o1+A*Cj),g=Q.getUTCFullYear(),C=Q.getUTCMonth()+B,e=new Date(Date.UTC(g,C+1,0)).getUTCDate();return Math.floor((Date.UTC(g,C,Math.min(Q.getUTCDate(),e))-o1)/Cj)}function AWo(e,t){"
+    },
+    {
+      "anchor": "\"no_dissolution_power\"",
+      "near": 1200,
+      "find": "Number.isFinite(a?.nextDay)?fr(a.nextDay,-hI(t)):null",
+      "replace": "Number.isFinite(a?.nextDay)?__geobalMonthsRaw(a.nextDay,-hI(t)):null"
+    },
+    {
+      "anchor": "\"indirect_chamber\"",
+      "near": 300,
+      "find": "let i=o==null?null:fr(o,hI(r));",
+      "replace": "let i=o==null?null:__geobalMonthsRaw(o,hI(r));"
+    }
+  ]
+}

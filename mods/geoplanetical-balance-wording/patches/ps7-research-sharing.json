@@ -1,0 +1,20 @@
+{
+  "id": "ps7-research-sharing",
+  "finding": "PS7",
+  "effect": "The research guide described a national doctrine that speeds some stages and slows others. No such setting exists; projects share one capacity, and the entry now says so. English and French only; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"technology.strategy.help\":\"Cette priorit\\xE9 ne cr\\xE9e aucun moyen sup",
+      "near": 40,
+      "find": "\"technology.strategy.help\":\"Cette priorit\\xE9 ne cr\\xE9e aucun moyen suppl\\xE9mentaire. Elle acc\\xE9l\\xE8re certaines \\xE9tapes et ralentit les autres.\"",
+      "replace": "\"technology.strategy.help\":\"Les projets qui avancent se partagent la capacit\\xE9 de recherche du pays : en ajouter un ralentit les autres.\""
+    },
+    {
+      "anchor": "\"technology.strategy.help\":\"This priority creates no extra capacity. It ",
+      "near": 40,
+      "find": "\"technology.strategy.help\":\"This priority creates no extra capacity. It speeds up some stages and slows down the others.\"",
+      "replace": "\"technology.strategy.help\":\"Projects making progress share the country\\u2019s research capacity, so adding a project slows the others.\""
+    }
+  ]
+}

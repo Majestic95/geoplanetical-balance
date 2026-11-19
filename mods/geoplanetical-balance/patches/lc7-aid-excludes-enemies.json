@@ -1,0 +1,20 @@
+{
+  "id": "lc7-aid-excludes-enemies",
+  "finding": "LC7",
+  "effect": "Multilateral aid no longer goes to a donor's enemies or to countries it sanctions. Each month every donor's aid budget is split among the countries in need (wit): each recipient's weight is its need x (0.4 + the donor's relations with it, scaled 0 to 1) x its GDP, so a country at war with the donor (relations -100) still gets 0.4 x need x GDP, and nothing checks the donor's own sanctions, although the game's data note says the split depends on them. Now a recipient gets zero weight from a donor that is fighting it (the game's own belligerency test M7: an active conflict in its hostilities phase with both countries as principal or co-belligerent on opposite sides, so a ceasefire or a country that only grants military access does not count) or that sanctions it (an active sanctions regime with the donor as sender and the recipient as target, LB). The donor's budget is unchanged and spread over the remaining recipients by the same split. Real-world behaviour: humanitarian channels do reach sanctioned states through agencies, but a donor does not pay its enemy's treasury or a government it sanctions; official development assistance to sanctioned or hostile governments is suspended or rerouted (OECD DAC practice; for example aid to Russia and Belarus after 2022, to Myanmar after 2021). Day-0 effect: aid flows from donors to the countries their seeded sanctions target (about eight regimes) move to other recipients from the first month; no new state. The sanctions map is built once a month for all donors; the war test is the game's own per pair.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "r.nukeAidMult",
+      "near": 700,
+      "find": "function wit(e,t,a){",
+      "replace": "function __geobalAidSanctionMap(e){let m=new Map;for(let r of LB(e)){let s=m.get(String(r.sender));s||m.set(String(r.sender),s=new Set);s.add(String(r.target))}return m}function wit(e,t,a){let __gbS=__geobalAidSanctionMap(e);"
+    },
+    {
+      "anchor": "r.nukeAidMult",
+      "near": 700,
+      "find": ",d=n.map((m,f)=>{if(m.key===l.key||i[f]<=0)return 0;",
+      "replace": ",d=n.map((m,f)=>{if(m.key===l.key||i[f]<=0||__gbS.get(String(l.key))?.has(String(m.key))||M7(e,l.key,m.key))return 0;"
+    }
+  ]
+}

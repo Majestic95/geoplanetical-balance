@@ -1,0 +1,13 @@
+{
+  "id": "n12-equity-ban-dividends",
+  "finding": "N12",
+  "effect": "The financial investment restriction (fin_equityban) no longer withholds dividends: it stops the sanctioning country's investors from buying the target's shares, as before, and existing shareholders are paid as usual, like real investment bans (US EO 14071 of 2022, the EU's ban on new investment in Russia). Before, the same instrument also withheld the dividends the sanctioning country's companies owed to the target's shareholders (the check ran the other way round), a partial freeze no instrument advertised. Frozen positions (the asset freeze, fin_assetfreeze) still receive nothing. Day-0 effect: holders in a country under a seeded equity ban are paid dividends their holdings earn (measured 2026-11-18, seed 12345, 6 months: the edit runs but no country's financial income differs from the mod without N12, so the seeded bans withheld nothing at game start and day 0 is unchanged; see N11 for the frozen-reserve side). No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "financial-markets:dividend-accounts",
+      "find": "u=s.map(w=>b4(c,o.headquartersCountryKey,xs(r,w.holderId),\"equity\")?0:Math.max(0,w.quantity-Math.max(0,ka(w.frozenQuantity))))",
+      "replace": "u=s.map(w=>Math.max(0,w.quantity-Math.max(0,ka(w.frozenQuantity))))"
+    }
+  ]
+}

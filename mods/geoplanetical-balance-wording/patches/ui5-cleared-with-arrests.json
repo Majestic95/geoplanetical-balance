@@ -1,0 +1,20 @@
+{
+  "id": "ui5-cleared-with-arrests",
+  "finding": "UI5",
+  "effect": "The police panel's “Cases cleared this month” counted public-order bookings (protest arrests) as well as cleared crimes, while “Share cleared” covers crime only, so a crackdown made the count jump while the share stayed flat. The game keeps the two together in its saved totals, so the label now says what the count holds. Interface text only; English and French; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"security.police.cleared\":\"Affaires \\xE9lucid\\xE9es ce mois\"",
+      "near": 40,
+      "find": "\"security.police.cleared\":\"Affaires \\xE9lucid\\xE9es ce mois\"",
+      "replace": "\"security.police.cleared\":\"Affaires \\xE9lucid\\xE9es ce mois (dont interpellations)\""
+    },
+    {
+      "anchor": "\"security.police.cleared\":\"Cases cleared this month\"",
+      "near": 40,
+      "find": "\"security.police.cleared\":\"Cases cleared this month\"",
+      "replace": "\"security.police.cleared\":\"Cases cleared this month (incl. protest arrests)\""
+    }
+  ]
+}

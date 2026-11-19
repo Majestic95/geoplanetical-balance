@@ -1,0 +1,18 @@
+{
+  "id": "i2-intel-staff-cap",
+  "finding": "I2",
+  "effect": "An intelligence service can no longer commit more agents than it has. Each branch's free agents (foreign, counter, covert) are now capped by the agents the whole service has left, so moving the branch allocation after launching missions no longer frees the committed agents for a second set of missions. Before, a branch drawn below its committed agents stayed blocked but the agents moved into the other branches counted as free, so the committed total could pass the active staff, and the monthly staffing pass then raised the active staff to the committed total for free. Every launch check reads these figures (own missions, joint operations for the sponsor and the partner), and so does the staffing panel. The same cap closes the second route to an overcommitted branch, cutting the staff target while missions run (the active staff drops at once and the allocation is re-split). Unchanged while no branch has more agents committed than allocated (no service at day 0 or in the first three months of an unmodded game). With a branch overcommitted, the per-branch free figures can add up to more than the service total shown, since each is capped by the same free total.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "nextTrainingMonth:",
+      "find": "let l=Object.fromEntries(jpe.map(d=>[d,Math.max(0,i[d]-s[d])]))",
+      "replace": "let l=Object.fromEntries(jpe.map(d=>[d,Math.max(0,Math.min(i[d]-s[d],o-Object.values(s).reduce((n,s)=>n+s,0)))]))"
+    },
+    {
+      "anchor": "nextTrainingMonth:",
+      "find": "availableTotal:Object.values(l).reduce((d,p)=>d+p,0)",
+      "replace": "availableTotal:Math.min(Object.values(l).reduce((d,p)=>d+p,0),Math.max(0,o-Object.values(s).reduce((d,p)=>d+p,0)))"
+    }
+  ]
+}

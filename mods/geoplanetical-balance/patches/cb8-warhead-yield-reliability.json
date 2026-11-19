@@ -1,0 +1,74 @@
+{
+  "id": "cb8-warhead-yield-reliability",
+  "finding": "CB8",
+  "effect": "A nuclear warhead's yield and reliability now count. Each country's achieved design (forces.nuclear.design: gun 15 kt / 0.85, implosion 22 kt / 0.90, boosted 50 kt / 0.95, thermonuclear 300 kt / 0.98) was listed but read by nothing: every warhead that landed killed over the same 150 km2 lethal area (evo), sized for a large modern weapon, and none failed. Now the lethal area scales with (yield / 300 kt)^(2/3), the standard blast-scaling law (a 15 kt weapon covers about 14% of a 300 kt weapon's area, 22 kt 17%, 50 kt 30%), and each warhead kills by its design's reliability: the per-warhead kill share is multiplied by the reliability, which is the exact expected toll when warheads fail independently (for one warhead, reliability times the toll of a successful one), so the result stays deterministic. This applies wherever the game turns warheads into deaths: the actual impact (dVa), the player's and the AI's strikes (uVa, fVa), the player's strike screen (Ov, lVa), and the AI's own forecasts, which name the firing country only for the warhead size (geobalYieldKey, so the game's own target choice is unchanged): a guarantor's retaliation cost (f9t), the deaths a victim expects from a strike (AVa), the counter-strike estimate (TVa, where a mixed retaliation scales the game's combined toll by the ratio of scaled to unscaled per-country tolls) and each response option (NVa). The player's retaliation and outbound screens therefore agree. A country without a design (none is armed without one) keeps the game's numbers, and thermonuclear arsenals barely change (0.98). Real-world behaviour: Hiroshima's 15 kt bomb killed about 70 000 at once and 130 000 by 1950, a fraction of what a 300 kt weapon does to the same city; blast radius scales with the cube root of yield, so area with the two-thirds power (Glasstone and Dolan, The Effects of Nuclear Weapons, 1977). No strike happens at day 0, but the forecasts are scaled from day 0 for every country whose design is below 300 kt (gun, implosion, boosted), so the AI's deterrence numbers (retaliation cost, expected tolls) shift for those arsenals from the start; thermonuclear arsenals barely change. The game's .005 floor on the per-warhead kill share (svo) partly cancels the yield scaling in very large provinces (above about 11.6 million people for a 15 kt warhead at density factor 1). No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "nuclear-impact-nonfinite:",
+      "near": 600,
+      "find": "function svo(e,t){if(!(e>0))return 0;let a=e*1e6/t,r=xv(a/1500,1,2.5);return xv(ovo*r/e,.005,rvo)}function lvo(e,t,a){if(!(e>0)||!(a>0))return 0;let r=svo(e,t);return e*(1-Math.pow(1-r,a))}function Cte(e,t){return e?lvo(e.__pop||0,ivo(e),t):0}",
+      "replace": "function svo(e,t,k=1){if(!(e>0))return 0;let a=e*1e6/t,r=xv(a/1500,1,2.5);return xv(ovo*k*r/e,.005,rvo)}function lvo(e,t,a,k=1,q=1){if(!(e>0)||!(a>0))return 0;let r=svo(e,t,k)*q;return e*(1-Math.pow(1-r,a))}function Cte(e,t,y){return e?lvo(e.__pop||0,ivo(e),t,y?y.area:1,y?y.rel:1):0}function __geobalMixedDeaths(e,a,l){let w=l.reduce((p,m)=>p+m.warheads,0),c=Ov(e,a,w);if(!(c>0))return c;let u=0,s=0;for(let m of l){if(!(m.warheads>0))continue;u+=Ov(e,a,m.warheads);s+=m.deaths}return u>0?c*s/u:c}function __geobalWarheadYield(e,k){let d=k==null?null:hM[e?.countries?.get?.(String(k))?.forces?.nuclear?.design];if(!d)return null;let y=Number(d.yieldKt),r=Number(d.reliability);return{area:Number.isFinite(y)&&y>0?Math.pow(y/300,2/3):1,rel:Number.isFinite(r)&&r>0&&r<=1?r:1}}"
+    },
+    {
+      "anchor": "\"target_occupied\"",
+      "near": 2600,
+      "find": "XNe(e,t,Math.round(a),r).reduce((o,n)=>o+Cte(n.pf,n.w),0):0}",
+      "replace": "XNe(e,t,Math.round(a),r).reduce((o,n)=>o+Cte(n.pf,n.w,__geobalWarheadYield(e,r.geobalYieldKey??r.actorKey)),0):0}"
+    },
+    {
+      "anchor": "\"target_occupied\"",
+      "near": 2600,
+      "find": "deaths:Cte(o.pf,o.w)})):[]}",
+      "replace": "deaths:Cte(o.pf,o.w,__geobalWarheadYield(e,r.geobalYieldKey??r.actorKey))})):[]}"
+    },
+    {
+      "anchor": "reasonId:\"stock_insufficient\"",
+      "near": 1200,
+      "find": "deaths:I>0?Cte(b,I):0,",
+      "replace": "deaths:I>0?Cte(b,I,__geobalWarheadYield(e,r)):0,"
+    },
+    {
+      "anchor": "strandedMilitaryDeathsM>0",
+      "near": 400,
+      "find": "l=s>0?Cte(o,s):0,",
+      "replace": "l=s>0?Cte(o,s,__geobalWarheadYield(e,t.attackerKey)):0,"
+    },
+    {
+      "anchor": "\"target_occupied\"",
+      "near": 4000,
+      "find": "w=I>0?Cte(b,I):0;",
+      "replace": "w=I>0?Cte(b,I,__geobalWarheadYield(e,i.key)):0;"
+    },
+    {
+      "anchor": "approvalPenaltyMax:",
+      "near": 600,
+      "find": "c=l>0?Ov(e,t.key,l):0,",
+      "replace": "c=l>0?Ov(e,t.key,l,{geobalYieldKey:r}):0,"
+    },
+    {
+      "anchor": "byPolity:",
+      "near": 600,
+      "find": "receivedDeathsM:[...o.byPolity].reduce((i,[s,l])=>i+Ov(e,s,l),0)",
+      "replace": "receivedDeathsM:[...o.byPolity].reduce((i,[s,l])=>i+Ov(e,s,l,{geobalYieldKey:a.actorKey}),0)"
+    },
+    {
+      "anchor": "\"preview\"",
+      "near": 1000,
+      "find": "deaths:y>0?Ov(e,a,y):0})",
+      "replace": "deaths:y>0?Ov(e,a,y,{geobalYieldKey:m.key}):0})"
+    },
+    {
+      "anchor": "\"preview\"",
+      "near": 1000,
+      "find": "Ov(e,a,l.reduce((p,m)=>p+m.warheads,0))",
+      "replace": "__geobalMixedDeaths(e,a,l)"
+    },
+    {
+      "anchor": "effectiveOptionId:",
+      "near": 400,
+      "find": "deathsM:m>0?Ov(e,i.key,m):0",
+      "replace": "deathsM:m>0?Ov(e,i.key,m,{geobalYieldKey:n.key}):0"
+    }
+  ]
+}

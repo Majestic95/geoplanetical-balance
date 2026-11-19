@@ -1,0 +1,18 @@
+{
+  "id": "e10-power-subsidy",
+  "finding": "E10",
+  "effect": "An electricity subsidy now lowers industry's production costs. Firms already paid the subsidised price in cash (the treasury pays the rest to the utility), but the sector cost model (powerCostUnit in CpB, the change in generation cost since day 0) ignored the subsidy, so the state paid an industrial subsidy that only added to firms' cash and never reached their production costs, prices or output decisions. The change in support per MWh since the start, contract price x (subsidy rate - day-0 rate), times the transmission-tariff ratio for transmission-connected sectors (as they are billed), is now taken off that cost change, inside the game's existing bounds (-20% to +150% of the base price). Lower costs feed producer prices and margins as a lower generation cost would; cutting the subsidy below its day-0 rate raises them. Since build 26368058 the game also prices electrified industry's power use (fossil inputs replaced by electricity, none at day 0) at the generation cost; the same support change is taken off that price too, never below zero. That price sits outside the game's -20% to +150% bound on the cost change (as the game's own electrified term does), so cutting the subsidy below its day-0 rate can raise it without that cap; electrified use is zero at day 0 and small since. Subsidy spending and billing are unchanged. Day 0 unchanged, and nothing changes while a country's rate stays at its day-0 rate (the player's subsidy slider and the AI's energy shield move it); a country without a recorded day-0 rate is unchanged. No saved state: the cost is recomputed at every market clearing. In practice an electricity subsidy to industry lowers producers' energy costs and so their prices; one that only moves cash while costs ignore it changes nothing real.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"world-economy:realized-input-cost-receipt-missing\"",
+      "find": "r&&r._servedCost0==null&&o>0&&(r._servedCost0=o);let n={},i={};",
+      "replace": "r&&r._servedCost0==null&&o>0&&(r._servedCost0=o);let n={},i={},$e10=t||e._elecSubsidy0==null?null:(d=>{let p=d?sra(e):null;return p&&p.contract>0?[p.contract*d,p.contract*p.transmissionRatio*d]:null})(oo(Number(e.elecSubsidy)||0,0,1)-oo(Number(e._elecSubsidy0)||0,0,1));"
+    },
+    {
+      "anchor": "\"world-economy:realized-input-cost-receipt-missing\"",
+      "find": "a.powerCostUnit[s]=t?0:Br(f*(o-(r._servedCost0||o))/1e3,-aa[s]*.2,aa[s]*1.5)+hKt(e,Dt[s].id)*o/1e3",
+      "replace": "a.powerCostUnit[s]=t?0:Br(f*(o-(r._servedCost0||o)-($e10?$e10[gPe(ii[s])?1:0]:0))/1e3,-aa[s]*.2,aa[s]*1.5)+hKt(e,Dt[s].id)*Math.max(0,o-($e10?$e10[gPe(ii[s])?1:0]:0))/1e3"
+    }
+  ]
+}

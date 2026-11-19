@@ -1,0 +1,14 @@
+{
+  "id": "p15-no-seats-minority",
+  "finding": "P15",
+  "effect": "A government with no seats in its confidence chamber now pays the largest minority penalty, 11 points of approval, instead of the smallest, 5. A seat share of exactly zero fell through to the default of one half. Countries with no confidence chamber are unaffected. Expected effect: only a government with zero seats changes. Day 0 unchanged: no government starts with zero seats (0 of 212, measured). No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"minority_government\"",
+      "near": 3000,
+      "find": "(l.pct||.5,0,.5)",
+      "replace": "(l.pct??.5,0,.5)"
+    }
+  ]
+}

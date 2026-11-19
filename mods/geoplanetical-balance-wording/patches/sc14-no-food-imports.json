@@ -1,0 +1,20 @@
+{
+  "id": "sc14-no-food-imports",
+  "finding": "SC14",
+  "effect": "A blockaded country was told it grows everything it eats, because the sentence shows whenever no supplier is delivering. The new wording is true in both cases and points to the figure that tells them apart. The original fix also chose by self-sufficiency; wording changes cannot do that. English and French only; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"food.suppliers.none\":\"Le pays produit tout ce qu'il mange : aucun ",
+      "near": 40,
+      "find": "\"food.suppliers.none\":\"Le pays produit tout ce qu'il mange : aucun fournisseur \\xE9tranger ne peut l'affamer.\"",
+      "replace": "\"food.suppliers.none\":\"Aucune nourriture n'arrive de l'\\xE9tranger ; \\xAB Produit lui-m\\xEAme \\xBB indique ce que le pays couvre seul.\""
+    },
+    {
+      "anchor": "\"food.suppliers.none\":\"The country grows everything it eats: no for",
+      "near": 40,
+      "find": "\"food.suppliers.none\":\"The country grows everything it eats: no foreign supplier can starve it.\"",
+      "replace": "\"food.suppliers.none\":\"No food is arriving from abroad; \\u201CGrown at home\\u201D shows how much the country covers itself.\""
+    }
+  ]
+}

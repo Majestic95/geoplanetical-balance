@@ -1,0 +1,20 @@
+{
+  "id": "lc18-fund-opposition-refusal",
+  "finding": "LC18",
+  "effect": "The refusal always blamed short funds, but the transfer also fails when the target is not in opposition, cannot take more, or a party has no organisation. The new text names no cause, so it is true of all of them. English and French only; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"lf.gate.noSubject.fundOpposition\":\"La caisse de votre parti ne permet aucun tra",
+      "near": 40,
+      "find": "\"lf.gate.noSubject.fundOpposition\":\"La caisse de votre parti ne permet aucun transfert vers ce parti.\"",
+      "replace": "\"lf.gate.noSubject.fundOpposition\":\"Aucun transfert de fonds vers ce parti n\\u2019est possible pour le moment.\""
+    },
+    {
+      "anchor": "\"lf.gate.noSubject.fundOpposition\":\"Your party does not have enough funds to tra",
+      "near": 40,
+      "find": "\"lf.gate.noSubject.fundOpposition\":\"Your party does not have enough funds to transfer money to this party.\"",
+      "replace": "\"lf.gate.noSubject.fundOpposition\":\"Funds cannot be moved to this party right now.\""
+    }
+  ]
+}

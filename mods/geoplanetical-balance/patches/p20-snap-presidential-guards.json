@@ -1,0 +1,13 @@
+{
+  "id": "p20-snap-presidential-guards",
+  "finding": "P20",
+  "effect": "The player's snap presidential election now obeys the same guards as the snap legislative election (P3, the AI's own rule): not within 365 days of the mandate's start, nor within 180 days of the scheduled election. Before, a president could re-run the election on any day after the post-reform freeze, re-rolling it at a honeymoon or rally peak for 4 approval. Real presidents cannot dissolve their own office; early presidential elections come from resignation, impeachment or an explicit constitutional power, and the ones called by sitting presidents (Kazakhstan 2019 and 2022, Azerbaijan 2018 and 2024) were never in the first year of a mandate. The mandate's start is the office's own record (mandate.startedDay, written when the office is filled) when it was filled during play, so a later term extension cannot shorten the first-year guard. For a mandate seeded at game start (recorded as day 0) the start is the scheduled election day minus one term, counted with P16's raw month arithmetic (__geobalMonthsRaw) because the game's calendar helper floors dates before day 0; so a president elected 18 months before the game starts may call an early election at once, and leap years are counted as the calendar has them. A contest with no scheduled election (nextDay null) gets no term-end guard, as the game's scheduler treats it. Refusals use the game's own rejection event and reasons (recent_mandate, term_ending); the app has text only for dissolution_cooldown, so a refusal shows the game's generic 'frozen' notice, as P3's refusals do. Limitation: for a seeded mandate whose term is extended in play, the start is still inferred from the current term length. Requires P16 (same mod). No new state. No day-0 effect.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"politics.snap_presidential_called\",{countryKey",
+      "find": "if(xee(e,a.pol))return EGa(e,a,\"presidential\"),!1;let o=fr(e.day,Bhe(r.termYears))",
+      "replace": "if(xee(e,a.pol))return EGa(e,a,\"presidential\"),!1;{let __gbT=VD(e.day),__gbN=r.nextDay,__gbR=null,__gbM=st(a)?.offices?.[Ve(a,r.targetOrganId)]?.mandate?.startedDay,__gbL=Number.isInteger(__gbM)&&__gbM>0?__gbM:Number.isFinite(__gbN)?__geobalMonthsRaw(__gbN,-Bhe(r.termYears)):null;if(__gbL!=null&&__gbT-__gbL<IWo)__gbR=\"recent_mandate\";else if(Number.isFinite(__gbN)&&__gbN-__gbT<_Wo)__gbR=\"term_ending\";if(__gbR)return H(e,\"politics.snap_election_rejected\",{countryKey:a.key,electionKind:\"presidential\",contestId:r.id,targetOrganId:r.targetOrganId,reason:__gbR},gF(\"warning\")),!1}let o=fr(e.day,Bhe(r.termYears))"
+    }
+  ]
+}

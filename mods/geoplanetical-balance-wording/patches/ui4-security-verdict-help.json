@@ -1,0 +1,20 @@
+{
+  "id": "ui4-security-verdict-help",
+  "finding": "UI4",
+  "effect": "The help line under the security verdict (UI4, with ui4-security-verdict): it said no part of the system is overwhelmed and capacity handles the caseload, though the verdict only compares each stage with the country’s start; it now says that, and that the alerts below use fixed limits. Interface text only; English and French; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"security.verdict.balanced.help\":\"Aucun maillon ne d\\xE9borde. Les capaci",
+      "near": 40,
+      "find": "\"security.verdict.balanced.help\":\"Aucun maillon ne d\\xE9borde. Les capacit\\xE9s absorbent les flux actuels.\"",
+      "replace": "\"security.verdict.balanced.help\":\"Aucun maillon de la cha\\xEEne n'est nettement plus charg\\xE9 qu'au d\\xE9but de la partie. Les alertes ci-dessous suivent des seuils fixes et peuvent tout de m\\xEAme appara\\xEEtre.\""
+    },
+    {
+      "anchor": "\"security.verdict.balanced.help\":\"No part of the system is overwhelmed. C",
+      "near": 40,
+      "find": "\"security.verdict.balanced.help\":\"No part of the system is overwhelmed. Current capacity can handle the caseload.\"",
+      "replace": "\"security.verdict.balanced.help\":\"No stage of the chain carries much more work than at the start of the game. The alerts below use fixed limits and can still appear.\""
+    }
+  ]
+}

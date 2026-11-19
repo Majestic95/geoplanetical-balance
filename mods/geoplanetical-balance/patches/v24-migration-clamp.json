@@ -1,0 +1,26 @@
+{
+  "id": "v24-migration-clamp",
+  "finding": "V24",
+  "effect": "Two hard errors inside the monthly population tick no longer stop the simulation. Stateless departures (people leaving a no-man's-land province, kUt) threw a RangeError when the departure exceeded the province's remaining population or the province was no longer no-man's land, and the education model's emigration step (O9e) threw when skilled emigrants exceeded the skill group's stock. Upstream scaling makes both rare, but the stateless pool also decays between its read and its use, and a save with an inconsistent displacement ledger would halt the game instead of repairing itself (the module already repairs such data on load). Now, at the start of the monthly migration step (hHt) and before any destination is credited, the stateless departures from each province are scaled down to the population actually there (to zero for a province that is missing or no longer no-man's land), with a warning in the console, so the source and every destination move the same number of people and nobody is created or counted twice; the old check in kUt keeps only a warning as a backstop. The skill stock cannot go below zero, which the game's own Math.max(0, stock - leavers) already does once the throw is gone. Real-world behaviour: population accounts are reconciled, not aborted; statistical offices revise a count that does not add up. Day 0 unchanged; no new state; the clamp only acts where the game would otherwise have stopped. Minified names are those of build 26734764.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "kind===\"refugee\"&&s.residenceProvinceKey",
+      "near": 400,
+      "find": "function hHt(e,t,a){let r=new Map,o=new Map,n=new Map;",
+      "replace": "function __geobalClampStateless(e,t,a){let q=new Map;for(let s of t){if(s?.sourceRef?.kind!==\"stateless\")continue;let v=fHt(s.amountM)*a;if(!(v>0))continue;let k=s.sourceRef.provinceKey,g=q.get(k);g||q.set(k,g={sum:0,flows:[]});g.sum+=v,g.flows.push(s)}for(let[k,g]of q){let p=e.world?.provByKey?.get(k),c=p&&(p.__polityKey||p.__countryKey)===\"__nomans\"?A4(p.__pop):0;if(!(g.sum>c+1e-10))continue;console.warn(\"[geobal V24] stateless departures scaled to the province's population\",k);let f=g.sum>0?c/g.sum:0;for(let s of g.flows)s.amountM=fHt(s.amountM)*f}}function hHt(e,t,a){__geobalClampStateless(e,t,a);let r=new Map,o=new Map,n=new Map;"
+    },
+    {
+      "anchor": "stateless:departure-stock",
+      "near": 400,
+      "find": "if(!i||(i.__polityKey||i.__countryKey)!==\"__nomans\"||n>A4(i.__pop)+1e-10)throw new RangeError(`stateless:departure-stock:${o}`);i.__pop=Math.max(0,i.__pop-n),r+=n}",
+      "replace": "if(!i||(i.__polityKey||i.__countryKey)!==\"__nomans\"){console.warn(\"[geobal V24] stateless departure from a missing or reassigned province skipped\",o);continue}let __gbV=Math.min(n,Math.max(0,A4(i.__pop)));__gbV<n-1e-10&&console.warn(\"[geobal V24] stateless departure clamped to the province's population\",o);i.__pop=Math.max(0,i.__pop-__gbV),r+=__gbV}"
+    },
+    {
+      "anchor": "education:migration:source-stock",
+      "near": 400,
+      "find": "if(v>g+1e-10)throw new RangeError(`education:migration:source-stock:${e.key}:${h}`);return Math.max(0,g-v)+Math.max(0,Oa(t[h]))",
+      "replace": "v>g+1e-10&&console.warn(\"[geobal V24] skilled emigration clamped to the skill stock\",e.key,h);return Math.max(0,g-v)+Math.max(0,Oa(t[h]))"
+    }
+  ]
+}

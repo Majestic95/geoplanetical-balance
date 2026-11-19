@@ -1,0 +1,20 @@
+{
+  "id": "g6-social-delivery-cap",
+  "finding": "G6",
+  "effect": "Social benefits can no longer be delivered well above what is paid. Delivery could reach 130% of the benefit's value, from doctrine factors or while a backlog drains, while the budget paid 100%. Real delivery is capped at the entitlement; the cap is now 105%, leaving room for the small overshoot the game's doctrine factors give. Under-delivery is unchanged. Expected effect, predicted from the code and checked in the batch run: slightly lower satisfaction where delivery was above 105%, nothing elsewhere. Day 0 unchanged (the ratio starts at 1). No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "socialDeliveryRatio:",
+      "near": 120,
+      "find": ".socialCorrect),.4,1.3)",
+      "replace": ".socialCorrect),.4,1.05)"
+    },
+    {
+      "anchor": "outcomes?.socialDeliveryRatio,1),.4,1.3)",
+      "near": 60,
+      "find": "outcomes?.socialDeliveryRatio,1),.4,1.3)",
+      "replace": "outcomes?.socialDeliveryRatio,1),.4,1.05)"
+    }
+  ]
+}

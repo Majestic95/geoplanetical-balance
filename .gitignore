@@ -1,0 +1,10 @@
+.modding/decompiled/
+.modding/inbox/
+node_modules/
+*.log
+dist/
+dump-*/
+__pycache__/
+probe-*.jsonl
+.cache/
+launcher-settings.json

@@ -1,0 +1,14 @@
+{
+  "id": "ax11-defence-authority",
+  "finding": "AX11",
+  "effect": "A state with no defence authority can no longer start a war on the player. The AI's war against another AI (H2B) requires the attacker to hold both its defence and diplomacy powers; the AI's path to war on the player (LQC) checked neither, and the earlier gates need only one. LQC now tests both for the attacker, and returns its usual declaration refusal. AEA itself is unchanged, because the nuclear branch calls it after a strike has already landed and ignores the result, so a refusal there would leave a strike with no war. Expected effect: small; which subject states could meet the power ratio was not enumerated, so this may rarely fire. A country with diplomacy but no defence powers retries weekly, as other refusals here do. Day 0 unchanged: no war exists. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "reasonId:\"declaration\"",
+      "near": 200,
+      "find": "if(!sfe(e,t.key,n,i,r.objective.statusProfileId,a.key))return",
+      "replace": "if(!He(t,\"defense\")||!He(t,\"diplomacy\")||!sfe(e,t.key,n,i,r.objective.statusProfileId,a.key))return"
+    }
+  ]
+}

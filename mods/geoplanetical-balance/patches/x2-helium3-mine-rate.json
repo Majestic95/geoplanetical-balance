@@ -1,0 +1,14 @@
+{
+  "id": "x2-helium3-mine-rate",
+  "finding": "X2",
+  "effect": "A lunar helium-3 mine now yields about 5.5 kg a month per unit at the best grade, not 40. The mine profile (mine_helium3) produced 40 kg a month for 5.5 MW and no regolith, so at the model's best grade (20 ppb) one mine would process about 2 million tonnes of regolith a month, and one USD 6.8 bn mine paid for itself in a few months (1 kg is worth 0.09 TWh of fusion electricity). The proposal's sourced figure is the University of Wisconsin Mark II lunar miner: about 66 kg of He-3 a year (5.5 kg a month) from roughly 1,250 t of regolith an hour at 10-20 ppb, with 85% heat recovery. Of the proposal's options (cut the output 7.3x, or raise the power 7.3x, plus consuming regolith), cutting the output is the realistic one: the miner's throughput, not its power, limits real He-3 extraction, and it keeps power demand where the game set it. The other readers (the AI's He-3 planning, the region's grade factor, the water co-product) take the same rate, so they stay consistent. Not modelled: consuming regolith from the site's reserve (about 75,000 t per kg; the region's reserve, at most 1 million t, would empty in months); left for a later decision. Fusion He-3 plants need about 41 kg a year, so one mine now supplies about 1.6 plants. No day-0 effect (no lunar site at day 0). No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "outputId:\"helium3\"",
+      "near": 300,
+      "find": "mine_helium3:Object.freeze({family:\"extraction\",powerNeed:5.5,maintenance:.05,outputId:\"helium3\",rate:40,coProductId:\"water_ice\",coProductRate:1})",
+      "replace": "mine_helium3:Object.freeze({family:\"extraction\",powerNeed:5.5,maintenance:.05,outputId:\"helium3\",rate:5.5,coProductId:\"water_ice\",coProductRate:1})"
+    }
+  ]
+}

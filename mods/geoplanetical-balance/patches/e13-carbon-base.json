@@ -1,0 +1,33 @@
+{
+  "id": "e13-carbon-base",
+  "finding": "E13",
+  "effect": "The carbon tax base follows power-sector emissions fully. The game's carbon base is GDP x a carbon share x a multiplier, so the multiplier that makes revenue track emissions is the change in carbon intensity: (power CO2 / GDP) / (the same at the reference), clamped 0..4, used in full (r9B 1) instead of 0.65 + 0.35 x the player's absolute emissions ratio. Decarbonising the grid shrinks carbon revenue toward zero; more emissions per unit of output raise it; growth with unchanged intensity raises it only with GDP, as real carbon revenue does (mod 0.1.0 used the absolute ratio, which counted growth twice, and only for the player). Every country gets the reference (geobalCo2I0, kept once set). It is taken inside the simulation only, so a reloaded or multiplayer-joined game stays identical to a continuous one: at game start (emQ, not on restore) and by a monthly pass in the month-end finance phase for any country still without one (an older save, or a country created mid-game). AI countries follow the same rule, and taking control of a country does not reset its base. Being a ratio of emissions to output, it is largely unaffected by secession, annexation or conquest, which move emissions and GDP together; a region whose grid is cleaner or dirtier than its country's average keeps the parent's reference and so starts somewhat away from 1. Emissions vary with the seasons (solar), so carbon revenue does too, as in reality. Industry and transport emissions still have no base in the model. Day 0 unchanged (the ratio is 1 at the reference); a save without the reference takes it at the first month end after loading (a player country from mod 0.1.0 then restarts at 1); until its reference is taken a country uses the game's rule with full weight (an AI country 1; a player country from an older save the absolute ratio to its _powerCo20), and a country without power data or GDP keeps that rule. (Minified names in this text are those of build 26296134; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"Accises tabac & alcool\"",
+      "find": "j7e=2,ALt=.35;function uMr(",
+      "replace": "j7e=2,ALt=1;function uMr("
+    },
+    {
+      "anchor": "\"Accises tabac & alcool\"",
+      "find": "if(!e||!e.energy||!e._powerCo20||e._powerCo20<=0)return 1;let t=R7(e.energy.co2Mt/e._powerCo20,0,4);",
+      "replace": "let I=e?.geobalCo2I0;if(e&&e.energy&&I>0&&e.gdp>0&&Number.isFinite(e.energy.co2Mt))return 1-ALt+ALt*R7(e.energy.co2Mt/e.gdp/I,0,4);if(!e||!e.energy||!e._powerCo20||e._powerCo20<=0)return 1;let t=R7(e.energy.co2Mt/e._powerCo20,0,4);"
+    },
+    {
+      "anchor": "Conflit T0 joueur impossible",
+      "find": "function _ur(e,t,a={}){X2a(e,t,a.playerControl||{});let r=e.player;",
+      "replace": "function _ur(e,t,a={}){X2a(e,t,a.playerControl||{});a.restore||__geobalCo2Refs(e);let r=e.player;"
+    },
+    {
+      "anchor": "Conflit T0 joueur impossible",
+      "find": "function Xqe(e,t){return t?(_Do(t),",
+      "replace": "function __geobalCo2Refs(A){for(let C of A?.countries?.values?.()||[])C.geobalCo2I0==null&&C.energy&&Number.isFinite(C.energy.co2Mt)&&C.gdp>0&&(C.geobalCo2I0=C.energy.co2Mt/C.gdp)}function Xqe(e,t){return t?(_Do(t),"
+    },
+    {
+      "anchor": "\"tickSovereignBondMarketsWorld\"",
+      "find": "_e(\"tickSovereignBondMarketsWorld\",()=>Yha(e))",
+      "replace": "_e(\"tickSovereignBondMarketsWorld\",()=>(__geobalCo2Refs(e),Yha(e)))"
+    }
+  ]
+}

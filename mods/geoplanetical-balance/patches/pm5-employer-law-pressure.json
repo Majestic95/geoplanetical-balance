@@ -1,0 +1,14 @@
+{
+  "id": "pm5-employer-law-pressure",
+  "finding": "PM5",
+  "effect": "Employers now judge a minimum wage against local income. jz, the property-law pressure behind employer grievance and investment strikes, scored laws with YQ but passed no country, so income-based laws (minimum wage, deposit guarantee) read the raw local-currency amount against a default income of $10,000, unclamped. In a weak-currency country one 10% rise could read as 19 on a scale of 0 to 1 per law (hand calculation), saturating employer pressure and reaching disinvestment, which cuts corporate expansion by up to 40%. The patch passes the country in both calls, so the amount is converted and judged against that country's income. Of the nine laws this pressure reads, only minimum wage and deposit guarantee use that form, so the others are unchanged. Expected effect: employers in weak-currency countries stop overreacting to a small minimum-wage step; the existing cap on total pressure still applies. A floor that differs from its starting level is now judged against current income and exchange rate, so its pressure moves as they do, with no change in the law: affordable floors ease as incomes grow, and devaluation lowers pressure from an earlier rise. Unchanged laws give 0 whatever those do. Size not measured. Day 0 unchanged: both sides of the comparison are equal. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"land_tenure\",\"technology_transfer\"]",
+      "near": 300,
+      "find": "i=Ba(r,o)-Ba(r,n===void 0?o:n),s=sn(",
+      "replace": "i=Ba(r,o,e)-Ba(r,n===void 0?o:n,e),s=sn("
+    }
+  ]
+}

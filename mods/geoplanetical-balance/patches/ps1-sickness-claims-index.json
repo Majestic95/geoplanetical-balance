@@ -1,0 +1,14 @@
+{
+  "id": "ps1-sickness-claims-index",
+  "finding": "PS1",
+  "effect": "A small shortfall in care no longer nearly doubles the sickness-benefit bill in a rich country. The bill's multiplier (Bb, health.social.sicknessClaimsIndex, read by YyA for the maladie spending line) was untreated illness today divided by untreated illness at day 0, clamped to [0.4, 3]. Where care covers almost everyone the day-0 figure is small, so the ratio has great leverage: a 10% capacity gap for six months gave about x1.94 in Germany (hand replay, matching 79.5 -> 153.4 measured on 26335289), while real sick pay follows hours lost, which move slowly. It is the same ratio error L2 fixed for working hours. The patch measures the rise against all illness at day 0, as L2 does: index = 1 + 1.5 x (s - s0) / N0, where s is sickDaysPer100kYear, s0 its day-0 value and N0 the day-0 need of the four care lines with the weights s uses (primary 1.4, maternal 2.5, emergency 3, hospital 5). The game's clamp stays. Expected effect: the German case falls to about +23% (hand calculation with a typical day-0 need from the test, not Germany's own, and not yet measured); the same extra untreated burden raises the bill by the same share whatever the starting level; better access in a rich country no longer cuts the line to 0.4 at no cost (where untreated illness starts high the most it can cut is 1.5 x s0 / N0, so 0.55 at a start of 30% of need). The factor 1.5 follows the L2 hours: a collapse costs 6% of hours, and against normal absence of about 4% of working time that is 0.06 / 0.04. Germany's official 6.1% of employees reported sick in 2023 (Destatis) would give 1.0, so the factor is a tuning choice. Untreated epidemic hospital cases stay in s, unlike L2 (whose hours the epidemic model already moves), because epidemics do raise claims; the bill is milder than before here too. So the bill follows the L2 hours only outside epidemics and while the hours are inside their clamp of 0.94 to 1.015. Day 0 unchanged (s = s0 gives 1). No new state. If a health state has no day-0 need the index is 1. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "sicknessClaimsIndex:",
+      "near": 200,
+      "find": "sicknessClaimsIndex:ame(t.sickDaysPer100kYear/Math.max(t.seed.sickDays0Per100kYear,1e-9),.4,3)",
+      "replace": "sicknessClaimsIndex:ame((__geobalN=>__geobalN>0?1+1.5*(t.sickDaysPer100kYear-t.seed.sickDays0Per100kYear)/__geobalN:1)(Bh.reduce((__geobalI,__geobalU)=>__geobalI+Ur(t.lines?.[__geobalU]?.need0Per100k)*(__geobalU===\"hospital\"?5:__geobalU===\"emergency\"?3:__geobalU===\"maternal\"?2.5:1.4),0)),.4,3)"
+    }
+  ]
+}

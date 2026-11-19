@@ -1,0 +1,26 @@
+{
+  "id": "np1-caretaker-deadlock",
+  "finding": "NP1",
+  "effect": "A player government left caretaker within a year of a dissolution, with a hung chamber that cannot form a government, is no longer stuck until the year ends. The game's politics tick (EWa) forms a new government from the chamber whenever a coalition has a majority or wins investiture, so this deadlock arises only when no government can be installed (no majority coalition passes investiture, the largest party fails it and no minority government is tolerated, or no head-of-government candidate is found): after a lost no-confidence vote, or after the player's own snap election returns such a chamber (the cooldown then starts again). Game 1.1.3 added a 365-day cooldown on dissolving the chamber (xfo, counted from the last dissolution), exempting only the cause \"deadlock\". After a passed no-confidence motion the game vacates the head of government (caretaker) and calls an election, which that cooldown refuses. AI governments leave caretaker after 60 days by a deadlock dissolution (EWo, wWo = 60), but the player's own snap election uses the cause \"player\" and stayed refused for the rest of the year. Now the player's snap election is exempt from the cooldown once the same caretaker government has lasted 60 days, the AI's deadlock rule. Caretaker time is P3's record (geobalCaretakerWatch on the country, the same clock as the AI's: from the first monthly review that sees the caretaker status, up to about a month after it starts, and reset by a new government or a dissolution), so P3's own caretaker guard (formation_pending before day 60) and this exemption open on the same day, and saves made before this patch are covered. When the cooldown refuses the player's snap election, its notice gives the earlier of the cooldown's end and the day the caretaker exemption opens (60 days after the watch's day, or after today if no review has seen the caretaker yet). The no-confidence notice no longer says an election was called when the cooldown refuses it. AI countries and every other cause are unchanged. Real-world behaviour: constitutions that bar early re-dissolution (France, art. 12: no new dissolution within a year of the election) still produce a government; no system keeps an outgoing cabinet for a year because it cannot dissolve. Day 0 unchanged (no dissolution at genesis). No new state. Requires P3 (same mod). Minified names are those of build 26734764.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "reason:\"dissolution_cooldown\"",
+      "near": 1200,
+      "find": "function xfo(e,t,a){let r=KGa(t);return a!==\"deadlock\"&&r!=null&&(e.day||0)<r}",
+      "replace": "function xfo(e,t,a){let r=KGa(t);return a!==\"deadlock\"&&!(a===\"player\"&&__geobalCaretakerOpens(e,t)<=VD(e.day))&&r!=null&&(e.day||0)<r}function __geobalCaretakerOpens(e,t){let g=xn(t),w=t?.geobalCaretakerWatch,d=VD(e.day);return t?.key!==e.playerKey||g?.status!==\"caretaker\"?1/0:(w?.governmentId===String(g.id)?VD(w.sinceDay,d):d)+wWo}"
+    },
+    {
+      "anchor": "reason:\"dissolution_cooldown\"",
+      "near": 1200,
+      "find": "untilDay:KGa(t)}",
+      "replace": "untilDay:Math.min(KGa(t),__geobalCaretakerOpens(e,t))}"
+    },
+    {
+      "anchor": "`${a.id}:caretaker`",
+      "near": 1500,
+      "find": "electionCalled:g,",
+      "replace": "electionCalled:g&&!xfo(e,t,\"no_confidence\"),"
+    }
+  ]
+}

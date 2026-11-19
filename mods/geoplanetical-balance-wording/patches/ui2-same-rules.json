@@ -1,0 +1,20 @@
+{
+  "id": "ui2-same-rules",
+  "finding": "UI2",
+  "effect": "The Rules screen said other countries have the same options as the player. They do not: some actions are the player's alone, and AI wars elsewhere run in a simpler model. English and French only; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"guide.rule.9\":\"Les autres pays disposent des m\\xEAmes moyen",
+      "near": 40,
+      "find": "\"guide.rule.9\":\"Les autres pays disposent des m\\xEAmes moyens d\\u2019action que vous et suivent les m\\xEAmes r\\xE8gles \\xE9conomiques.\"",
+      "replace": "\"guide.rule.9\":\"Les autres pays suivent les m\\xEAmes r\\xE8gles \\xE9conomiques dans le m\\xEAme monde, mais leurs dirigeants planifient \\xE0 leur fa\\xE7on.\""
+    },
+    {
+      "anchor": "\"guide.rule.9\":\"Other countries have the same options as you",
+      "near": 40,
+      "find": "\"guide.rule.9\":\"Other countries have the same options as you and follow the same economic rules.\"",
+      "replace": "\"guide.rule.9\":\"Other countries follow the same economic rules and draw on the same world, but AI leaders plan in their own way.\""
+    }
+  ]
+}

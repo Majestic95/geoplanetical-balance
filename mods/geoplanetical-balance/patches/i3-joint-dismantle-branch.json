@@ -1,0 +1,18 @@
+{
+  "id": "i3-joint-dismantle-branch",
+  "finding": "I3",
+  "effect": "A joint operation to dismantle a foreign cell now draws on the sponsor's covert branch, as the same mission does when a service runs it alone. Before, the launch checked the foreign branch's free agents and lowered foreign readiness, while the agents were counted against the covert branch for the whole mission, so a covert branch could be overcommitted with no warning and the foreign branch was charged for agents it never lent. Joint tracing of a cell is unchanged (foreign). The partner's counter-intelligence share is unchanged. No day-0 effect.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "reason:\"partner_agents_unavailable\"",
+      "find": "let y=Hpe(e,o,\"foreign\",l);",
+      "replace": "let y=Hpe(e,o,Sdo(l),l);"
+    },
+    {
+      "anchor": "intelligence:joint-funding-rollback:",
+      "find": "i.readiness.foreign=_t(i.readiness.foreign-.1,0,1),s.readiness.counter=",
+      "replace": "i.readiness[Sdo(v)]=_t(i.readiness[Sdo(v)]-.1,0,1),s.readiness.counter="
+    }
+  ]
+}

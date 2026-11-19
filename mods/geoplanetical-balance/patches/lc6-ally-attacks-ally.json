@@ -1,0 +1,62 @@
+{
+  "id": "lc6-ally-attacks-ally",
+  "finding": "LC6",
+  "effect": "An ally that attacks another ally no longer has the alliance turned against it. When the attacker was a treaty member, every other member got +0.7 on its response score, so most crossed the join line. In 1974 NATO stayed out of Cyprus, and Article 5 leaves each party to decide what it deems necessary. The patch removes the bonus; in such a case an AI member goes no further than access, which no longer enters it into the war on the defender's side, and answering below full support costs that member no treaty credibility and no standing with the defender, including the player, whose decision screen shows no cost for it. A call counts as this case only when the attacker is in every treaty behind it, so a separate defence pact with the victim that excludes the attacker keeps its full force, whatever order the treaties are listed in: an AI member is now answered only after every treaty has been added to its call, as the player already was (before, it was answered inside the first treaty, which alone took the credibility gain or loss and the refusal record, whichever treaty the game listed first), and a refusal is charged only to the treaties that do not include the attacker. Expected effect: wars inside an alliance stay local rather than becoming an alliance-wide war on the attacker. Attacks from outside are unchanged. The AI's war planner reads the same response preview, so it now expects less resistance when attacking a treaty partner; that may make such attacks more likely, and was not measured. Day 0 unchanged. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"fiscal_constraint\"",
+      "near": 500,
+      "find": "d=t.memberBreach?.7:0,",
+      "replace": "d=0,"
+    },
+    {
+      "anchor": "\"fiscal_constraint\"",
+      "near": 500,
+      "find": "h=y>.9?\"join\":y>.42?\"support\":y>.12?\"access\":\"refuse\",g=[]",
+      "replace": "h=t.memberBreach?y>.12?\"access\":\"refuse\":y>.9?\"join\":y>.42?\"support\":y>.12?\"access\":\"refuse\",g=[]"
+    },
+    {
+      "anchor": "kind:\"defense_refused\"",
+      "near": 400,
+      "find": "if(c<1){for(let p of l)hde(p,e.day||0,eRe(a)),a===\"refuse\"&&p.violations.push({day:e.day||0,memberKey:r.memberKey,kind:\"defense_refused\"});let u=e.countries.get(r.defenderKey),d=e.countries.get(r.memberKey);bp(e,d,u,\"defense_refused\",{obligation:.8*(1-c)})}else{",
+      "replace": "if(c<1){if(!r.memberBreach){for(let p of l.filter(q=>!D7a(q).includes(r.aggressorKey)))hde(p,e.day||0,eRe(a)),a===\"refuse\"&&p.violations.push({day:e.day||0,memberKey:r.memberKey,kind:\"defense_refused\"});let u=e.countries.get(r.defenderKey),d=e.countries.get(r.memberKey);bp(e,d,u,\"defense_refused\",{obligation:.8*(1-c)})}}else{"
+    },
+    {
+      "anchor": "supportQuote:",
+      "near": 200,
+      "find": "[\"join\",\"support\",\"access\",\"refuse\"].map(o=>[o,eRe(o)])",
+      "replace": "[\"join\",\"support\",\"access\",\"refuse\"].map(o=>[o,t.memberBreach&&L7a[o]<1?0:eRe(o)])"
+    },
+    {
+      "anchor": "response:\"pending\",score:null",
+      "near": 200,
+      "find": "s.memberBreach||=n",
+      "replace": "s.memberBreach&&=n"
+    },
+    {
+      "anchor": "kind:\"member_aggression\",warId:",
+      "near": 300,
+      "find": "let p=c.has(d);if(d===a||!G7a(e,d))continue;",
+      "replace": "let p=s.every(x=>!qB(x,r,{theaterKey:r}).includes(d)||D7a(x).includes(a));if(d===a||!G7a(e,d))continue;"
+    },
+    {
+      "anchor": "kind:\"member_aggression\",warId:",
+      "near": 400,
+      "find": "m.memberBreach||=p",
+      "replace": "m.memberBreach&&=p"
+    },
+    {
+      "anchor": "\"defense_refused\",{obligation:.8}",
+      "near": 500,
+      "find": "u&&d&&!s&&a!==\"support\"&&(a===\"join\"&&x9(",
+      "replace": "u&&d&&!s&&a!==\"support\"&&!(r.memberBreach&&a===\"access\")&&(a===\"join\"&&x9("
+    },
+    {
+      "anchor": "kind:\"alliance_response\"",
+      "near": 500,
+      "find": "else{let y=JQ(e,f.id,l.get(d)||Hao(e,f));!y.ok&&y.reason===\"support\"&&JQ(e,f.id,\"access\")}}if(a===e.playerKey){",
+      "replace": "}for(let f of i)e.playerControlsGovernment(f.memberKey)||(y=>!y.ok&&y.reason===\"support\"&&JQ(e,f.id,\"access\"))(JQ(e,f.id,l.get(f.memberKey)||Hao(e,f)));if(a===e.playerKey){"
+    }
+  ]
+}

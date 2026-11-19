@@ -1,0 +1,98 @@
+{
+  "id": "l5-health-all-groups",
+  "finding": "L5",
+  "effect": "Health care now matters to every social group's satisfaction, not only retirees (0.5) and health workers (0.4). Every other group gets a weight of 0.25, half the retirees', on the same health-experience change the game already computes for each group. Health care is among the top concerns across classes in opinion polls, and the groups left out have the worst access. The size is a tuning choice from the direction of the evidence, not a measured rate: at most 3.5 points on a group's satisfaction target. Expected effect: a government that lets care worsen loses more goodwill and one that improves it gains more. Day 0 unchanged (the change is measured from the first value). No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "{id:\"agri\",incBase:.55,",
+      "near": 400,
+      "find": "sat:{},ideal:{econ:.15,social:.45,gov:.15,nat:.55}",
+      "replace": "sat:{health:.25},ideal:{econ:.15,social:.45,gov:.15,nat:.55}"
+    },
+    {
+      "anchor": "{id:\"ouvr\",incBase:.75,",
+      "near": 400,
+      "find": "sat:{},ideal:{econ:-.55,social:.1,gov:0,nat:.25}",
+      "replace": "sat:{health:.25},ideal:{econ:-.55,social:.1,gov:0,nat:.25}"
+    },
+    {
+      "anchor": "{id:\"empl\",incBase:.85,",
+      "near": 400,
+      "find": "sat:{},ideal:{econ:-.15,social:-.05,gov:-.05,nat:0}",
+      "replace": "sat:{health:.25},ideal:{econ:-.15,social:-.05,gov:-.05,nat:0}"
+    },
+    {
+      "anchor": "{id:\"fonc\",incBase:.95,",
+      "near": 400,
+      "find": "sat:{publicJob:.6},ideal:{econ:-.4,social:-.1,gov:-.1,nat:-.1}",
+      "replace": "sat:{publicJob:.6,health:.25},ideal:{econ:-.4,social:-.1,gov:-.1,nat:-.1}"
+    },
+    {
+      "anchor": "{id:\"sold\",incBase:.85,",
+      "near": 400,
+      "find": "sat:{publicJob:.6},ideal:{econ:0,social:.1,gov:.15,nat:.2}",
+      "replace": "sat:{publicJob:.6,health:.25},ideal:{econ:0,social:.1,gov:.15,nat:.2}"
+    },
+    {
+      "anchor": "{id:\"ense\",incBase:1,",
+      "near": 400,
+      "find": "sat:{publicJob:.6},ideal:{econ:-.15,social:-.1,gov:-.05,nat:0}",
+      "replace": "sat:{publicJob:.6,health:.25},ideal:{econ:-.15,social:-.1,gov:-.05,nat:0}"
+    },
+    {
+      "anchor": "{id:\"secu\",incBase:.92,",
+      "near": 400,
+      "find": "sat:{publicJob:.6},ideal:{econ:0,social:.1,gov:.15,nat:.1}",
+      "replace": "sat:{publicJob:.6,health:.25},ideal:{econ:0,social:.1,gov:.15,nat:.1}"
+    },
+    {
+      "anchor": "{id:\"just\",incBase:1.05,",
+      "near": 400,
+      "find": "sat:{publicJob:.6},ideal:{econ:-.05,social:0,gov:-.05,nat:0}",
+      "replace": "sat:{publicJob:.6,health:.25},ideal:{econ:-.05,social:0,gov:-.05,nat:0}"
+    },
+    {
+      "anchor": "{id:\"seco\",incBase:.9,",
+      "near": 400,
+      "find": "sat:{publicJob:.6},ideal:{econ:-.05,social:0,gov:0,nat:0}",
+      "replace": "sat:{publicJob:.6,health:.25},ideal:{econ:-.05,social:0,gov:0,nat:0}"
+    },
+    {
+      "anchor": "{id:\"dipl\",incBase:1.25,",
+      "near": 400,
+      "find": "sat:{publicJob:.6},ideal:{econ:0,social:-.05,gov:-.05,nat:-.1}",
+      "replace": "sat:{publicJob:.6,health:.25},ideal:{econ:0,social:-.05,gov:-.05,nat:-.1}"
+    },
+    {
+      "anchor": "{id:\"soci\",incBase:.92,",
+      "near": 400,
+      "find": "sat:{publicJob:.6},ideal:{econ:-.15,social:-.05,gov:0,nat:0}",
+      "replace": "sat:{publicJob:.6,health:.25},ideal:{econ:-.15,social:-.05,gov:0,nat:0}"
+    },
+    {
+      "anchor": "{id:\"cadr\",incBase:1.9,",
+      "near": 400,
+      "find": "sat:{},ideal:{econ:.45,social:-.35,gov:-.1,nat:-.45}",
+      "replace": "sat:{health:.25},ideal:{econ:.45,social:-.35,gov:-.1,nat:-.45}"
+    },
+    {
+      "anchor": "{id:\"inde\",incBase:1.1,",
+      "near": 400,
+      "find": "sat:{},ideal:{econ:.5,social:.15,gov:-.05,nat:.2}",
+      "replace": "sat:{health:.25},ideal:{econ:.5,social:.15,gov:-.05,nat:.2}"
+    },
+    {
+      "anchor": "{id:\"capi\",incBase:6,",
+      "near": 400,
+      "find": "sat:{},ideal:{econ:.75,social:.1,gov:.1,nat:-.1}",
+      "replace": "sat:{health:.25},ideal:{econ:.75,social:.1,gov:.1,nat:-.1}"
+    },
+    {
+      "anchor": "{id:\"marg\",incBase:.35,",
+      "near": 400,
+      "find": "sat:{housing:.4},ideal:{econ:-.5,social:-.3,gov:-.15,nat:-.15}",
+      "replace": "sat:{housing:.4,health:.25},ideal:{econ:-.5,social:-.3,gov:-.15,nat:-.15}"
+    }
+  ]
+}

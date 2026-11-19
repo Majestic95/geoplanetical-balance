@@ -1,0 +1,44 @@
+{
+  "id": "z8-disaster-capital-share",
+  "finding": "Z8",
+  "effect": "Disaster damage now cuts output by the share of production that capital accounts for, and more in capital-heavy sectors. Before, a province's availability was 1 - open damage / province capital (Gte, floor 15%), applied to every sector alike, so losing 20% of the capital stock cut output by 20%. With a capital share of about 0.35-0.4 (Cobb-Douglas), and damaged plant partly covered by idle capacity, a 20% capital loss cuts output by about 7-10%, and industry, utilities and construction lose more than services, agriculture and finance. Now: availability = 1 - 0.4 x damage / capital (the province value and the country's fallback, disasterSupplyFactor), floor kept at 15%; and each sector's shortfall from a province is multiplied by a capital-intensity weight wherever the economy reads a province's availability: the sector supply factor (Lar), mapped crops (QCo, by the crop's own sector, agriculture) and extractive fields such as oil, gas, coal and ores (XCo, by the resource's sector, energy or mining): 1.2-1.25 for industry, utilities, energy, construction, mining and the defence industries, 1.1 transport, 1 consumer goods and lunar, 0.8-0.9 agriculture, trade, real estate, health, hospitality, leisure, public and tech, 0.6-0.7 finance, services, business, ICT, education and knowledge. The weights are a judgment from capital intensity, not measured data. Because Z1 (capital is not actually destroyed) still holds, this haircut remains the main economic damage. Provinces the country does not hold still give 0. No day-0 effect (no damage at day 0). No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"earthquake\",\"tropical_cyclone\",\"wildfire\",\"flood\",\"volcanic_eruption\"",
+      "near": 400,
+      "find": "o.__disasterAvailability=i>0?Er(1-s/i,.15,1):1",
+      "replace": "o.__disasterAvailability=i>0?Er(1-.4*s/i,.15,1):1"
+    },
+    {
+      "anchor": "\"earthquake\",\"tropical_cyclone\",\"wildfire\",\"flood\",\"volcanic_eruption\"",
+      "near": 400,
+      "find": "i=n<=0?1:Er(1-n/Math.max(1,ot(o.capital)),.15,1)",
+      "replace": "i=n<=0?1:Er(1-.4*n/Math.max(1,ot(o.capital)),.15,1)"
+    },
+    {
+      "anchor": ".__sectorCapacityBn0?.[",
+      "near": 300,
+      "find": "let i=Zbt(o,e.key);a+=n,r+=n*i}",
+      "replace": "let i=__geobalZ8Avail(Zbt(o,e.key),t);a+=n,r+=n*i}"
+    },
+    {
+      "anchor": ".__sectorCapacityBn0?.[",
+      "near": 300,
+      "find": "function Lar(e,t){",
+      "replace": "var __geobalZ8Weight=Object.freeze({agriculture:.8,business:.7,construction:1.2,consumer:1,defense_air:1.2,defense_ammo:1.2,defense_electronics:1.2,defense_land:1.2,defense_missiles:1.2,defense_naval:1.2,education:.7,energy:1.25,finance:.6,health:.9,hospitality:.9,ict:.7,industry:1.25,knowledge:.7,leisure:.9,lunar:1,mining:1.2,public:.8,realestate:.8,services:.7,tech:.8,trade:.8,transport:1.1,utilities:1.25});function __geobalZ8Avail(z,s){return z<=0?0:1-Math.min(1,(1-z)*(__geobalZ8Weight[s]??1))}function Lar(e,t){"
+    },
+    {
+      "anchor": ".__sectorCapacityBn0?.[",
+      "near": 600,
+      "find": "i>0&&(r+=i,o+=i*Zbt(n,e.key))",
+      "replace": "i>0&&(r+=i,o+=i*__geobalZ8Avail(Zbt(n,e.key),ZCo.get(t)?.sector??\"agriculture\"))"
+    },
+    {
+      "anchor": "weighted:0,total:0",
+      "near": 400,
+      "find": "s=Zbt(i,o.key),",
+      "replace": "s=__geobalZ8Avail(Zbt(i,o.key),ZCo.get(r.resource)?.sector??\"mining\"),"
+    }
+  ]
+}

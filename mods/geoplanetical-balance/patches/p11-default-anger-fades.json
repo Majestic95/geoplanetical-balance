@@ -1,0 +1,20 @@
+{
+  "id": "p11-default-anger-fades",
+  "finding": "P11",
+  "effect": "Anger over a sovereign default now fades. While a country stayed in default it paid a flat 12 points of approval and 10 of stability, on top of the one-off hit, for as long as the default lasted. Public anger peaks and then fades. The penalty now halves each year down to a quarter of its size, which remains until the default ends: at the moment of default it is the same as before, after a year 62.5%, after two 44%. A country that starts the game in default has no default day and counts from day 0. The half-life and the residue are a tuning choice from the direction of the evidence, not a measured rate. Expected effect: long-defaulted countries recover some approval and stability, and start fewer crises from that term alone. Day 0 unchanged. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"popular_satisfaction\"",
+      "near": 900,
+      "find": "\"default\",t.defaulted?-sme:0",
+      "replace": "\"default\",t.defaulted?-sme*(.25+.75*Math.pow(.5,Math.max(0,(e.day||0)-(Number.isFinite(t.defaultDay)?t.defaultDay:0))/365)):0"
+    },
+    {
+      "anchor": "\"high_inflation\"",
+      "near": 200,
+      "find": "\"default\",t.defaulted?-E5t:0",
+      "replace": "\"default\",t.defaulted?-E5t*(.25+.75*Math.pow(.5,Math.max(0,(e.day||0)-(Number.isFinite(t.defaultDay)?t.defaultDay:0))/365)):0"
+    }
+  ]
+}

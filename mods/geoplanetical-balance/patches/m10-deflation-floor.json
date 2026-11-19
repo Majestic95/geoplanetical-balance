@@ -1,0 +1,14 @@
+{
+  "id": "m10-deflation-floor",
+  "finding": "M10",
+  "effect": "Expected inflation can no longer fall below -5% a year. Nothing stopped it before: prices took expectations one for one, expectations chased prices, and the policy rate cannot go below -3, so a country whose prices started to fall slid towards -99% a year, with bond yields of -71% in default: Syria in every run on two seeds, Ukraine, Taiwan and others in some. In one unmodded run Ukraine's economy then exploded in nominal terms and the game crashed at month 111. Measured on that seed with this patch alone: no crash through month 115, Ukraine's GDP 85 against 42 million and its inflation 6 at month 110, country-months under -10% down from 243 to 108. One seed; a real deflation can still pass -5 for a while, the lowest at the end was -13. Worst modern national deflations are about -4 to -6% a year; the size is a choice from that direction, not a measured rate. High inflation is not touched by the patch; the spread of 50%-plus inflation at the end of the unmodded run goes away with the explosion. Day 0 unchanged (no currency starts below 0, measured). No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "moneySources=Object.fromEntries",
+      "near": 700,
+      "find": "Number.isFinite(t.inflExp)||(t.inflExp=h),",
+      "replace": "Number.isFinite(t.inflExp)||(t.inflExp=h),t.inflExp=Math.max(t.inflExp,-5),"
+    }
+  ]
+}

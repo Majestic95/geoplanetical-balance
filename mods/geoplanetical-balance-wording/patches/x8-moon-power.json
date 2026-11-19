@@ -1,0 +1,20 @@
+{
+  "id": "x8-moon-power",
+  "finding": "X8",
+  "effect": "The Moon's power screen no longer says lunar power is still to come. Colonies and lunar solar and fission modules exist, built from the Outposts screen, as the Moon's resource screen already says. English and French only; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"enr.moon.note\":\"La production d'\\xE9nergie lunaire (solaire,",
+      "near": 40,
+      "find": "\"enr.moon.note\":\"La production d'\\xE9nergie lunaire (solaire, r\\xE9acteurs) arrivera avec les colonies. Fondez une colonie sur la Lune, puis alimentez-la.\"",
+      "replace": "\"enr.moon.note\":\"La production d'\\xE9nergie lunaire (solaire, r\\xE9acteurs) se construit depuis Espace \\u2192 Implantations.\""
+    },
+    {
+      "anchor": "\"enr.moon.note\":\"Lunar power generation (solar, reactors) wil",
+      "near": 40,
+      "find": "\"enr.moon.note\":\"Lunar power generation (solar, reactors) will arrive with colonies. Found a colony on the Moon, then power it.\"",
+      "replace": "\"enr.moon.note\":\"Lunar power generation (solar, reactors) is built from Space \\u2192 Outposts.\""
+    }
+  ]
+}

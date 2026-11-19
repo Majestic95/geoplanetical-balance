@@ -1,0 +1,26 @@
+{
+  "id": "hp6-migrant-spending",
+  "finding": "HP6",
+  "effect": "Migrants' spending now moves with them. A country's household budget is its starting basket times expected income over baseline income. Migration moved both incomes together, so the destination's budget stayed at the old basket and the origin's did not fall: a net-immigration country drifted to a lower spending share of income, about 9% less after ten years at 1% arrivals a year by hand calculation, and an emigration country to a higher one. Groups still move their baseline as before, and each country now keeps one running multiplier for the baseline that crossed its border, so its total baseline stays where it was. A multiplier and not a fixed amount, because a province transfer scales baseline and income together and a multiplier stays right through that. Moves inside a country are unchanged. Expected effect: spending follows population in migration countries, predicted from the code and checked in the batch run. Day 0 unchanged. One new saved number per country, absent means 1.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"household.membership.unresolved\"",
+      "near": 1600,
+      "find": "function r$(e,t={}){",
+      "replace": "function __geobalMigSum(A,B){let Q=0;for(let g of B?.pops?.groups||[])Q+=Math.max(0,Number(A.finance.households[g.financeId]?.baselineDisposableIncomeBnY)||0);return Q}function __geobalMigBase(A,B,Q,g){if(B===Q)return g();let C=A.countries?.get?.(B),e=A.countries?.get?.(Q),r=__geobalMigSum(A,C),w=__geobalMigSum(A,e);g();let D=__geobalMigSum(A,C),o=__geobalMigSum(A,e);C&&r>0&&(C.geobalMigBaseFactor=D>0?(Number(C.geobalMigBaseFactor)||1)*r/D:1),e&&o>0&&(e.geobalMigBaseFactor=w>0?(Number(e.geobalMigBaseFactor)||1)*w/o:1)}function r$(e,t={}){"
+    },
+    {
+      "anchor": "\"household.membership.unresolved\"",
+      "near": 600,
+      "find": "nve(f,y,S,b,P,KLr)",
+      "replace": "__geobalMigBase(e,u,d,()=>nve(f,y,S,b,P,KLr))"
+    },
+    {
+      "anchor": "operating-purchases:expected-income:",
+      "near": 500,
+      "find": "?.baselineDisposableIncomeBnY)||0),0),y=d.reduce(",
+      "replace": "?.baselineDisposableIncomeBnY)||0),0)*(Number(t.geobalMigBaseFactor)||1),y=d.reduce("
+    }
+  ]
+}

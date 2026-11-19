@@ -1,0 +1,14 @@
+{
+  "id": "y8-independent-un-member",
+  "finding": "Y8",
+  "effect": "A territory that wins independence now counts as a UN member. Jb read only the static day-0 table, so Greenland stayed a dependency for good: no Security Council candidacy, no vote in council elections, not shown as a member. Now a row listed as dependency or disputed counts as a member when the table gives it a relation profile and the country's constitutional record is gone or is a state kind, which is what independence leaves. Unchanged: the listed members and non-members at day 0 (every such row starts with a domestic-polity record, and n:Indian Ocean Ter. has no profile), recognized and observer rows, and born breakaway regions, which still count at once (a design question, not this bug). Independence leaving the record empty was read in MUA, not run. Expected effect: only after independence. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "[\"sovereign\",\"micro\"].includes(",
+      "near": 300,
+      "find": "let t=hA(e.key).status;return t===\"sovereign\"||t===\"micro\"}",
+      "replace": "let __geobalS=hA(e.key),t=__geobalS.status;return t===\"sovereign\"||t===\"micro\"||(t===\"dependency\"||t===\"disputed\")&&!!__geobalS.relationProfile&&(!e.constitutional||e.constitutional.actorKind===\"sovereign_state\")}"
+    }
+  ]
+}

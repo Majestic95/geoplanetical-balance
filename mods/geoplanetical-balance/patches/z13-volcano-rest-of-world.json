@@ -1,0 +1,14 @@
+{
+  "id": "z13-volcano-rest-of-world",
+  "finding": "Z13",
+  "effect": "Large volcanic eruptions now happen about as often as the Holocene record says. The game's catalogue of 53 volcanoes (Global Volcanism Program rates) gives one VEI >= 5 eruption per 138 years, one VEI >= 6 per 730 years and one VEI >= 7 per 5,800 years, because most large eruptions come from volcanoes outside the 53; the record implies roughly one VEI >= 5 per 15 years, one VEI >= 6 per 100 years and one VEI >= 7 per 1,500 years worldwide, so Pinatubo-scale climate shocks (15 Tg of SO2 for VEI 6) were about 7x too rare. A rest-of-the-world source now adds the missing rate: VEI 5 at 0.0508 a year, VEI 6 at 0.0081 and VEI 7 at 0.0005 (the record's rates minus the catalogue's). Each day, after the catalogue's own draws (xbo), a Poisson draw at that total rate (times the campaign's natural-disaster setting, as for the catalogue) decides whether one occurs; its VEI is drawn from those weights, and it is placed at a catalogue volcano picked in proportion to its eruption rate (a stand-in for the uncatalogued volcanoes of the same arcs), then built by the game's own eruption step (SZa: ash, damage, SO2 and its climate effect). Every draw uses the game's own seeded volcanic random stream (k9t, volcanicRngState), so runs stay deterministic, and nothing happens when natural disasters are off. An eruption picked at a volcano already erupting, or with no owner, is skipped (slightly under the target rate). No day-0 effect. No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "typeId:\"volcanic_eruption\",status:\"active\"",
+      "near": 1600,
+      "find": "function xbo(e,t){let a=e.disasters;for(let r of Hfe){let o=Math.exp(-G$a(r)*t),n=1,i=-1;do i++,n*=k9t(a);while(n>o);i>0&&SZa(e,{volcanoId:r.id})}}",
+      "replace": "function xbo(e,t){let a=e.disasters;for(let r of Hfe){let o=Math.exp(-G$a(r)*t),n=1,i=-1;do i++,n*=k9t(a);while(n>o);i>0&&SZa(e,{volcanoId:r.id})}__geobalZ13(e,t)}function __geobalZ13(e,t){let a=e.disasters,R=[.0508,.0081,5e-4],T=R[0]+R[1]+R[2],o=Math.exp(-T/365*t),n=1,i=-1;do i++,n*=k9t(a);while(n>o);for(let k=0;k<i;k++){let u=k9t(a)*T,v=u<R[0]?5:u<R[0]+R[1]?6:7,s=0;for(let y of Hfe)s+=Math.max(0,ot(y.eruptionsPerYear));let w=k9t(a)*s,d=Hfe[Hfe.length-1];for(let y of Hfe)if(w-=Math.max(0,ot(y.eruptionsPerYear)),w<=0){d=y;break}d&&SZa(e,{volcanoId:d.id,vei:v})}}"
+    }
+  ]
+}

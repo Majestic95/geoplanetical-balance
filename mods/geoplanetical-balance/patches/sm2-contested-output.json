@@ -1,0 +1,20 @@
+{
+  "id": "sm2-contested-output",
+  "finding": "SM2",
+  "effect": "An insurgency's hold on a province now costs output. The game computed each contested province's economic activity (down to 0.55) and nothing read it, so a group holding de facto control cost the state approval and stability but no production or tax. Each country's supply factor now falls with the population-weighted loss of activity in its contested provinces, measured against the first evaluation after a year, the reference A1 uses, so seeded conflicts such as Yemen keep their calibrated output. Tax should follow output, which was not traced to the end. Floor 0.55. Where two groups contest a province, the lower activity counts. A group that dissolves leaves its record, which recovers slowly as the game moves it, so output recovers the same way rather than at once. Not done, and still open in SM2: authority's effect on tax collection, and displacement. Output only drops for a new or worsening conflict after year one; a conflict that worsens in the first year is partly in the reference. Expected effect: a spreading insurgency shows in GDP. Day 0 unchanged. New state: one saved number per country (geobalContestRef365). (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": ".cropClimateSupplyBaseline>",
+      "near": 1400,
+      "find": "c.set(\"agriculture\",d);for(let p of ge.goods){let m;",
+      "replace": "c.set(\"agriculture\",d);let __geobalC=__geobalSM2(e,l);for(let p of ge.goods){let m;"
+    },
+    {
+      "anchor": ".cropClimateSupplyBaseline>",
+      "near": 2000,
+      "find": "l.we.provinceSupplyFactor[ZCo.get(p.id).index]=m}yield{countryKey:l.key}}}function*Qbt(e)",
+      "replace": "l.we.provinceSupplyFactor[ZCo.get(p.id).index]=m*__geobalC}yield{countryKey:l.key}}}function __geobalSM2(A,B){if((A?.day|0)<365)return 1;let Q=new Map((B.provs||[]).map(r=>[String(r.__provKey),Number(r.__pop)||0])),g=0;for(let r of Q.values())g+=r;if(!(g>0))return 1;let C=new Map;for(let r of A.nonStateActors?.values?.()||[]){if(r.hostKey!==B.key)continue;for(let[w,D]of Object.entries(r.strategy?.territorialEscalation||{})){let o=Number(D?.economicActivityIndex);Number.isFinite(o)&&Q.has(w)&&C.set(w,Math.min(C.get(w)??1,o))}}let e=0;for(let r of[...C.keys()].sort())e+=Q.get(r)*(1-C.get(r));let w=1-e/g;return B.geobalContestRef365==null&&(B.geobalContestRef365=w),Math.max(.55,Math.min(1,w/B.geobalContestRef365))}function*Qbt(e)"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "n2-iran-opec-exemption",
+  "finding": "N2",
+  "effect": "Iran is exempt from OPEC+ production quotas, as the game's own data note says (exempt = Iran, Libya, Venezuela, Mexico) and as in reality: Iran, Libya and Venezuela have been exempt from OPEC+ cuts since 2016. The member table had Iran's flag false, so a cartel cut squeezed Iran like Saudi Arabia and its compliance model cheated on a quota it never had. With the flag set, a cut is shared among the non-exempt members (the quota scale (target - exempt entitlements) / non-exempt entitlements, in g7Q) and Iran keeps its full entitlement; Iran no longer votes on cuts or can become the swing producer (exempt members never do). Day 0 unchanged: with no cut decided the target equals the sum of entitlements, the scale is 1 and every quota equals its entitlement. The exempt list is stored in each save and seeded only when a new game starts, so the change applies to new games; existing saves keep their own list.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "cutTargetPrice:70,members:",
+      "find": "\"364\":{baseline:3.3,spare:0,exempt:!1,bloc:\"opec\"}",
+      "replace": "\"364\":{baseline:3.3,spare:0,exempt:!0,bloc:\"opec\"}"
+    }
+  ]
+}

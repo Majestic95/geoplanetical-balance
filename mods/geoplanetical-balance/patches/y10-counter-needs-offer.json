@@ -1,0 +1,14 @@
+{
+  "id": "y10-counter-needs-offer",
+  "finding": "Y10",
+  "effect": "A counter-offer with nothing to offer can no longer calm a region. To a referendum petition, counter gives the next undevolved power; with none left it gave nothing, yet grievance and organization fell, the petition closed and no new one could come for a year, so fully devolved regions could be stalled for free, and it is the AI's usual answer. Real governments that refuse a vote pay for it, as a refusal here does. km now rejects counter on a referendum petition when no power is left, with the game's existing reason and text (nothing_to_promise). The AI skips a rejected choice (znC) and picks accept or refuse. Expected effect: in fully devolved regions (Quebec, Greenland, Faroe, New Caledonia, the Basque Country and others) grievance rises over the years, or referendums come sooner; size not measured. Day 0 unchanged. No new state. (Minified names in this text are those of build 26403824; the patch's find text has the current ones.)",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"not_addressee\"",
+      "near": 300,
+      "find": "[\"accept\",\"counter\",\"refuse\"].includes(o.decisionId))return{ok:!1,reasonId:\"decision\"};break;",
+      "replace": "[\"accept\",\"counter\",\"refuse\"].includes(o.decisionId))return{ok:!1,reasonId:\"decision\"};if(o.decisionId===\"counter\"&&n.petition.kindId===\"referendum\"&&!LJ(n))return{ok:!1,reasonId:\"nothing_to_promise\"};break;"
+    }
+  ]
+}

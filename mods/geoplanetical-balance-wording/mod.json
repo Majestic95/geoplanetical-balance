@@ -1,0 +1,46 @@
+{
+  "id": "geoplanetical-balance-wording",
+  "name": "Geoplanetical Balance: wording",
+  "version": "0.3.0",
+  "description": "Corrects game text that says something untrue, in English and French. Changes wording only, nothing in the simulation or your saves.",
+  "format": 3,
+  "builds": [
+    "26734764"
+  ],
+  "requires": [
+    "geoplanetical-balance"
+  ],
+  "patches": [
+    "patches/x8-moon-power.json",
+    "patches/z17-prevention-budget.json",
+    "patches/lc18-un-vote-refusal.json",
+    "patches/lc18-fund-opposition-refusal.json",
+    "patches/sc14-no-food-imports.json",
+    "patches/ui2-same-rules.json",
+    "patches/ps7-research-sharing.json",
+    "patches/ui4-security-verdict.json",
+    "patches/ui4-security-verdict-help.json",
+    "patches/ui5-cleared-with-arrests.json"
+  ],
+  "changes": [
+    {
+      "group": "Game 1.1.5 (build 26734764)",
+      "items": [
+        "Ported to game 1.1.5. The petition-button wording fix is dropped: the game now names the specific reason itself."
+      ]
+    },
+    {
+      "group": "Game text (English and French)",
+      "items": [
+        "The Moon's power screen says how to build lunar power, instead of that it is coming.",
+        "The prevention panel's budget error no longer mentions wildfire for every hazard.",
+        "Two refusals in correspondence no longer name a wrong reason.",
+        "A country with no food imports is no longer told it grows everything it eats.",
+        "The Rules screen no longer says other countries have the same options as you.",
+        "The research guide no longer describes a priorities setting that does not exist; it says how projects share research capacity.",
+        "The security screen's verdict now says it compares each stage with where it started, so it no longer reads 'under control' beside a court-backlog alert.",
+        "The police panel's cleared-cases count now says it includes protest arrests."
+      ]
+    }
+  ]
+}
