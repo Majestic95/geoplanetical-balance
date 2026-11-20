@@ -1,0 +1,13 @@
+{
+  "id": "q20-enemy-front-collapse",
+  "finding": "Q20",
+  "effect": "An enemy that fights you can now collapse. In a war fought front by front, each side's support for the war is tracked; at zero the side's front collapses and the war ends in its defeat on the winner's terms. The game applied that to the player's own front and to wars between AI countries, but an enemy fighting the player never collapsed: it only sued for peace (at support 5 or below) and accepted a ceasefire if the player proposed one, so a beaten enemy fought on at zero support indefinitely while the player held back. Now an enemy whose support has stayed at zero for 60 days in a row collapses, leaving the player two months to name terms first; any day above zero restarts the count. The war then ends in the player's victory on the terms the game sets for a collapse, as in AI wars; a collapse whose terms cannot be applied leaves the war running, as in the game. Real-world basis: armies whose home support and capacity to fight are exhausted break or capitulate (Germany 1918, Iraq 1991, the Afghan government 2021) rather than fighting on to the last; the delay mirrors how a winner is first offered terms. Day-0 effect: none (needs a player war with the enemy at zero support). New saved state: the day the enemy's support reached zero, per war (keyed by the war's id and start day, since a later war with the same country reuses the id), in the player's sovereign record (geobalEnemyZero; the save keeps that record's fields, while the war's own record keeps only a fixed list); an entry is removed when support rises above zero, and entries of wars that have ended are removed when a new one is written.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"enemy_morale\",{enemySupport:",
+      "find": ":t.support.e<=0&&!e.playerControlsGovernment(a)&&U8t(e,t,a,r,\"B\",()=>{})}",
+      "replace": ":__geobalEnemyCollapse(e,t,a)&&U8t(e,t,a,r,\"B\",()=>{})}function __geobalWarKey(w){return`${w?.id??`${w?.sideAKey}>${w?.sideBKey}`}@${w?.startDay??\"\"}`}function __geobalEnemyCollapse(e,t,a){if(!e.playerControlsGovernment(a))return t.support.e<=0;let s=e.finance?.sovereigns?.[a.key];if(!s)return!1;let m=s.geobalEnemyZero&&typeof s.geobalEnemyZero==\"object\"&&!Array.isArray(s.geobalEnemyZero)?s.geobalEnemyZero:null,k=__geobalWarKey(t),d=Math.max(0,Math.floor(e.day||0));if(!(t.support.e<=0))return m&&Object.hasOwn(m,k)&&delete m[k],!1;if(!m)m=s.geobalEnemyZero={};if(!Number.isInteger(m[k])){let live=new Set;for(let w of e.wars?.values?.()||[])w?.status===\"active\"&&live.add(__geobalWarKey(w));for(let q of Object.keys(m))live.has(q)||delete m[q];m[k]=d}return d-m[k]>=60}"
+    }
+  ]
+}

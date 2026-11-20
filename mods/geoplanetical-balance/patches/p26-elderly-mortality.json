@@ -1,0 +1,20 @@
+{
+  "id": "p26-elderly-mortality",
+  "finding": "P26",
+  "effect": "Named people (leaders, ministers, monarchs and their families) now die of old age at about real life-table rates. The game's yearly death chance was 0.003 + 0.012 x exp((age - 72) / 8), times a health factor (1 at health 0.7): about 0.5% a year at 60, 1.2% at 70, 3.6% at 80 and 11% at 90, the same for men and women and for rich and poor countries, so leaders and monarchs routinely reached their late 80s and 90s and successions and regencies were rare. Now the base is a Gompertz curve fitted to a high-income male period life table, 0.0008 + 0.055 x exp((age - 80) / 11.2): about 0.24% at 40, 1.0% at 60, 2.3% at 70, 5.6% at 80, 13.5% at 90 and 33% at 100; women's rate is 0.65 times men's, and in poorer countries it rises smoothly up to 1.5 times at a GDP per head of 2 thousand dollars or less (none above 30 thousand). The health factor, the clamp at 92%, the extra risk of office at war or under low stability, and the rule that nobody under 16 dies are unchanged. Real-world basis: high-income male life tables give roughly 1.1% at 60, 2.2% at 70, 5.6% at 80 and 16% at 90, women about two thirds of that, and low-income countries' rates at 60 to 70 are up to about twice as high (rates recalled from period life tables, not checked against a dataset here). Day-0 effect: none on the starting state; from the first month older named people die somewhat more often (an office holder aged 75 about 3.6% a year instead of 2%), so successions, heirs taking thrones and regencies come more often over a long game.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"dyn:\"+t+\":\"",
+      "near": 300,
+      "find": "function Kso(e,t=.7,a=0){let r=.003+Math.exp((e-72)/8)*.012;",
+      "replace": "function Kso(e,t=.7,a=0,__gbSex,__gbIncK){let r=8e-4+Math.exp((e-80)/11.2)*.055;__gbSex===\"f\"&&(r*=.65);let __gbK=Number(__gbIncK);Number.isFinite(__gbK)&&__gbK>0&&(r*=1+.5*Xo(Math.log(30/__gbK)/Math.log(15),0,1));"
+    },
+    {
+      "anchor": "\"violent\":d?\"illness\"",
+      "near": 200,
+      "find": "Kso(l,s.traits.health,p)",
+      "replace": "Kso(l,s.traits.health,p,s.g,c?.gdpCap)"
+    }
+  ]
+}

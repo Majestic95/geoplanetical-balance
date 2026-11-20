@@ -75,17 +75,20 @@ const between = (text, from, to, max = 6000) => {
   check(LYB({ expectedIncomeBn: 50, baselineIncomeBn: total(patched)([], { finance: groups([]) }, { geobalMigBaseFactor: 2 }), demandScale: 1 }) === 1, 'HP6: a country with no groups reads 1, no division error');
 }
 
-// P15: the term in the game's own text.
+// P15: the term in the game's own text. P4 (2026-11-20) replaced the term's formula with its helper
+// __geobalMinorityTerm (12 x (0.5 - share), support parties counted; tests/p4.test.mjs); P15's property, a share of
+// exactly 0 read as 0 and so the largest penalty, is checked here through that helper.
 {
+  const helper = patched.includes('function __geobalMinorityTerm(') ? between(patched, 'function __geobalMinorityTerm(', '}function cme(').slice(0, -13) : '';
   const term = text => {
     const expr = between(text, 'c=l&&!l.hasMajority?', ':0,u=0').slice(2, -4);
-    return t => new Function('l', 'Cd', `return ${expr}`)(t, (A, B, Q) => Math.max(B, Math.min(Q, A)));
+    return l => new Function('l', 't', 'Cd', 'xn', 's9e', `${text === patched ? helper : ''};return ${expr}`)(l, {}, (A, B, Q) => Math.max(B, Math.min(Q, A)), () => null, () => null);
   };
   const P = term(patched), V = term(original);
-  check(near(P({ hasMajority: false, pct: 0 }), -11), 'P15 patched: no seats, the largest penalty', String(P({ hasMajority: false, pct: 0 })));
+  check(!!helper, 'P15: the P4 helper is in the patched bundle');
+  check(near(P({ hasMajority: false, pct: 0, total: 100 }), -6), 'P15 patched: no seats, the largest penalty (6 since P4)', String(P({ hasMajority: false, pct: 0, total: 100 })));
   check(near(V({ hasMajority: false, pct: 0 }), -5), 'P15 original: no seats, the smallest penalty (the bug)');
-  for (const pct of [0.01, 0.3, 0.49, 0.5]) check(near(P({ hasMajority: false, pct }), V({ hasMajority: false, pct })), `P15: seat share ${pct} unchanged`);
-  check(near(P({ hasMajority: false }), -5), 'P15: a missing share still reads as one half');
+  for (const pct of [0.01, 0.3, 0.49]) check(P({ hasMajority: false, pct, total: 100 }) > P({ hasMajority: false, pct: 0, total: 100 }), `P15: seat share ${pct} pays less than no seats`);
   check(P({ hasMajority: true, pct: 0.6 }) === 0, 'P15: a majority pays nothing');
 }
 

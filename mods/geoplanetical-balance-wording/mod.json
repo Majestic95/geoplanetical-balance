@@ -1,7 +1,7 @@
 {
   "id": "geoplanetical-balance-wording",
   "name": "Geoplanetical Balance: wording",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Corrects game text that says something untrue, in English and French. Changes wording only, nothing in the simulation or your saves.",
   "format": 3,
   "builds": [
@@ -20,7 +20,10 @@
     "patches/ps7-research-sharing.json",
     "patches/ui4-security-verdict.json",
     "patches/ui4-security-verdict-help.json",
-    "patches/ui5-cleared-with-arrests.json"
+    "patches/ui5-cleared-with-arrests.json",
+    "patches/io4-dispute-60-days.json",
+    "patches/io4-disputes-opened-against.json",
+    "patches/io4-dispute-opened-for.json"
   ],
   "changes": [
     {
@@ -39,7 +42,8 @@
         "The Rules screen no longer says other countries have the same options as you.",
         "The research guide no longer describes a priorities setting that does not exist; it says how projects share research capacity.",
         "The security screen's verdict now says it compares each stage with where it started, so it no longer reads 'under control' beside a court-backlog alert.",
-        "The police panel's cleared-cases count now says it includes protest arrests."
+        "The police panel's cleared-cases count now says it includes protest arrests.",
+        "The tariff screen's note on trade disputes and the events announcing a dispute now say partners, and you, can retaliate after 60 days of consultations, matching the balance mod's rule."
       ]
     }
   ]

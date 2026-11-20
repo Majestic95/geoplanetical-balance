@@ -1,0 +1,32 @@
+{
+  "id": "s4-real-school-funding",
+  "finding": "S4",
+  "effect": "School funding is now measured after inflation, and per pupil where it sets learning. The game measured each school programme's funding (schools for foundation and secondary levels, universities for higher education) as its current spend over its day-0 spend. The spend is a budget share of a reference GDP that the game resets once a year to current nominal GDP, and it also grows with the school-age population. So every yearly reset carried the year's inflation into school funding: ten years of 5% inflation at an unchanged budget share made schools look about 60% better funded (learning up about 15%, places up 60%, as funding above 1 counts one for one), high-inflation countries reached the funding cap, and a growing child population raised learning without any more money per pupil. Now, when the reference is reset, the game's price level at that moment (the consumer price index it uses for real wages) is stored with it, and the funding ratio is divided by that stored price level, so only real budget changes count; before the first reset (the first year) the reference holds no inflation and nothing is divided. For learning and completion the ratio is also divided by the programme's pupils over its day-0 pupils (foundation plus secondary for schools, higher education for universities; never below 0.2, also when enrolment falls to zero), read once a month before any level's enrolment is updated, so every level sees the same count. The number of places funded still follows real total funding, not funding per pupil. A country without a day-0 education budget, where the game measures funding by the budget share itself (which never inflates), is unchanged. Bounds (0.2 to 2.5 for learning; the place curve) are unchanged. Real-world basis: school outcomes track real resources per pupil, not nominal budgets. Measured on a headless run (seed 12345, day 185): the price part of nominal GDP growth equals the game's price index within about 1% (median ratio 0.999, 212 countries), so the stored price removes what a reset adds. Day-0 effect: none. Saves: adds one number per country (geobalRefPrice), written at each yearly reset; a save from before this change that has already been reset uses the current price level until its next reset.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "==\"higher\"?\"sup\":\"edu\"",
+      "near": 400,
+      "find": "function RFt(e,t,a){let r=a===\"higher\"?\"sup\":\"edu\",o=jCr(e,r);return o>1e-12?UCr(e,r)/o:K3(Die(e,r),t.means0[r])}function VCr(e,t,a){return ao(RFt(e,t,a),.2,2.5)}",
+      "replace": "function __geobalEduDeflator(e,t,a,pp){let p=Number(e?.geobalRefPrice);Number.isFinite(p)&&p>0||(p=e?.budgetGdpReferenceBn!=null?Number(jn(e)):1);Number.isFinite(p)&&p>0||(p=1);if(!pp)return p;let n=0,b=0;for(let l of a===\"higher\"?[\"higher\"]:[\"foundation\",\"secondary\"]){let v=t?.levels?.[l];n+=Math.max(0,Oa(v?.enrolledM));b+=Math.max(0,Oa(v?.baseline?.enrolledM))}return p*(b>1e-12?Math.max(.2,n/b):1)}function RFt(e,t,a,__gbPP){let r=a===\"higher\"?\"sup\":\"edu\",o=jCr(e,r);return o>1e-12?UCr(e,r)/o/__geobalEduDeflator(e,t,a,__gbPP):K3(Die(e,r),t.means0[r])}function VCr(e,t,a){return ao(RFt(e,t,a,!0),.2,2.5)}"
+    },
+    {
+      "anchor": "==\"higher\"?\"sup\":\"edu\"",
+      "near": 2000,
+      "find": "teachersM:i>1e-12?a*o[s]/i:0}]))}",
+      "replace": "teachersM:i>1e-12?a*o[s]/i:0,__gbV:VCr(e,t,s)}]))}"
+    },
+    {
+      "anchor": "==\"higher\"?\"sup\":\"edu\"",
+      "near": 2000,
+      "find": "s=VCr(e,t,a),l={facilities:i.facilities",
+      "replace": "s=r[a].__gbV??VCr(e,t,a),l={facilities:i.facilities"
+    },
+    {
+      "anchor": "operating-budget:${t}",
+      "near": 400,
+      "find": "(a.budgetGdpReferenceBn=r,t++)",
+      "replace": "(a.budgetGdpReferenceBn=r,a.geobalRefPrice=jn(a),t++)"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "np7-fragility-scale",
+  "finding": "NP7",
+  "effect": "An AI country's domestic fragility now stays on the 0 to 1 scale its war decision uses. When an AI weighs a war (the quarterly foreign-policy review), it scores its own fragility and its target's as low stability (below 42) plus low approval (below 38), each term between 0 and 1, and then uses the result as a 0 to 1 weight: in the cost of a war (+0.28 x fragility), in the 'rally the nation abroad' bonus for coercion and in how weak the target looks. The sum was not capped, so a country both unstable and unpopular counted up to 2, doubling those weights. Now the sum is capped at 1: a country with one weakness scores as before, and one with both scores at most 1. The other weights are unchanged (the cap changes only the countries that reached above 1). The cap applies to both scores: an unstable, unpopular AI no longer counts its own weakness twice (cost of war and diversionary bonus at most 0.28 each, was up to 0.56), and any AI weighing a war against a target that is both unstable and unpopular sees that target's weakness bonus at most 0.28 (was up to 0.56), so such targets look less inviting than before. Real-world basis: a regime's domestic weakness raises both the risk of war and the temptation of a diversionary conflict, but it does not double beyond the point of crisis. Day-0 effect: AI countries that start both unstable and unpopular weigh war differently, and so does any AI weighing a war against such a country; no new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "domesticFragility:",
+      "near": 7500,
+      "find": "function mYa(e){return j5((42-Kv(e?.stab,50))/35,0,1)+j5((38-Kv(e?.approval,50))/35,0,1)}",
+      "replace": "function mYa(e){return j5(j5((42-Kv(e?.stab,50))/35,0,1)+j5((38-Kv(e?.approval,50))/35,0,1),0,1)}"
+    }
+  ]
+}

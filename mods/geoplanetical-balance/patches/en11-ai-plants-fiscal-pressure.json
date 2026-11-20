@@ -1,0 +1,26 @@
+{
+  "id": "en11-ai-plants-fiscal-pressure",
+  "finding": "EN11",
+  "effect": "AI governments under fiscal stress now build power plants more slowly when they are not short of power. Each month an AI government picks a source and orders the plant capacity its power gap calls for, and the funding check passes for any country not in default because any shortfall is borrowed; the game's own rule already stops a country in a debt crisis from building unless its firm supply is below demand, but below a crisis the pressure on its finances did not slow it at all. Now, when the country's planned firm supply covers demand (the order is for its reserve margin or its energy transition, not a shortage), the number of plant units ordered is scaled by one minus the country's fiscal pressure (the game's own 0-to-1 score from interest burden, deficit and market access) and rounded down to whole units, since the game builds whole units or a single part-unit: no change without pressure, 4 units become 2 at pressure 0.5 and 3 units become 2 at pressure 0.1; an order that falls below one unit becomes one smaller part-unit (1 unit at pressure 0.4 becomes 0.6 of a unit). The next month's order sees what is already being built, so this spreads the building out over more months rather than cancelling it. Orders made because firm supply is short of demand are never scaled, and the source choice, the funding check, the player's orders, private plants and the AI's storage, interconnector and transport works are unchanged. Real-world behaviour: governments under debt stress cut and defer public investment first (IMF fiscal-consolidation studies find public capital spending is the line cut first and furthest; for example public investment in Greece and Portugal fell by about half after 2010), but a country short of power keeps building what it must. Day-0 effect: AI countries that start under fiscal pressure and are not short of firm power order less capacity per month from the first month; the rest are unchanged. No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": ".startPowerProject(t,a,c)",
+      "near": 300,
+      "find": "let c=Mka(s,T4e(a,r,t.energy,o,i.yieldFactor));if(!(c>0))return!1;",
+      "replace": "let c=__geobalEN11(t,Mka(s,T4e(a,r,t.energy,o,i.yieldFactor)),__gbShort);if(!(c>0))return!1;"
+    },
+    {
+      "anchor": ".startPowerProject(t,a,c)",
+      "near": 600,
+      "find": "function LCo(e,t,a,r,o){",
+      "replace": "function __geobalEN11(t,c,s){if(s)return c;let p=Number(Zn(t)?.pressure);if(!(p>0)||!(c>0))return c;let x=c*(1-Math.min(1,p));return x>=1?Math.floor(x):x}function LCo(e,t,a,r,o,__gbShort){"
+    },
+    {
+      "anchor": "committedGWBySource||{}",
+      "near": 300,
+      "find": "l&&LCo(e,r,l,i.gapToTargetTWh,n)",
+      "replace": "l&&LCo(e,r,l,i.gapToTargetTWh,n,i.plannedFirmTWh<i.demandTWh)"
+    }
+  ]
+}

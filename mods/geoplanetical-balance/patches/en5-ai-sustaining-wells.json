@@ -1,0 +1,32 @@
+{
+  "id": "en5-ai-sustaining-wells",
+  "finding": "EN5",
+  "effect": "AI governments now invest to replace the output their oil and gas fields are about to lose, and judge a project by whether its output over the field's life pays back its cost. Before, an AI government's extraction need counted only unmet demand, shortages and imports, so it started a new oil or gas project only after its fields had already declined and a shortage appeared (mines got a fixed 13.6% of output for replacement, wells nothing). Now the need also counts the saleable output its own fields will lose over the next 24 months (about the time a new field takes to build and ramp up): fields entering or in their decline phase at their profile's decline rate, and fields past 40% depletion as the game's depletion curve falls with two years of the country's actual output. Existing and pending projects are netted against it as before, and so is the output still to come from fields that are ramping up, in the same units as the game's capacity (the game dropped a finished project from the pending count while its field was still ramping, so a country short of supply could order a second project the month the first one opened; this applies to every extracted resource). And the project test charged the cost times the interest rate each year, never the cost itself, so a project was approved whenever its peak yearly margin beat the interest even if it never paid for itself; now the yearly charge is the cost divided by the discounted years of output the field's own profile gives (ramp, plateau, then decline over its life, counted from first output; the game's ranking already discounts the build time): about 8% of the cost a year for a conventional field at 5% interest, about 24% for a shale well, which declines 28% a year, instead of 5% for both. Real-world basis: most upstream spending goes to offsetting decline (about 90% since 2019 by the IEA's count), and companies approve projects whose discounted output recovers their capital. Day-0 effect: the replacement need is zero in every AI country at the start (measured: no AI oil or gas field starts past 40% depletion and no project field is in decline yet; the fields seeded at the start produce flat until 40% depleted, a separate finding, E5), so it grows only as fields deplete or new fields pass their plateau; the payback test applies from month 1 and turns down projects that do not recover their cost. The player is not affected (the player's projects are chosen by the player).",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "(t.tension??1)",
+      "near": 400,
+      "find": "function GMo(e,t){let a=t.index,r=e.we,o=pot(e,a),n=t.mine?Dd(r.prod?.[a])*uar:0;",
+      "replace": "function __geobalWellDecline(e,c,s){if(!e?.fields)return 0;let w=qmt.has(s),i=Jt(s),cap=c.we?h0e(c.we,i):0,u=cap>0?Math.min(1,Dd(c.we.prod?.[i])/cap):1,x=0;for(let id of c._fields||[]){let f=e.fields.get(id);if(!f||f.owner!==c.key||f.resource!==s)continue;let q=Xr(f);if(!f.seeded&&f.phase===\"ramp\"&&f.online!==!1&&!f.warSuspended){let full=Math.max(0,f.capacityFlow||0)*(Kc.has(s)?ple(f):1)*Math.max(0,Math.min(1,f.operationFactor==null?1:f.operationFactor));x-=Math.max(0,full-q)}if(!w||!(q>0))continue;let k=1;if(!f.seeded){let end=Math.max(1,f.rampMonths||1)+Math.max(0,f.plateauMonths||0),m=Math.max(0,Math.min(24,(f.ageMonths||0)+24-end));k*=Math.pow(Math.max(0,1-(f.declineRate||0)/12),m)}let p=ple(f);if(p>0){let left=Math.max(0,(f.reserveLeft||0)-2*q*u*ym(s));k*=Math.min(1,ple({reserveInitial:f.reserveInitial,reserveLeft:left})/p)}x+=q*(1-k)}let g=(Sna[i]??1)/Pna(i);return x<0?-tE(e,s,-x)*g:tE(e,s,x)*g}function GMo(e,t,__geobalSustain=0){let a=t.index,r=e.we,o=pot(e,a),n=(t.mine?Dd(r.prod?.[a])*uar:0)+(Number.isFinite(__geobalSustain)?__geobalSustain:0);"
+    },
+    {
+      "anchor": "domesticNeed:c,exportNeed:u",
+      "near": 400,
+      "find": "c=GMo(t,l),",
+      "replace": "c=GMo(t,l,__geobalWellDecline(e,t,s)),"
+    },
+    {
+      "anchor": "lendingRatePct??t.bondRate",
+      "near": 900,
+      "find": "function LMo(e,t,a,r,o,n){",
+      "replace": "function __geobalCapitalRecovery(r,f){let n=Math.round(12*(f?.life>0?f.life:25)),ra=Math.max(1,f?.ramp||1),pl=Math.max(0,f?.plateau||0),d=Math.max(0,f?.decline||0),A=0;for(let m=1;m<=n;m++){let o=m<=ra?m/ra:m<=ra+pl?1:Math.pow(Math.max(0,1-d/12),m-ra-pl);A+=o/12/Math.pow(1+Math.max(0,r||0),m/12)}return A>1e-9?1/A:1}function LMo(e,t,a,r,o,n){"
+    },
+    {
+      "anchor": "lendingRatePct??t.bondRate",
+      "near": 400,
+      "find": "f=d.annualValue-d.operatingCost-d.cost*m;",
+      "replace": "f=d.annualValue-d.operatingCost-d.cost*__geobalCapitalRecovery(m,d.profile);"
+    }
+  ]
+}

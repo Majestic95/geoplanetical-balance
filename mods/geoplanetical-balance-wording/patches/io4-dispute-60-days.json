@@ -1,0 +1,20 @@
+{
+  "id": "io4-dispute-60-days",
+  "finding": "IO4",
+  "effect": "The tariff screen's note on trade disputes said a harmed partner may retaliate after 30 days of consultations; with the balance mod's IO4 change, consultations last 60 days before an AI partner can retaliate, so the note now says 60. Interface text only; English and French; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"budget.tariff.noteDisputes\":\"Au-del\\xE0 du plafond OMC",
+      "near": 200,
+      "find": "\"budget.tariff.noteDisputes\":\"Au-del\\xE0 du plafond OMC, chaque partenaire l\\xE9s\\xE9 ouvre un diff\\xE9rend. Apr\\xE8s 30 jours",
+      "replace": "\"budget.tariff.noteDisputes\":\"Au-del\\xE0 du plafond OMC, chaque partenaire l\\xE9s\\xE9 ouvre un diff\\xE9rend. Apr\\xE8s 60 jours"
+    },
+    {
+      "anchor": "\"budget.tariff.noteDisputes\":\"Above the WTO ceiling",
+      "near": 200,
+      "find": "\"budget.tariff.noteDisputes\":\"Above the WTO ceiling, each harmed partner opens a dispute. After 30 days",
+      "replace": "\"budget.tariff.noteDisputes\":\"Above the WTO ceiling, each harmed partner opens a dispute. After 60 days"
+    }
+  ]
+}

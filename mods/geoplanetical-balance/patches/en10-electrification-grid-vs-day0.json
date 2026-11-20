@@ -1,0 +1,26 @@
+{
+  "id": "en10-electrification-grid-vs-day0",
+  "finding": "EN10",
+  "effect": "Electrification is now judged against each country's own starting grid. The grid test that gates every electrification programme (heat pumps, electric vehicles and industrial equipment) returned zero, freezing adoption completely, whenever more than 1% of electricity demand went unserved or the reserve margin was below -2%, judged against a fixed standard; countries that start the game with chronic power shortages could therefore never electrify until their grid was fixed. Now the blackout test counts only unserved demand above the country's own day-0 level (the game already records it when it sets up each country's service baseline), and a country whose grid settles at a negative reserve margin when the game starts has its margin read relative to that settled starting margin (recorded once when the game is set up, either when the starting grid is restored from the game's prepared starting position or at the end of the full grid setup, beside the game's own day-0 unserved share), so its programmes run at a reduced pace instead of not at all; a grid that gets worse than it started still freezes adoption as before, and countries with healthy day-0 grids see no change. Real-world basis: countries with frequent load-shedding, such as South Africa, Nigeria, Pakistan and India, still extended grids and adopted electric equipment through their shortages. Day-0 effect: numbers unchanged; from the first month, programmes in countries seeded with chronic shortages can start where they were frozen before. Saved state: one number per country (the settled day-0 reserve margin) in the energy service baseline; a game started before this version has none and keeps the game's rule for the margin.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "return{bottleneckId:\"grid\",share:0}",
+      "near": 1000,
+      "find": "let a=Math.max(0,g0(t.lastServiceWindow?.unservedShare));return Math.max(a,g0(t.deficitFrac))>.01?0:ZL((g0(t.marginPct,15)+2)/17,0,1)}",
+      "replace": "let a=Math.max(0,g0(t.lastServiceWindow?.unservedShare)),__gbB=ZL(g0(t.serviceDeliveryBaseline?.unservedShare,0),0,1),__gbM=Math.min(0,g0(t.serviceDeliveryBaseline?.__geobalMarginPct0,0));return Math.max(a,g0(t.deficitFrac))-__gbB>.01?0:ZL((g0(t.marginPct,15)-__gbM+2)/17,0,1)}"
+    },
+    {
+      "anchor": "energy-baseline:service-window-already-running",
+      "near": 900,
+      "find": "return r.serviceDeliveryBaseline.unservedShare=oo(Number(c.unservedShare)||0,0,1),",
+      "replace": "return r.serviceDeliveryBaseline.unservedShare=oo(Number(c.unservedShare)||0,0,1),r.serviceDeliveryBaseline.__geobalMarginPct0=Number.isFinite(Number(r.marginPct))?Number(r.marginPct):null,"
+    },
+    {
+      "anchor": "source:\"economic_t0_checkpoint\"",
+      "near": 400,
+      "find": "function zcr(e,t){return fda(e,t.plants),Sra(e,t.energy),RGe(e,t.electricityExchange),t.energy}",
+      "replace": "function zcr(e,t){fda(e,t.plants),Sra(e,t.energy);for(let c of e.countries.values()){let b=c.energy?.serviceDeliveryBaseline;b&&typeof b==\"object\"&&!Number.isFinite(b.__geobalMarginPct0)&&(b.__geobalMarginPct0=Number.isFinite(Number(c.energy.marginPct))?Number(c.energy.marginPct):null)}return RGe(e,t.electricityExchange),t.energy}"
+    }
+  ]
+}

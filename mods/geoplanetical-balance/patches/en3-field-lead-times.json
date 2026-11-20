@@ -1,0 +1,14 @@
+{
+  "id": "en3-field-lead-times",
+  "finding": "EN3",
+  "effect": "New oil and gas fields and new mines take longer to build and ramp up. The game stores realistic project profiles (a conventional oil field 30 months to build and 18 to ramp up, deepwater 72 and 36, arctic 84 and 42, shale 16 and 8, gas 42 and 24, a mine 27 and 30) and then divides build and ramp times by 5 (mine ramps by 10), so a deepwater field came on in about 14 months and supply shocks healed in a year or two. Now the divisor is 2 (mine ramps 4): deepwater about 36 months to build, conventional about 15, before the game's difficulty factor of 0.75 to 1.5; the shortest build is now 6 months instead of 3. Real projects take longer still from decision to first oil (often 3 to 10 years), so this halves the gap rather than closing it. A country that answers a sudden shortage with a new field now waits longer for it, as real importers do; the AI also invests ahead of field decline (EN5), though that only starts once fields deplete, because the fields seeded at the start produce flat until 40% depleted (E5, a separate finding). Real-world basis: offshore and frontier developments take several years from sanction to first production. Day-0 effect: none (seeded fields and projects already running keep their months).",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "capexYears:4,opex:.48},uranium:",
+      "near": 400,
+      "find": "var Fmt=5,xlo=2,",
+      "replace": "var Fmt=2,xlo=2,"
+    }
+  ]
+}

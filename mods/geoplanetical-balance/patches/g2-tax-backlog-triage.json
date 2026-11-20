@@ -1,0 +1,14 @@
+{
+  "id": "g2-tax-backlog-triage",
+  "finding": "G2",
+  "effect": "The tax office's backlog now settles instead of piling up without limit. Each month new tax files arrive in proportion to the workforce, the office clears them at a rate set by its staff, offices and the population, and anything not cleared is carried forward for ever: nothing is ever triaged or written off. A steady gap between the two therefore accumulates: a country whose population and workforce grow 2% a year with fixed tax staff ends about seven months further behind after ten years, which cuts tax collection by about a third through the delay term. Now each month 3% of the fiscal backlog in excess of the day-0 backlog (scaled with population, as the game scales it) is written off as triaged or time-barred cases, so the excess settles at about 33 months of the monthly gap instead of growing for ever. Written-off files bring in no tax (only processed files do), and a backlog at or below its day-0 level is untouched, so hiring, offices and the fiscal priority still matter. Only the fiscal queue changes; the civil, social and foreign-affairs queues are as before. Real-world behaviour: tax agencies triage arrears, write off uncollectable or stale cases and are bound by limitation periods of a few years (often three to six), so backlogs stabilise; revenue-to-GDP does not decay by a third in a decade from population growth. Day-0 effect: none (the excess is zero at the start). No new state; the backlog stays finite and non-negative, as the save validator requires.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "l.backlog>0?120:0",
+      "near": 200,
+      "find": "l.backlog=Math.max(0,d+(p-y)),",
+      "replace": "l.backlog=Math.max(0,d+(p-y)),s===\"fiscal\"&&Number.isFinite(l.baseline?.backlog)&&Number.isFinite(o)&&(l.backlog-=.03*Math.max(0,l.backlog-l.baseline.backlog*o)),"
+    }
+  ]
+}

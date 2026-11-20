@@ -1,0 +1,32 @@
+{
+  "id": "n13-sanction-leverage-recheck",
+  "finding": "N13",
+  "effect": "Sanctions now lapse when the sender loses the leverage they need. Some sanction tools only work if the sender has the means to apply them: an asset freeze needs a currency that others hold as reserves, chip and technology export controls need a technology industry, and an equity ban needs an economy of at least 2% of world output. The game checked this only when a sanction was imposed, so a country that later lost its reserve currency (leaving the euro or defaulting), its chip industry or its economic weight kept the tool at full strength for good. Now, once a month, just before the game's regular national review of sanctions, each participant's tools are checked again against the game's own leverage rules, and a tool whose leverage has lapsed is dropped; a participant left with no tools leaves the regime, and a regime with no participants left ends, as the game already does. When the player loses every tool in a regime this way, the player gets the game's own message for leaving it (\"You withdrew from the regime targeting ...\"), and when a country sanctioning the player loses all its tools and has no other sanction on the player, the player gets the game's message that it lifts its sanctions; a tool lapse that leaves other tools in place shows no message (the mod loader allows changes to existing game text only, so there is no text for it). The size rules get a 10% margin (economic weight, technology output and income per head may fall about 10% below the bar before a tool lapses), so a one-month dip does not end a sanction. Tools seeded at the start of the game are not re-checked, since the game seeds them without the leverage test (they are recorded when the game is set up); tools a country adds later to a seeded regime are re-checked like any other. Sanctions owned by a security crisis are left to the crisis, which lifts them itself when its measure ends, and a participant with an open relief agreement is skipped until the agreement ends. Real-world basis: a sanction only bites through the sender's own reach; a state that no longer issues a reserve currency has no foreign holdings to freeze, and export controls bind only producers of the controlled technology. Day-0 effect: none (seeded tools are exempt and no other sanction exists at the start). Saved state: each seeded regime records its seeded tools per participant once, at game setup; a game started before this version has no record and its seeded regimes are not re-checked.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "causeId:\"war_backlash\",objectiveId:\"ceasefire_withdrawal\"",
+      "near": 900,
+      "find": "Zg(e),Hwa(e),Ctr(e);",
+      "replace": "Zg(e),Hwa(e),__geobalLeverageLapse(e),Ctr(e);"
+    },
+    {
+      "anchor": "originId:\"national_review\"",
+      "near": 1300,
+      "find": "function Ctr(e){",
+      "replace": "function __geobalLeverageLapse(e){let ch=!1,w=null,tech=c=>(pl(e,c,\"digital.chip_design\")||pl(e,c,\"digital.mature_fabs\"))&&f6a(c,peo)>=.9*Math.max(.25,Math.max(0,Number(c?.gdp)||0)*5e-5)&&(c?.gdpCap||0)>=.9*(ueo.minGdpCap||999),lev=(c,i)=>{let d=zK[i];if(!d||!Mut.has(i))return!1;let n=d.requires;return n?!(n.reserveIssuer&&!s6a(e,c)||n.techProducer&&!tech(c)||n.minGdpShare!=null&&meo(e,c,w)<n.minGdpShare):!0};for(let r of[...e.sanctions||[]].sort((a,b)=>K(a.id,b.id))){if((r.statusId||\"active\")!==\"active\"||r.causeId===\"security_crisis\"||r.sourceTypeId===\"security_crisis\")continue;let sd=null;if(r.preset){if(!r.__geobalSeed||typeof r.__geobalSeed!=\"object\")continue;sd=r.__geobalSeed}for(let o of[...r.participants||[]].sort((a,b)=>K(a.countryKey,b.countryKey))){if(o.reliefs?.some(s=>s.statusId!==\"ended\"))continue;let c=e.countries.get(o.countryKey);if(!c)continue;w??=SQ(e)/1.1;let seed=new Set(sd&&Array.isArray(sd[o.countryKey])?sd[o.countryKey]:[]),all=o.instrumentIds||[],keep=all.filter(i=>seed.has(i)||lev(c,i));if(keep.length===all.length)continue;ch=!0;keep.length?o.instrumentIds=keep:R1(e,o.countryKey,r.targetKey,{regimeId:r.id,deferRecompute:!0})&&(o.countryKey===e.playerKey?H(e,\"diplomacy.sanction_lifted\",{targetKey:r.targetKey,regimeId:r.id,reason:\"leverage_lapsed\"},{category:\"diplomatie\",severity:\"info\"}):r.targetKey===e.playerKey&&!(e.sanctions||[]).some(x=>x!==r&&(x.statusId||\"active\")===\"active\"&&x.targetKey===e.playerKey&&x.participants?.some(y=>y.countryKey===o.countryKey))&&H(e,\"diplomacy.sanction_eased\",{senderKey:o.countryKey,targetKey:r.targetKey,reason:\"leverage_lapsed\"},{category:\"diplomatie\",severity:\"info\",interrupt:\"none\"}))}}return ch&&(Aut(e),Zg(e),Il(e)),ch}function Ctr(e){"
+    },
+    {
+      "anchor": "Groupe sanctions T0 inconnu",
+      "near": 1300,
+      "find": "for(let s of o)rut(e,i,s,0);e.sanctions.push(i)}",
+      "replace": "for(let s of o)rut(e,i,s,0);i.__geobalSeed=Object.fromEntries(o.map(s=>[s.countryKey,[...s.instrumentIds]]));e.sanctions.push(i)}"
+    },
+    {
+      "anchor": "economic T0 sanctions:structure",
+      "near": 1200,
+      "find": "e.sanctions=JSON.parse(JSON.stringify(t.regimes));",
+      "replace": "e.sanctions=JSON.parse(JSON.stringify(t.regimes));for(let r of e.sanctions)r?.preset&&!r.__geobalSeed&&(r.__geobalSeed=Object.fromEntries((r.participants||[]).map(s=>[s.countryKey,[...s.instrumentIds||[]]])));"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "v5-migration-distance",
+  "finding": "V5",
+  "effect": "Distance now matters when emigrants choose a destination. The game weighted each destination by the square root of a distance kernel, 0.22 + 0.78 / (1 + km / 1400), or 9 for a land neighbour: after the root a destination 7,000 km away was only 25% less attractive than one 1,400 km away, and the far side of the world only 30% less, while a neighbour counted 3 times a nearby non-neighbour. Now the kernel is used without the root and is steeper: 0.1 + 0.9 / (1 + km / 1000), so 0.70 at 500 km, 0.48 at 1,400, 0.33 at 3,000, 0.21 at 7,000 and 0.17 at 12,000 (a destination 7,000 km away draws about 2.2 times fewer emigrants than one 1,400 km away, other things equal), and a land neighbour counts 2, about 2.9 times a non-neighbour 500 km away (the game: 3.4 times). A country without a known position gets 0.55, the middle of the new range (the distance weight at 1,000 km); the game gave it 1, as if it were next door. Each origin's emigrants are still all placed (the weights are shares), so total emigration is unchanged; only where people go moves, toward nearer countries. Real-world basis: gravity models of migration find flows falling about in proportion to distance (elasticity near -1) when diaspora networks are not counted; the game already rewards an existing diaspora separately (up to 25 times), which carries much of the distance effect, so this change uses about half that elasticity and is meant to be tuned once destination income and size are corrected (the related population-weighting finding). Day-0 effect: the new-game setup runs the migration split once to fill the starting migration figures, so the day-0 migration corridors and net migration shown for most countries differ from the unmodded game (182 of 212 countries on seed 12345); the world total changes only by rounding (about 2,300 people a year). Populations, budgets, ratings and other calibrated starting numbers are unchanged, so no re-calibration is needed; from the first month flows shift toward nearby destinations.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "i=\"regular\",s=t.length",
+      "near": 900,
+      "find": "return 9;let o=GHt(e,t),n=GHt(e,a);return!o||!n?1:.22+.78/(1+DAr(o,n)/1400)}",
+      "replace": "return 2;let o=GHt(e,t),n=GHt(e,a);return!o||!n?.55:.1+.9/(1+DAr(o,n)/1000)}"
+    },
+    {
+      "anchor": "i=\"regular\",s=t.length",
+      "near": 900,
+      "find": "R=TAr(e,I,C),x=ro(C._pullW)*k*Math.sqrt(R)",
+      "replace": "R=TAr(e,I,C),x=ro(C._pullW)*k*R"
+    }
+  ]
+}

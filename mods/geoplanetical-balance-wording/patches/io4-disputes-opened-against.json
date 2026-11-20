@@ -1,0 +1,20 @@
+{
+  "id": "io4-disputes-opened-against",
+  "finding": "IO4",
+  "effect": "The event telling you that partners opened trade disputes against you said retaliation was possible in 30 days; with the balance mod's IO4 change, consultations last 60 days before a partner can retaliate, so the event now says 60. Interface text only; English and French; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"evt.trade.disputesOpenedAgainst\":\"{n, plural, one {# parten",
+      "near": 10,
+      "find": "\"evt.trade.disputesOpenedAgainst\":\"{n, plural, one {# partenaire ouvre un diff\\xE9rend} other {# partenaires ouvrent un diff\\xE9rend}} contre vous ({amount} par an de pr\\xE9judice). Riposte possible dans 30 jours si la mesure reste en place.\"",
+      "replace": "\"evt.trade.disputesOpenedAgainst\":\"{n, plural, one {# partenaire ouvre un diff\\xE9rend} other {# partenaires ouvrent un diff\\xE9rend}} contre vous ({amount} par an de pr\\xE9judice). Riposte possible dans 60 jours si la mesure reste en place.\""
+    },
+    {
+      "anchor": "\"evt.trade.disputesOpenedAgainst\":\"{n, plural, one {# partne",
+      "near": 10,
+      "find": "\"evt.trade.disputesOpenedAgainst\":\"{n, plural, one {# partner opens a dispute} other {# partners open a dispute}} against you ({amount} a year in losses). Retaliation is possible in 30 days if the measure stays.\"",
+      "replace": "\"evt.trade.disputesOpenedAgainst\":\"{n, plural, one {# partner opens a dispute} other {# partners open a dispute}} against you ({amount} a year in losses). Retaliation is possible in 60 days if the measure stays.\""
+    }
+  ]
+}

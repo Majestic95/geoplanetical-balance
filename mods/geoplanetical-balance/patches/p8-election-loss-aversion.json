@@ -1,0 +1,13 @@
+{
+  "id": "p8-election-loss-aversion",
+  "finding": "P8",
+  "effect": "Elections punish losses at least as much as they reward gains. In the party-choice model each voter bloc multiplies the ruling parties' vote by a factor of its satisfaction gap to the neutral 52 (and the opposition's by a factor of its own): gains give the ruling parties 1 + 0.012 per point (up to 1.7), but losses gave 1 / (1 + (gap/30)^2.4), nearly flat for small losses before a steep collapse below -20. In a bloc split evenly between government and opposition, +10 satisfaction won the government about 4.9 points of the bloc's vote while -10 cost it only about 3.8, and -1 cost almost nothing (0.02 points against +0.5). Now a loss gives the lower of a straight line, 1 - 0.02 per point, and the game's collapse curve, with the game's floor of 0.12 (reached at -44); the line is the lower of the two at every gap, so the curve no longer applies above the floor. In the same even bloc, -1 costs 0.52 points, -10 about 7.6 and -20 about 20 (was 15.9), so a loss never costs fewer votes than an equal gain wins, and it costs about one and a half times as much at -10, rising to over two times from -20. A popular leader's charisma still softens the loss as in the game. This extends the approval fix A1 (which changed approval and the growth input) to the vote itself. Real-world basis: retrospective voting studies find voters punish incumbents for bad times more than they reward good times (negativity bias; Soroka; Nannestad and Paldam), by about 1.5 to 2 times. Day-0 effect: none on seats (seeded from data); poll projections for ruling parties fall in blocs below 52 satisfaction: measured at day 30 (seed 12345) on the same world, 72 of 212 countries' projected ruling share falls, by 0.1 points on average and at most 2.7 (South Sudan); the ruling parties lose first place in two (South Sudan, Germany by 0.1 points) and fall below half in one (Cameroon). The projections feed party support each period, so the effect grows with time in countries with unhappy voters. No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "politics:invalid-bloc-vote:",
+      "find": "w=h>=0?Cn(1+h*.012,1,1.7):Cn(1/(1+Math.pow(-h/30,2.4)),.12,1);",
+      "replace": "w=h>=0?Cn(1+h*.012,1,1.7):Cn(Math.min(1+h*.02,1/(1+Math.pow(-h/30,2.4))),.12,1);"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "d7-deficit-yield-continuous",
+  "finding": "D7",
+  "effect": "The budget deficit now raises a government's borrowing cost from the first point, not only past 6% of GDP. The game adds 0.12 points to the yield a sovereign must offer for each point of primary deficit (the deficit before interest, as a share of GDP) above 6%, so a primary deficit of 5% added nothing and the deficit reached the yield almost only through the credit rating. Now the same 0.12 points apply to each point of primary deficit from zero: a 3% primary deficit adds 0.36 points and a 6% one 0.72 points; above 6% every country gets 0.72 points more than before (an 8% primary deficit: 0.96 points instead of 0.24). A primary surplus still adds nothing and earns no discount. Real-world behaviour: bond markets price fiscal deficits continuously; estimates for advanced economies are about 0.2 to 0.3 points of long-term yield per point of deficit (for example Laubach 2009 for the US, and comparable euro-area studies), so the game's slope is kept as the conservative end. Day-0 effect (measured on a booted start): among countries with a primary deficit the starting required yield rises by a median 0.12 points, 0.36 at the 90th percentile and 0.72 at most (United States 3.95% to 4.36%, China +0.56, France +0.46, Japan +0.45). It sets the cost of new borrowing only; the average rate on existing debt is set separately at the start and moves as debt rolls over. In the first month the game's bond market reprices each government's latest bond toward the new required yield, so holders of those bonds (banks, households, central banks, foreigners) take a small one-off price loss. Credit ratings and crisis flags at the start are unchanged; the rating rules are unchanged.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "_glut||0)*1.5",
+      "near": 200,
+      "find": "Math.max(0,o-n-6)*.12",
+      "replace": "Math.max(0,o-n)*.12"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "p4-minority-support-parties",
+  "finding": "P4",
+  "effect": "Minority governments lose approval gradually, and support parties count. The approval formula gave a government without a majority of seats in its confidence chamber a permanent penalty of 5 + 12 x (0.5 - seat share) points: a cliff of 5 points between 50.1% and 49.9% of seats, up to 11 with no seats. Only coalition parties' seats counted, so a minority government kept in office by confidence-and-supply partners (parties listed as supporting the government without joining it) was penalised as if it had no backing. Now the seats of support parties are added to the coalition's, and the penalty is 12 x (0.5 - that share) points: none once government and support parties reach half the chamber, about 0.6 at 45% and at most 6 with no seats and no support parties (still the largest, as fix P15 requires). Whether a government holds a majority for every other purpose (legislation, confidence votes, the interface) is unchanged. Real-world basis: voters do not judge a government by its seat arithmetic, and confidence-and-supply minority governments are common and often stable (Denmark, Sweden, Canada, New Zealand); what costs a minority government is the bargaining it must do, which other parts of the game already model. Day-0 effect: none in a new game (approval is anchored to its day-0 value at genesis). A save already running with a minority government sees its approval target rise once: by up to 5 points from the smaller penalty, and up to 11 for a government whose support parties bring it to half the seats (11 to 0 with no coalition seats). No new state. The second edit changes the text that fix P15 (p15-no-seats-minority) writes, so this patch must follow P15 in the patch list.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"minority_government\"",
+      "near": 3000,
+      "find": "function cme(e,t,a,r=null){",
+      "replace": "function __geobalMinorityTerm(e,l){let g=xn(e),a=g?.confidenceOrganIds?.[0]||null,r=a?s9e(e,a):null,o=r?.composition||{},co=g?.coalitionPartyIds||[],s=(g?.supportPartyIds||[]).filter(p=>!co.includes(p)).reduce((c,u)=>c+(Number(o[u])||0),0),p=Cd((Number.isFinite(l.pct)?l.pct:.5)+(l.total>0?s/l.total:0),0,.5);return-(.5-p)*12}function cme(e,t,a,r=null){"
+    },
+    {
+      "anchor": "\"minority_government\"",
+      "near": 3000,
+      "find": "c=l&&!l.hasMajority?-(5+(.5-Cd(l.pct??.5,0,.5))*12):0",
+      "replace": "c=l&&!l.hasMajority?__geobalMinorityTerm(t,l):0"
+    }
+  ]
+}

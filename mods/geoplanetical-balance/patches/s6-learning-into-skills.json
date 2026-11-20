@@ -1,0 +1,32 @@
+{
+  "id": "s6-learning-into-skills",
+  "finding": "S6",
+  "effect": "How much pupils learn now counts when school leavers join the workforce. The game turned schooling into the workforce's skill mix (low, middle and high skill) from the share of each age group that completes secondary and higher education, relative to day 0, and nothing else: the learning index of each level (test-score quality) reached workers only through a small effect on completion, so a country whose schools taught half as much but graduated as many ended with the same workforce. Now, when a cohort moves from the youth group into the adult workforce (age 25, where the game fixes each cohort's skill mix and keeps it as it ages), each level's skill yield is also multiplied by that level's learning index relative to day 0 (bounded between 0.5 and 1.5): secondary learning sets how many become middle-skill workers, higher-education learning how many become high-skill, and the mix then stays with that cohort. The 15-to-24 group, which the game rebuilds every month from current schooling, is left as the game computes it, so a change in school quality reaches the workforce only as cohorts enter the adult stock, month by month as people age in. Real-world basis: measured cognitive skills (international test scores) predict earnings and long-run growth much better than years of schooling (Hanushek and Woessmann). Day-0 effect: none, every level's learning index equals its day-0 value; afterwards better or worse schooling shows up in each new adult cohort's skills, and so in productivity, over years.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "initial-data:education-attainment.json:",
+      "near": 2000,
+      "find": "function uFt(e,t){",
+      "replace": "function uFt(e,t,__gbW){"
+    },
+    {
+      "anchor": "initial-data:education-attainment.json:",
+      "near": 2000,
+      "find": "return r>1e-15?Math.max(0,a/r*t):t}",
+      "replace": "let __gbL=__gbW&&Number.isFinite(e.learningIndex)?K3(e.learningIndex,e.baseline?.learningIndex):1;Number.isFinite(__gbL)||(__gbL=1);return(r>1e-15?Math.max(0,a/r*t):t)*ao(__gbL,.5,1.5)}"
+    },
+    {
+      "anchor": "initial-data:education-attainment.json:",
+      "near": 2000,
+      "find": "function SFt(e,t){let a=zCr(t),r=uFt(t.levels.secondary,a.mid),o=uFt(t.levels.higher,a.high)",
+      "replace": "function SFt(e,t,__gbW){let a=zCr(t),r=uFt(t.levels.secondary,a.mid,__gbW),o=uFt(t.levels.higher,a.high,__gbW)"
+    },
+    {
+      "anchor": "initial-data:education-attainment.json:",
+      "near": 2500,
+      "find": "o=SFt(e.skills.generation0,e)",
+      "replace": "o=SFt(e.skills.generation0,e,!0)"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "u10-arrears-before-new-bills",
+  "finding": "U10",
+  "effect": "Old unpaid bills are now paid before this month's other bills. When a payer (a company, household group or treasury) is short of cash, the game's daily payment clearing paid in four tiers: the wage tier (wages, mixed incomes and public transfers), then required purchases, then this month's other bills, and only then arrears (bills already overdue), so a firm short of cash could keep paying this month's suppliers and never clear last year's. Now arrears share the third tier with the other new bills, where the game already orders bills by due date, so after the wage tier and required purchases overdue bills are paid before this month's ones, earliest due date first (overdue bills merged into one debt to the same creditor carry the earliest due date of the merged bills). This month's wage tier and required purchases keep their priority, and overdue wages, incomes and transfers are paid in the same tier as other arrears (behind this month's wage tier and required purchases), so a cash-short payer can still pay for the inputs it must have. Real creditors press the oldest debts first and unpaid arrears usually cut off new supplier credit; insolvency law ranks unpaid wages and taxes ahead of ordinary trade creditors. Day 0 unchanged (no open obligations at day 0); the effect appears once payers fall behind: arrears clear sooner and fewer reach the game's 2-year write-off, while this month's non-essential bills are the ones left unpaid.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "economic-payment:payment-required:",
+      "near": 1200,
+      "find": "O[Na]=nt?FSr:ya?YOt:wt?jYe:VOt",
+      "replace": "O[Na]=nt?VOt:ya?YOt:wt?jYe:VOt"
+    }
+  ]
+}

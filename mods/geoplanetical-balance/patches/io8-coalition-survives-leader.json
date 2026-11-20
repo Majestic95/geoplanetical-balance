@@ -1,0 +1,20 @@
+{
+  "id": "io8-coalition-survives-leader",
+  "finding": "IO8",
+  "effect": "A sanctions coalition no longer ends for every member when the country that started it leaves. When the player leads a coalition of countries sanctioning a target and later withdraws from it, the game's daily sanctions review ended the whole regime at once, lifting every member's sanctions (the withdrawal screen warned that leaving would close the case for all members). Now the remaining members keep their sanctions; each AI member then weighs its own interest in the game's regular national review of sanctions (from 90 days after the regime began), which already lets a member withdraw when sanctioning no longer suits it, and the regime ends when its last member leaves, as for any other regime. The withdrawal screen now shows the usual note that other sanctions stay in place instead of the coalition-closing warning, except when the leader is the last member left, where leaving does close the case. Real-world basis: partners in a coordinated sanctions effort keep their own national measures when one partner lifts its own; for example, other Western states kept their Iran sanctions after the United States' policy changes, and European and Asian partners kept their Russia measures independently of each other. Day-0 effect: none (no seeded regime is a coalition, and the rule only applies once a leader withdraws). No new saved state. Patch order: this patch must follow n1-un-sanctions-all-members, whose second edit is anchored on the coalition clause this patch removes.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "sourceTypeId===\"annexation\"?!(",
+      "near": 400,
+      "find": ":r.sourceTypeId===\"coalition\"&&r.initiatorKey!=null&&!(r.participants||[]).some(n=>n.countryKey===r.initiatorKey))",
+      "replace": ":!1)"
+    },
+    {
+      "anchor": "otherParticipantKeys:",
+      "near": 300,
+      "find": "coalitionCloses:a.effect===\"withdraw_participation\"&&r.sourceTypeId===\"coalition\"&&r.objectiveId!==\"nuclear_compliance\"&&r.initiatorKey===o.countryKey,",
+      "replace": "coalitionCloses:a.effect===\"withdraw_participation\"&&r.sourceTypeId===\"coalition\"&&r.objectiveId!==\"nuclear_compliance\"&&r.initiatorKey===o.countryKey&&r.participants.length===1,"
+    }
+  ]
+}

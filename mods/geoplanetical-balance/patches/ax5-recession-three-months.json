@@ -1,0 +1,26 @@
+{
+  "id": "ax5-recession-three-months",
+  "finding": "AX5",
+  "effect": "An AI government now judges recession on three months of output, not one. Each month the AI's budget policy compared real output with the month before, and a fall of a tenth of a percent put it in 'support' (recession) mode: it may not raise taxes or cut spending that month, even with a large deficit, and a mid-review switch into support overrides the current plan, so one month's noise could block budget repair, and one up month inside a real downturn switched support off. Now the test compares the average real output of the last three months with the three months before (from the game's own twelve-month output history), with the same 0.1% margin; when that history is missing, or any of those six months is not a positive number, the old one-month test is used. Measured on an unmodded 12-month run of this game version (real output, all AI countries, months 6 to 12): in months when output was higher than a year earlier both tests fire about equally often (9.1% one-month, 8.5% three-month), but in months when output was lower than a year earlier the three-month test calls recession in 77% of them against 50% for the one-month test, so the change mostly stops real downturns being missed. Real-world behaviour: fiscal stimulus answers a downturn that shows over a quarter or more (the usual recession test is output falling over successive quarters), not one month's noise. Crisis mode, the two-month 'consolidation not working' rule and the rest of the budget rules are unchanged. Day-0 effect: none on day 0 itself (the review does not run then). The first review can run within the first days, when the twelve-month history still holds the game's start-up trend built from each country's growth rate, so a country seeded with output falling by about 0.4% a year or more starts in support mode, as the old fallback (growth below -0.5%) roughly did; the history fills with simulated months over the first half year. No new saved state: the ratio is recomputed from saved output history at every review.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "inflationPct:Zl(e.inflation)}}",
+      "near": 400,
+      "find": "defaulted:!!e.defaulted,gdpBn:",
+      "replace": "defaulted:!!e.defaulted,__geobalGdpQ3:__geobalGdpQ3(e),gdpBn:"
+    },
+    {
+      "anchor": "inflationPct:Zl(e.inflation)}}",
+      "near": 400,
+      "find": "inflationPct:Zl(e.inflation)}}",
+      "replace": "inflationPct:Zl(e.inflation)}}function __geobalGdpQ3(e){let r=e?._gdpRing,i=e?._gdpRingIdx;if(!r||r.length!==12||!Number.isInteger(i))return null;let v=[1,2,3,4,5,6].map(k=>Number(r[((i-k)%12+12)%12]));return v.some(x=>!Number.isFinite(x)||!(x>0))?null:(v[0]+v[1]+v[2])/(v[3]+v[4]+v[5])}"
+    },
+    {
+      "anchor": "\"consolidate\":\"neutral\"",
+      "near": 400,
+      "find": "if((t?.gdpBn>0?e.gdpBn<t.gdpBn*C1o:",
+      "replace": "if((e.__geobalGdpQ3!=null?e.__geobalGdpQ3<C1o:t?.gdpBn>0?e.gdpBn<t.gdpBn*C1o:"
+    }
+  ]
+}

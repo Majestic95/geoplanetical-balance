@@ -25,7 +25,7 @@ check(wording.patches.every(p => p.bundle === APP), 'every wording patch is on t
 check(built.has(SIM) && built.get(SIM).text !== readFileSync(bundlePath(build, SIM), 'utf8'), 'the simulation bundle still builds with the balance patches');
 
 const edits = wording.patches.flatMap(p => p.edits.map(e => ({ ...e, id: p.id })));
-check(edits.length === 20, 'ten entries, two languages each', String(edits.length));
+check(edits.length === 26, 'thirteen entries, two languages each', String(edits.length));
 let restored = patched;
 for (const e of edits) {
   check(patched.split(e.replace).length === 2, `${e.id}: new text appears once`, e.replace.slice(0, 40));

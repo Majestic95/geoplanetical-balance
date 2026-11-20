@@ -1,0 +1,14 @@
+{
+  "id": "j2-security-operations-floor",
+  "finding": "J2",
+  "effect": "Cutting the police or justice operating budget to zero no longer switches the service off. The game's police capacity is staffing^0.6 x operations^0.25 x stations^0.15 (courts: staffing^0.62 x operations^0.23 x courthouses^0.15; prisons: staffing^0.48 x operations^0.32), where operations is the non-payroll budget relative to day 0 with a floor of zero. At zero the whole capacity is zero however many officers and judges are still paid. With police operations at zero nothing is cleared and the police queue grows without limit, and because no cases then reach the courts and prisons, court backlogs and prison overcrowding disappear and their alerts clear, a perverse reward for defunding. With justice operations at zero the courts decide no cases, so cases waiting for court pile up without limit. Now operations count at least 25% of the day-0 level (police capacity at least 0.71 times what its staff and buildings give, courts 0.73, prisons 0.64): staff with no operating budget still patrol, investigate and hold hearings, at a reduced rate. Spending above the floor counts as before (cap 2.2 unchanged). Real-world basis: services whose non-wage budget collapses keep working on staff alone at reduced effect (fuel, equipment and maintenance cuts degrade but do not stop policing and courts); the real cost of defunding is a rise in crime, which this change does not add (that needs crime to respond to policing, a separate and larger fix). Day-0 effect: none, every operations ratio is 1 at the start.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "policeFacilities:m,justiceFacilities:f",
+      "near": 900,
+      "find": "u=(h,g)=>Ja(h?.nonPayroll0Bn>1e-9?j3(Wa(h.nonPayrollBn),h.nonPayroll0Bn):g,0,2.2)",
+      "replace": "u=(h,g)=>Ja(h?.nonPayroll0Bn>1e-9?j3(Wa(h.nonPayrollBn),h.nonPayroll0Bn):g,.25,2.2)"
+    }
+  ]
+}

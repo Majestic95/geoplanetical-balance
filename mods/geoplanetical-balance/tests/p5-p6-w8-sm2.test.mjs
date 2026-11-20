@@ -87,7 +87,7 @@ check(read('d').count === NV({ wars: [war({})], day: 100 }, 'd').count && read('
 // W8: the pace and the target, through the patched lines and the game's own war helpers (stubbed for membership).
 const w8 = new Function('eh', 'Oo', 'n_', `${between(patched, 'function __geobalW8(A,B){', 'pace:.18*e}}')}; return __geobalW8;`)(A => A.wars || [], (C, k) => C.members.includes(k), C => C.status === 'active');
 const line = text => between(text, 'm=p.budgetGdpPct+u-p.desireGdpPct', 'c.competence*.06', 300);
-const pace = (text, h) => (D, A, comp = 0.5, budget = 3) => new Function('p', 'u', 'l', 'c', 'e', '__geobalW8', `let ${line(text)};return{I:m,n:f}`)({ budgetGdpPct: budget, desireGdpPct: 0 }, 0, D, { competence: comp }, A, h);
+const pace = (text, h) => (D, A, comp = 0.5, budget = 3) => new Function('p', 'u', 'l', 'c', 'e', '__geobalW8', '__geobalW9', `let ${line(text)};return{I:m,n:f}`)({ budgetGdpPct: budget, desireGdpPct: 0 }, 0, D, { competence: comp }, A, h, () => 0); // W9's war-time fiscal cut is tested in w9.test.mjs
 const WP = pace(patched, w8), WV = pace(original, null);
 const prov = (pop, occ) => ({ __pop: pop, __occupier: occ });
 const at = (provs, fighting = true) => ({ key: 'K', activeHostilities: fighting, atWar: fighting, provs });

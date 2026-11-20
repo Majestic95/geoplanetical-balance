@@ -1,0 +1,26 @@
+{
+  "id": "io4-retaliation-60-days-small-hold-back",
+  "finding": "IO4",
+  "effect": "Trade disputes now give 60 days of consultations before retaliation, and small economies that depend on the offender hold back. When a country raises a tariff or breaks a trade agreement, every country hurt opens a dispute; after 30 days of consultations the dispute fell due and nearly every AI country retaliated with matching tariffs unless the offender was its patron, so one tariff spiralled into many. Now consultations last 60 days (the consultation period of the WTO dispute settlement rules), for every dispute, the player's included, and an AI country does not retaliate when it is both small next to the offender (its GDP under 5% of the offender's, members of a trade bloc counted together) and dependent on it (the offender takes 25% or more of its exports); the dispute stays open, so it can still act if either changes, and it is left out before the game picks the three oldest due disputes to answer, so held-back disputes never crowd out one the country would answer. The size of the harm is deliberately not part of the test: real small export-dependent economies held back even under very large tariffs (Vietnam in 2025), so dependence, not the harm, decides. Patrons are still spared as before. Real-world basis: the WTO Dispute Settlement Understanding allows 60 days of consultations, then a panel; unilateral counter-tariffs do happen, but mostly from large economies (the EU, China, Canada and Mexico in 2018; China, Canada and the EU in 2025), while small export-dependent economies such as Vietnam and the Central American and Caribbean states negotiated instead. Day-0 effect: none (disputes open only when a tariff is raised; disputes already open in a save keep their date); later, AI retaliation comes a month later and less often from small trading partners. No new saved state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "trade.disputes_opened",
+      "near": 1900,
+      "find": "p=Math.max(i,c.activeDay)+30,",
+      "replace": "p=Math.max(i,c.activeDay)+60,"
+    },
+    {
+      "anchor": "verb:\"trade.requestActMandate\",draft:n",
+      "near": 700,
+      "find": "function SGo(e,t){let a=dGo(e,t.key).filter(s=>!fGo(e,t,s));",
+      "replace": "function __geobalRetaliationHoldBack(e,a){let c=new Set(Xe(e,a.complainantPartyId)),r=new Set(Xe(e,a.respondentPartyId));if(!c.size||!r.size)return!1;let g=s=>{let v=0;for(let k of[...s].sort())v+=Math.max(0,Number(e.countries.get(k)?.gdp)||0);return v},gc=g(c),gr=g(r);if(!(gr>0)||gc>=.05*gr)return!1;let to=0,all=0;for(let f of nr(e)||[]){if(!c.has(f.exporterActorId)||c.has(f.importerActorId))continue;let v=Math.max(0,Number(f.tradeValue)||0);all+=v,r.has(f.importerActorId)&&(to+=v)}return all>0&&to>=.25*all}function SGo(e,t){let a=dGo(e,t.key).filter(s=>!fGo(e,t,s));"
+    },
+    {
+      "anchor": "verb:\"trade.requestActMandate\",draft:n",
+      "near": 4000,
+      "find": "&&!uGo(e,r)).sort((r,o)=>r.openedDay-o.openedDay||K(r.id,o.id)).slice(0,eGo)}",
+      "replace": "&&!uGo(e,r)&&!__geobalRetaliationHoldBack(e,r)).sort((r,o)=>r.openedDay-o.openedDay||K(r.id,o.id)).slice(0,eGo)}"
+    }
+  ]
+}

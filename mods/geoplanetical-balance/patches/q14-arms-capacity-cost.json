@@ -1,0 +1,32 @@
+{
+  "id": "q14-arms-capacity-cost",
+  "finding": "Q14",
+  "effect": "New arms-industry capacity costs about a year of its output and takes years, not months. A new production line (ammunition, explosives, vehicles, aircraft, ships, missiles and the other military goods) cost 30% of one year's output at the added capacity and was ready in 6 months for ammunition and explosives, 18 for most goods and 36 for ships when the country already made the good; a first line, from no capacity at all, took 6 months whatever the good. Now a line costs one year's output, an expansion of an existing line takes 12 months for ammunition and explosives, 24 for most goods and 36 for ships, and a first line takes 24, 36 and 48 months. AI countries still start lines automatically on wartime demand and order backlogs, through the game's own gate: the firm pays what its cash allows and the state the rest, reserved in full at the start, and an AI starts a line only when the state's share is at most a quarter of its available military money (or within a public limit it has set). At the higher price fewer lines pass: in a 150-day comparison (seed 12345) AI countries started 68 lines instead of 97 (30% fewer, 38 countries instead of 45; those that started none at this price include Israel, North Korea and Pakistan, and Ukraine started 3 instead of 5). The procurement planner's wait for a producer without a line follows the new first-line months. Real-world basis: arms plants cost about one to two years of output and take two to five years (Western 155 mm shell capacity roughly doubled only two years after 2022; new shipyards and combat-aircraft lines take four years or more), and a first line in a country with no industry for the good is the slowest of all. Expected effect: running short of munitions and equipment in a war hurts for longer, and arms build-ups cost more. Day-0 effect: nothing changes at genesis; from the first month, countries that start lines (wars and order backlogs) pay more, wait longer, and some cannot afford a line they would have started. No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"public_authorization\"",
+      "near": 2500,
+      "find": "m=n?p*o.base*.3:0",
+      "replace": "m=n?p*o.base*1:0"
+    },
+    {
+      "anchor": "\"public_authorization\"",
+      "near": 2500,
+      "find": "g=ae(Math.max(0,h*.3),\"ceil\"),v=s>0?a===\"naval_military\"?36:[\"ammunition\",\"explosives\"].includes(a)?6:18:Pct,",
+      "replace": "g=ae(Math.max(0,h*1),\"ceil\"),v=s>0?a===\"naval_military\"?36:[\"ammunition\",\"explosives\"].includes(a)?12:24:__geobalFirstLineMonths(a),"
+    },
+    {
+      "anchor": "\"invalid_project\"",
+      "near": 3000,
+      "find": "function p5a(e,t){",
+      "replace": "function __geobalFirstLineMonths(a){return a===\"naval_military\"?48:[\"ammunition\",\"explosives\"].includes(a)?24:36}function p5a(e,t){"
+    },
+    {
+      "anchor": "\"invalid_project\"",
+      "near": 3000,
+      "find": "return a?Math.max(0,Math.ceil(a.monthsLeft||0)):Pct}",
+      "replace": "return a?Math.max(0,Math.ceil(a.monthsLeft||0)):__geobalFirstLineMonths(t)}"
+    }
+  ]
+}

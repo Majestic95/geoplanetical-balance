@@ -1,0 +1,20 @@
+{
+  "id": "j1-crime-responds-to-policing",
+  "finding": "J1",
+  "effect": "Crime now responds to policing and imprisonment. Before, police reached crime only through the clearance rate, which moved crime by -5.6% to +2.2% at most: doubling the police lowered crime by about 0.6%, while a 10-point rise in unemployment raised it 15%. Now each crime family's underlying level is also scaled by police capacity against day 0 (staffing, operating budget and stations, the same measure the game uses for clearance): violent crime by capacity^-0.5, property crime by capacity^-0.25, the criminal economy by capacity^-0.15, within 0.6 to 1.5 times. Capacity is about staffing^0.6, so per police officer this is about -0.3 for violent and -0.15 for property crime. A smaller incapacitation term uses the prison population against day 0 (violent and property crime, prison ratio^-0.1, within 0.85 to 1.15). A shrinking prison population (shorter sentences, fewer custodial sentences) raises crime a little the same way, and in a country with very few prisoners at the start a few cases move the prison term noticeably within its limits. Crime moves toward the new level at the game's own pace (about 5.5% of the gap a month). Examples: cutting police capacity by half raises violent crime about 41% and property crime about 19% through the police term alone; fewer police also clear and convict fewer cases, so the prison population falls over the following years and the prison term adds up to 15% more (at most 1.73 times in all); cutting the police operating budget to zero (capacity about 0.71 with the operations floor) raises violent crime about 19%. Real-world basis: estimated elasticities of crime to police numbers are about -0.3 for violent and -0.15 to -0.2 for property crime, and incapacitation effects are about -0.1 to -0.2 at ordinary prison rates. Day-0 effect: none (both ratios are 1 at the start).",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "latentViolent),pa===\"criminalEconomy\"",
+      "near": 400,
+      "find": "et=o.latentAnnualPer100k[pa]*d*Ja(1.04-.04*p,.9,1.06);",
+      "replace": "et=o.latentAnnualPer100k[pa]*d*Ja(1.04-.04*p,.9,1.06)*__geobalDeterrence(pa,n.police,t,o);"
+    },
+    {
+      "anchor": "cannabisLoadRelative))",
+      "near": 900,
+      "find": "function nLr(e,t,a,r){",
+      "replace": "function __geobalDeterrence(f,c,t,o){let el=f===\"violent\"?.5:f===\"property\"?.25:.15,g=f===\"criminalEconomy\"?0:.1,p=Math.max(.05,Number.isFinite(c)?c:1),b=(Number(o?.convictedPer100k)||0)+(Number(o?.pretrialPer100k)||0),q=b>1e-9?((Number(t?.prisons?.convictedPer100k)||0)+(Number(t?.prisons?.pretrialPer100k)||0))/b:1;return Math.max(.6,Math.min(1.5,Math.pow(p,-el)))*Math.max(.85,Math.min(1.15,Math.pow(Math.max(.05,q),-g)))}function nLr(e,t,a,r){"
+    }
+  ]
+}

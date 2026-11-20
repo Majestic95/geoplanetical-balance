@@ -22,7 +22,9 @@ const fnSrc = (text, name) => {
 };
 const zDecl = (text) => { const a = text.indexOf('z$e=new Set(['); if (a < 0) throw new Error('z$e missing'); return text.slice(a, text.indexOf('])', a) + 2); };
 const src = (text) => `const ${zDecl(text)};` + fnSrc(text, 'n_') + fnSrc(text, 'QGt') + fnSrc(text, 'M7') +
-  (text.includes('function __geobalAidSanctionMap(') ? fnSrc(text, '__geobalAidSanctionMap') : '') + fnSrc(text, 'wit');
+  (text.includes('function __geobalAidSanctionMap(') ? fnSrc(text, '__geobalAidSanctionMap') : '') +
+  // LC8's cut (AI bilateral paid from the multilateral share) is zero here: these donors commit no bilateral aid.
+  (text.includes('function __geobalLC8Cut(') ? 'function __geobalLC8Cut(){return 0}' : '') + fnSrc(text, 'wit');
 const NUKE = Number((/nukeAidMult:([\d.]+)/.exec(original) || [])[1]);
 check(NUKE > 0 && NUKE < 1, 'the game reduces aid to nuclear-armed recipients', String(NUKE));
 const load = (text) => new Function('Jr', 'TIe', 'zG', 'At', 'Rua', 'ae', 'Pt', 'wi', 'St', 'LB', `${src(text)};return wit;`)(

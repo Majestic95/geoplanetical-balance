@@ -1,0 +1,38 @@
+{
+  "id": "hp11-public-severance",
+  "finding": "HP11",
+  "effect": "Cutting public-sector staff now costs redundancy pay. In the game, when a government lowers a public service's staff target, the surplus staff leave over the following months (about half within a year), the wage bill falls with headcount at once and nothing is paid: a cut's only costs were lost capacity and the leavers' unemployment benefits, so austerity through public jobs was close to free money. Now every month, for each civil public service whose headcount falls (education, health, police, administration and the other roles; the armed forces are not included), the state pays the leavers a one-off redundancy payment of several months of that service's average wage, booked as a treasury expense (purpose public_severance) through the game's own treasury payment (borrowing for a shortfall as the game's other payments do; a country in default pays only the cash it has). It is modelled as a cost to the state only: the leavers do not receive it as household income, because the game has no payment path from the treasury to a group of former public workers. Amounts below one ledger unit (0.00000001 bn) in a month are not paid or carried over. There is no employment-protection law in the game, so the number of months follows the trade-union law as the closest measure of how protected public jobs are: 6 months with independent unions, 4 when unions need approval, 3 with an official federation only, 2 where unions are banned. Real-world basis: public-sector redundancies pay several months to over a year of salary (for example the UK civil service compensation scheme, up to 21 months; statutory and collective severance in most OECD countries is about a month per year of service), and civil servants in many countries have tenure. Day-0 effect: none, no cut is under way at the start; a cut of 10% of a service's staff now costs about half a year's worth of the wage savings, spread over the months the staff leave. The payment is computed from the month's headcount change and settled within the same population step, so no state is added to saves.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "public-employment:territory-role:",
+      "near": 2500,
+      "find": "let i=[],s=0,l=0,c=0;for(let f of Nl)",
+      "replace": "let i=[],s=0,l=0,c=0,__gbSev=0;for(let f of Nl)"
+    },
+    {
+      "anchor": "public-employment:territory-role:",
+      "near": 2500,
+      "find": "f.headcountM=h<=y?h:y+(h-y)*m;let v=Math.max(f.wageAnnualK||0,1e-6);",
+      "replace": "f.headcountM=h<=y?h:y+(h-y)*m;let v=Math.max(f.wageAnnualK||0,1e-6);h<y&&(__gbSev+=(y-h)*(f.wageAnnualK>0?f.wageAnnualK:0));"
+    },
+    {
+      "anchor": "public-employment:territory-role:",
+      "near": 2500,
+      "find": "y.surplusM=Math.max(0,y.headcountM-y.targetHeadcountM))}e_(e)}",
+      "replace": "y.surplusM=Math.max(0,y.headcountM-y.targetHeadcountM))}e_(e);return __gbSev}"
+    },
+    {
+      "anchor": "population.statelessMortality",
+      "near": 300,
+      "find": "function FTo(e,t,a){",
+      "replace": "function __geobalSeverance(e,c,b){let k=Number(b);if(!c||!e?.finance||!Number.isFinite(k)||!(k>0))return;let m={free:6,licensed:4,official:3,banned:2}[EB(c).freedom]??6,x=k*m/12;if(!(x>=1e-8))return;let o={purposeId:\"public_severance\",kind:\"public_severance_payment\",refs:{months:m}},P=od(e,c,x,o);P?.ok||od(e,c,x,{...o,allowPartial:!0})}function FTo(e,t,a){"
+    },
+    {
+      "anchor": "population.statelessMortality",
+      "near": 2500,
+      "find": "Uzt(i,r,!e.playerControlsGovernment(i),g,v?.publicSeparationsM||null)",
+      "replace": "__geobalSeverance(e,i,Uzt(i,r,!e.playerControlsGovernment(i),g,v?.publicSeparationsM||null))"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "w9-war-defence-fiscal-term",
+  "finding": "W9",
+  "effect": "An AI country at war now keeps some concern for its finances on the defence budget once they are in danger. In peace the AI's defence target falls by up to 0.8 points of GDP as fiscal pressure rises (the game's own 0-to-1 pressure score from interest burden, deficit and market access); at war that term was dropped entirely, so defence could keep rising while the rest of the budget was trying to save, and with the faster war-time pace (W8) a long war could run a country into default without the defence line ever weighing it. Now, at war, the monthly defence target is lowered by up to 0.4 points of GDP, half the peace-time maximum, in proportion to the larger of two danger measures: fiscal pressure from 0.7 (nothing) to 1 (full, which includes the game's debt-crisis state), and public debt from 80% (nothing) to 100% of GDP (full). The cut is applied to the target itself each month, so it holds while the danger lasts and goes away when it passes. Below both lines war spending ignores finances as before. The rest of the budget rules, the war-time exemption from the financing-priority check, IMF requests and default are unchanged, and the war-time extras of W8 (up to 15 points of GDP) still dominate, so a country fighting for survival still spends. Real-world behaviour: governments at war borrow heavily, but financing limits still bind: debt near or above 90-100% of GDP and lost market access force war economies into rationing, money financing or external aid, and they trim what they can (for example Ukraine's reliance on external budget support from 2022, and Britain's war loans and rationing in 1940-45). Day-0 effect: only AI countries that start at war with debt above 80% of GDP or fiscal pressure above 0.7: their defence target is up to 0.4 points of GDP lower. No new state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "forcePlan?.strategy",
+      "near": 400,
+      "find": "function Tko(e,t,a){",
+      "replace": "function __geobalW9(t){if(!t?.atWar)return 0;let p=Number(Zn(t)?.pressure),d=Number(t.debtRatio),s=Math.max(Number.isFinite(p)?Math.max(0,Math.min(1,(p-.7)/.3)):0,Number.isFinite(d)?Math.max(0,Math.min(1,(d-80)/20)):0);return .4*s}function Tko(e,t,a){"
+    },
+    {
+      "anchor": "aiBudgetAnchor||=",
+      "near": 300,
+      "find": "+(l.activeHostilities?__geobalW8(e,l).target:0),f=",
+      "replace": "+(l.activeHostilities?__geobalW8(e,l).target:0)-__geobalW9(l),f="
+    }
+  ]
+}

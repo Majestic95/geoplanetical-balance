@@ -1,0 +1,14 @@
+{
+  "id": "r2-technology-gain-cap",
+  "finding": "R2",
+  "effect": "Technology can no longer multiply a good's productivity more than three times over its starting level. Each research node that a country deploys multiplies the supply and labour factors of the goods it touches, and the game stacks every node on a good, then divides by the same product at the start of the game; that ratio was clamped between 0.25 and 50. Service goods carry the most stackable nodes (16 each for health and scientific research, a product of 19 to 33 times when all are deployed), so in a long game their productivity could grow 15 to 20% a year and keep compounding toward 50 times. Now the ratio is clamped at 3 (the floor of 0.25 is unchanged), so a good's technology gain tops out at three times its starting productivity; research still matters fully up to that point, and within the first decade gains stay below the cap (the most a good can reach in ten years even with instant research is about 2.7 times). The cap is measured per country against its own starting deployment, so a country that starts with little of the technology deployed can also gain at most three times its own starting productivity: catching up to the leaders' level is cut off at that point where the gap is wider than threefold. The cap also bounds the research-tree preview of a node's potential gain, which reads the same clamp. Real-world basis: productivity in health care, research and other services grows the slowest of all sectors (about 0 to 1% a year, Baumol's cost disease), and even the fastest-improving real industries take several decades to triple output per unit of input. Day-0 effect: none (every ratio is 1 at the start); no new saved state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "storage:\"energy.grid_storage\"}),",
+      "near": 120,
+      "find": "=Object.freeze({min:.25,max:50})",
+      "replace": "=Object.freeze({min:.25,max:3})"
+    }
+  ]
+}

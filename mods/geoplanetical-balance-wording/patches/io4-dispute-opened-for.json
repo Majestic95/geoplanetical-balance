@@ -1,0 +1,20 @@
+{
+  "id": "io4-dispute-opened-for",
+  "finding": "IO4",
+  "effect": "The event telling you that your trade dispute was opened said you may retaliate in 30 days; with the balance mod's IO4 change, consultations last 60 days for every dispute, the player's included, so the event now says 60. Interface text only; English and French; the other 16 languages keep the old text.",
+  "bundle": "app.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"evt.trade.disputeOpenedFor\":\"Diff\\xE9rend commercial ouvert",
+      "near": 10,
+      "find": "\"evt.trade.disputeOpenedFor\":\"Diff\\xE9rend commercial ouvert avec {actor}. Vous pourrez riposter dans 30 jours si sa mesure reste en place.\"",
+      "replace": "\"evt.trade.disputeOpenedFor\":\"Diff\\xE9rend commercial ouvert avec {actor}. Vous pourrez riposter dans 60 jours si sa mesure reste en place.\""
+    },
+    {
+      "anchor": "\"evt.trade.disputeOpenedFor\":\"Trade dispute opened with {act",
+      "near": 10,
+      "find": "\"evt.trade.disputeOpenedFor\":\"Trade dispute opened with {actor}. You may retaliate in 30 days if its measure stays.\"",
+      "replace": "\"evt.trade.disputeOpenedFor\":\"Trade dispute opened with {actor}. You may retaliate in 60 days if its measure stays.\""
+    }
+  ]
+}
