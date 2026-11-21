@@ -1,0 +1,44 @@
+{
+  "id": "ax19-losing-government-listens",
+  "finding": "AX19",
+  "effect": "An AI government that is losing the public now listens to it more, most of all before an election. The AI weighed public opinion in its choice of laws by electoral integrity x (0.15 + 0.45 x election nearness) and in its budget by (0.4 + integrity x (0.6 + nearness)), and the nearness term also eased tightening before a vote; approval never entered, so a government at 20% approval 90 days before a vote acted exactly like one at 70%. Now the nearness term these rules read is nearness x (1 + risk) + 0.25 x risk, where risk = (45 - approval) / 20, clamped 0 to 1 (zero at 45% approval and above, full at 25% and below): a losing government near a vote gives public opinion up to about twice the weight, and one far from a vote a little more (0.25 x risk) than none; a country with no election scheduled gets no far-from-a-vote term. The pull that eases budget tightening is capped at 1 as before, and it still vanishes under market pressure (the game multiplies it by 1 - fiscal pressure), so a government in a debt crisis is not let off. Electoral integrity multiplies every term, so regimes without real elections are unchanged. Real-world behaviour: governments trailing in the polls before an election spend more, cut taxes and drop unpopular bills (political budget cycles; from memory). Day-0 effect: none (every accountable regime starts at 48% approval or more, measured on day 2 of a new game, so risk is 0); it is live within months, as approval falls: by day 120 on seed 12345 about 32 accountable countries are under 45%, among them the United States at about 40%. No new saved state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "get publicContext(){return",
+      "near": 300,
+      "find": "function Pae(e,t){",
+      "replace": "function __geobalElecNear(e,t){let n=Oh(e,t),a=Number(t?.approval),r=Number.isFinite(a)?Math.min(1,Math.max(0,(45-a)/20)):0;return n*(1+r)+(Lpe(e,t)==null?0:.25*r)}function Pae(e,t){"
+    },
+    {
+      "anchor": "get publicContext(){return",
+      "near": 200,
+      "find": "get publicWeight(){return n??=_f(t)*(.15+.45*Oh(e,t))}",
+      "replace": "get publicWeight(){return n??=_f(t)*(.15+.45*__geobalElecNear(e,t))}"
+    },
+    {
+      "anchor": "?.publicContext)",
+      "near": 200,
+      "find": "h=o?.publicWeight??_f(t)*(.15+.45*Oh(e,t))",
+      "replace": "h=o?.publicWeight??_f(t)*(.15+.45*__geobalElecNear(e,t))"
+    },
+    {
+      "anchor": "climateUrgency:",
+      "near": 400,
+      "find": "i=_f(t),s=Oh(e,t),l=Math.max(0,Jh(e.climate?.temperatureOffset))",
+      "replace": "i=_f(t),s=__geobalElecNear(e,t),l=Math.max(0,Jh(e.climate?.temperatureOffset))"
+    },
+    {
+      "anchor": "climateUrgency:",
+      "near": 200,
+      "find": "electoralPull:i*s,",
+      "replace": "electoralPull:Math.min(1,i*s),"
+    },
+    {
+      "anchor": "climateUrgency:",
+      "near": 200,
+      "find": "fiscalDiscipline:O4e(1-i*s*(1-",
+      "replace": "fiscalDiscipline:O4e(1-Math.min(1,i*s)*(1-"
+    }
+  ]
+}

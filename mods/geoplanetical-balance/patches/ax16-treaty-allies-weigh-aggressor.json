@@ -1,0 +1,20 @@
+{
+  "id": "ax16-treaty-allies-weigh-aggressor",
+  "finding": "AX16",
+  "effect": "An AI treaty ally called to defend a member now weighs who the attacker is. The answer to a defence-treaty call (join, support, access or refuse) read the member's alignment with each side, whether its treasury is positive, the treaty's credibility, its leader's traits and its own war load; never the aggressor's nuclear weapons, its strength or the member's trade with it, though the voluntary routes into a war do weigh those. Now the answer's score is lowered by (0.45 x the aggressor's nuclear cover against the member + 0.25 x how far the aggressor's land forces exceed the member's and the defender's together, from 0 at parity to 2 at three times as strong + 0.3 x the member's share of trade with the aggressor), scaled by the member leader's caution (1.5 - risk tolerance, divided by 1.5, so 1 for a cautious leader and a third for a reckless one). Nuclear cover uses the game's own measure (own arsenal 1, else an umbrella or patron's probability); land power is the game's own count of available formations. The penalty can lower a join to support or a support to access, but never an access to a refusal: an ally that would grant access still does (a refusal counts as a treaty violation). For scale: the score joins above 0.9, supports above 0.42 and grants access above 0.12, so facing a nuclear-armed aggressor a cautious ally tends to support rather than join, while a strongly aligned ally under a credible treaty still joins. Real-world behaviour: alliance commitments are hedged by the cost of fighting a nuclear or much stronger aggressor, and allies with deep trade ties hesitate (from memory). Day-0 effect: none (no treaty call runs before a war). No new saved state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"fiscal_constraint\"",
+      "near": 400,
+      "find": "y=(i-s)*m+l+u*.25+d-c*f,",
+      "replace": "y=__geobalTreatyAdj((i-s)*m+l+u*.25+d-c*f,__geobalTreatyRisk(e,a,r,o)*f/1.5),"
+    },
+    {
+      "anchor": "\"fiscal_constraint\"",
+      "near": 1200,
+      "find": "function W7a(e,t){",
+      "replace": "function __geobalTreatyRisk(e,a,r,o){if(!a||!o)return 0;let n=Math.min(1,Math.max(0,Number(GK(e,a.key,o.key)?.value)||0)),p=Number(Y7t(e,o,'land'))||0,q=(Number(Y7t(e,a,'land'))||0)+(r?Number(Y7t(e,r,'land'))||0:0),w=Math.min(2,Math.max(0,p/Math.max(1,q)-1)),t=Number(zl(a,[o.key]));t=Number.isFinite(t)?Math.min(1,Math.max(0,t)):0;return .45*n+.25*w+.3*t}function __geobalTreatyAdj(y,p){return y>.12&&Number.isFinite(p)?Math.max(.12+1e-6,y-p):y}function W7a(e,t){"
+    }
+  ]
+}

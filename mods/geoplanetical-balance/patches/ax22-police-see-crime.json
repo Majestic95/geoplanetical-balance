@@ -1,0 +1,26 @@
+{
+  "id": "ax22-police-see-crime",
+  "finding": "AX22",
+  "effect": "AI governments now answer a crime wave, not only a growing case backlog. The AI's security review measured police pressure only as the backlog of unprocessed cases against its starting level, so when crime rose but fewer crimes were reported (police trust falls in a crime wave) the review saw nothing; the budget's police need read the same backlog, and hiring needed fiscal room of 0.3 whatever crime cost the government. A stimulus test on this game version (three AI countries, crime x1.6) found crime 41% above an untouched world after six months, approval down about 1.2 points, and no police hired. Now police pressure in the AI's security review is the larger of the backlog ratio and the crime ratio (crime now against crime at the start, the game's own measure), and when the crime ratio is above 1 the fiscal room needed to hire police (not court or prison staff) falls from 0.3 toward 0.15 (fully at 40% more crime, where the game's own rule takes about 1 point off approval and 1.6 off stability). The review still waits 91 days between actions, hires at most once a year and 4 to 8% at a time, and only when police is the main bottleneck. The screen the player sees is unchanged: this is a copy used by the AI's own security review. The budget's police-need term is left on the backlog, because the game also reads it as an essential-service shortage that blocks state industrial programmes, and a crime wave is not that. Real-world behaviour: crime waves drive police funding and tougher policing even when reporting falls (for example the United States in 1994; from memory). With J1 police capacity lowers crime, so this closes the loop for AI countries. Day-0 effect: none (the crime ratio is 1 at the start). No new saved state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "securityJusticeDiagnosis?.(t)",
+      "near": 400,
+      "find": "function f2r(e,t,a=null){",
+      "replace": "function __geobalCrimeRatio(e){if(!e?.crime||!e.seed?.latentAnnualPer100k)return 1;let r=mLo(e).latent;return Number.isFinite(r)?Math.min(4,Math.max(0,r)):1}function __geobalPoliceDiag(o,e){if(!o?.pressures||o.pressures.police==null)return o;let L=__geobalCrimeRatio(e);if(!(L>o.pressures.police))return{...o,__geobalCrimeRatio:L};let p={...o.pressures,police:L},b=o.bottleneckId;return{...o,pressures:p,bottleneckId:b!=null&&p[b]!=null&&p[b]>=L-1e-9&&b!=='police'?b:'police',__geobalCrimeRatio:L}}function __geobalPoliceGate(o){let L=Number(o?.__geobalCrimeRatio);return Number.isFinite(L)?uLo-.15*Math.min(1,Math.max(0,(L-1)/.4)):uLo}function f2r(e,t,a=null){"
+    },
+    {
+      "anchor": "securityJusticeDiagnosis?.(t)",
+      "near": 300,
+      "find": "let o=a?.securityJusticeDiagnosis?.(t)||IE(t),n=G1(e,t)",
+      "replace": "let o=__geobalPoliceDiag(a?.securityJusticeDiagnosis?.(t)||IE(t),t.securityJustice),n=G1(e,t)"
+    },
+    {
+      "anchor": "roleId:\"internalSecurity\"",
+      "near": 500,
+      "find": "if(!n||n.pressure<r||Gr(t)<uLo)return null;",
+      "replace": "if(!n||n.pressure<r||Gr(t)<(n.roleId==='internalSecurity'?__geobalPoliceGate(a):uLo))return null;"
+    }
+  ]
+}

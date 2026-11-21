@@ -1,0 +1,14 @@
+{
+  "id": "ax18-market-yields-reach-budget",
+  "finding": "AX18",
+  "effect": "A bond-market rout now reaches an AI government's budget before its rating falls. The AI budget reads fiscal pressure built from the average interest rate on the debt it already owes and from its rating; with long bonds that average moves slowly, so a jump in what new borrowing costs reached the budget only once the rating was cut. Now the AI budget's pressure is at least (rise - 1) / 4, clamped 0 to 1, where rise is how far the gap between the current market yield and the average rate on existing debt has widened since the country's first budget reading of the game (day 1 or later; a save from an older version takes its first reading after loading): a 1-point widening is ignored, 3 points gives 0.5, 5 points gives full pressure. Under pressure the AI tightens faster, favours fiscal levers and is less swayed by the coming election, as the game already does for rating-driven pressure. The starting gap itself is never counted: on day 2 of a new game the market yield is above the average rate for 150 of 211 countries (median 2.6 points, much more for distressed states), so a level test would have put most of the world under pressure at the start; the baseline is taken from day 1 because the game's own set-up sets the opening yields after the debt tables are read. Only the AI budget's own reading changes: the stress band, the rating and every other rule that reads fiscal pressure are unchanged. Real-world behaviour: the marginal cost of new borrowing and the spread drive when governments consolidate (Greece 2010, Italy 2011, the United Kingdom 2022; from memory). Day-0 effect: none by construction (the term is zero until a reading after day 0 has set the baseline, and zero at that reading). New saved state: two fields per country, its baseline yield gap (__geobalBondGap0) and the key it was taken for (__geobalBondGapKey), written at its first budget reading; a country created by secession, which starts as a copy of its parent, takes its own baseline at its first reading.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "unemploymentPct:Math.max(0,",
+      "near": 300,
+      "find": "function h4t(e,t){return{...Zn(e),day:t,",
+      "replace": "function __geobalMarketTerm(e,t){let g=Number(e?.bondRate)-Number(e?.debtAvgRate);if(!Number.isFinite(g))return 0;let g0=e.__geobalBondGap0;if(!(typeof g0==='number'&&Number.isFinite(g0))||e.__geobalBondGapKey!==e.key){if(!(Number(t)>=1))return 0;e.__geobalBondGap0=g0=g;e.__geobalBondGapKey=e.key}return Math.min(1,Math.max(0,(g-g0-1)/4))}function h4t(e,t){let __z=Zn(e);return{...__z,pressure:Math.max(Number(__z.pressure)||0,__geobalMarketTerm(e,t)),day:t,"
+    }
+  ]
+}

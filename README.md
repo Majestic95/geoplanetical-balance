@@ -7,7 +7,7 @@ unmodded game.
 
 This repository holds two mods:
 
-- **Geoplanetical Balance** (`mods/geoplanetical-balance`, version 0.6.0): the simulation changes.
+- **Geoplanetical Balance** (`mods/geoplanetical-balance`, version 0.7.0): the simulation changes.
 - **Geoplanetical Balance: wording** (`mods/geoplanetical-balance-wording`, version 0.3.1): corrections to the game's
   own English and French text where it misdescribes what the game does. It requires the balance mod.
 
@@ -47,35 +47,20 @@ play, the loader's `launcher.log` and, if you can, the save.
 
 ## What it changes
 
-### New in this version (balance 0.6.0, wording 0.3.1)
+### New in this version (balance 0.7.0, wording 0.3.1)
 
-- A company, household or treasury short of cash now pays its overdue bills right after wages, transfers and essential purchases, before this month's other bills, so old debts are cleared instead of left to the end.
-- Research can now raise a good's productivity at most three times above the country's own starting level (it could reach 50 times), so health care, research and software no longer compound into runaway output in long games; a country far behind the leaders also catches up at most threefold.
-- A government's primary budget deficit (before interest payments) now raises its borrowing cost from the first point of deficit, not only past 6% of GDP.
-- AI governments judge a recession on three months of output instead of one, so a single weak month no longer blocks their deficit cuts and a single good month no longer hides a real downturn.
-- AI governments under fiscal stress order fewer power-plant units at a time when they are not short of power, so their building is spread over more months; a country short of power still builds what it needs.
-- Countries that start the game with chronic power shortages can now electrify (heat pumps, electric vehicles and equipment) at a reduced pace; blackouts freeze electrification only when the grid is worse than it was at the start.
-- AI governments invest to replace the oil and gas output their fields are about to lose once fields deplete, count fields still ramping up as supply on the way, and approve a project only if its output over the field's life pays back its cost.
-- New oil and gas fields and mines take longer to build and ramp up: a deepwater field about three years to build instead of just over one.
-- Leaders, monarchs and other named people now die of old age at about real rates (about 5.6% a year at 80 for a man instead of 3.6%), women somewhat less often and people in poor countries more often, so successions and regencies come at realistic intervals.
-- Emigrants now favour nearer destinations: a country 7,000 km away draws about half as many as one 1,400 km away, other things equal, instead of nearly as many.
-- At elections, a fall in voters' satisfaction now costs the government at least as many votes as an equal rise wins it, about one and a half times as many at a 10-point fall and over two times from 20 points (in an evenly split group of voters a 10-point fall costs about 7.6 points of its vote, not 3.8).
-- A minority government now loses approval gradually (none once it and its support parties hold half the seats, at most 6 points with no seats) instead of 5 points at once on losing its majority, and parties that support it without joining count.
-- Trade disputes now run 60 days of talks before retaliation (was 30), and small AI economies that sell a quarter or more of their exports to the offender hold back instead of answering a tariff with their own.
-- If you leave a sanctions coalition you lead, the other members now keep their sanctions and each reviews its own, instead of every member's sanctions ending at once.
-- Sanction tools now lapse when the sender loses the means to apply them (a reserve currency for asset freezes, a technology industry for export controls, about 2% of world output for an equity ban), checked once a month; sanctions seeded at the start are not affected.
-- When all your sanction tools against a country lapse because you lost the leverage they need, you are told you left that regime; when a country sanctioning you loses all of its tools and has no other sanction on you, you are told it lifted its sanctions.
-- An enemy whose support for the war has stayed at zero for 60 days in a row now collapses, ending the war in your victory, instead of fighting on until you propose terms.
-- An AI country that is both unstable and unpopular no longer counts its weakness twice when deciding on a war.
-- New arms-industry lines cost about one year of their output (was 30%) and take years: 12 to 36 months to expand an existing line (was 6 to 36) and 24 to 48 for a first line (was 6 months for any good). Fewer AI countries can afford new lines.
-- AI countries at war trim their defence target a little (up to 0.4% of GDP) once public debt passes 80% of GDP or their finances come under heavy pressure, fully at 100% debt or in a debt crisis.
-- How much pupils actually learn now shapes the workforce: better schools produce more skilled workers over the years, and failing schools fewer, not only the number who graduate.
-- Police, courts and prisons keep working at a reduced rate when their operating budget is cut to zero, instead of stopping outright, which had emptied the courts and prisons and cleared their backlog warnings.
-- School funding now counts after inflation and per pupil: inflation or a growing number of children no longer improves schools by itself, while real budget increases still do.
-- Cutting public-sector staff now costs the treasury redundancy pay of 2 to 6 months of wages per leaver (more where independent trade unions are allowed), paid as staff leave.
-- The tax office now writes off a small share of its excess backlog each month, so a growing country's tax collection no longer decays from a backlog that piles up for ever.
-- Crime responds to policing and prisons: cutting police capacity by half raises violent crime about 41% and property crime about 19% over time, more as fewer convictions shrink the prison population, and more police lower it.
-- Wording: The tariff screen's note on trade disputes and the events announcing a dispute now say partners, and you, can retaliate after 60 days of consultations, matching the balance mod's rule.
+- A bond-market rout now pushes AI governments to tighten before their rating is cut: the budget reads how far borrowing costs have risen since its first reading of the game.
+- AI donors no longer send bilateral aid to a country they are fighting or sanctioning.
+- AI governments losing the public now listen to it more when choosing laws and budgets, most of all before an election; before, approval never changed what they did.
+- AI governments answer a crime wave with police even when fewer crimes are reported, and find the money for it more readily when crime is costing them approval.
+- AI governments review their budget within a month of a rating shock or a jump in unemployment, instead of waiting up to three months for their quarterly review.
+- AI governments no longer give every protest movement half of its budget demand each month: weak movements get nothing, strong ones get concessions in proportion to their strength and what the budget can bear.
+- AI countries weigh their own finances and the sanctions they will face before starting a war or a crisis: indebted, defaulted and open economies start fewer.
+- AI treaty allies weigh the attacker before answering a call to defend a member: a nuclear-armed, much stronger or major trading partner aggressor makes cautious allies support rather than join.
+- An AI country already at war is much less willing to start a second one.
+- A country facing a security crisis now counts the other side as a threat in its defence planning and reviews its defence as the crisis escalates, instead of waiting for war.
+- AI states call off sabotage of power grids, plants and fields when they are likely to be caught, as they already did for covert support to foreign groups.
+- AI governments can hire for schools, administration, police, courts and prisons, and answer lasting health pressure, in the first year of a game; before, these were frozen at their starting staff until day 365.
 
 ### Game 1.1.5 (build 26734764)
 
@@ -111,6 +96,8 @@ play, the loader's `launcher.log` and, if you can, the save.
 - A currency reform now cuts household loans, and their monthly repayments, by the same share as household savings, instead of leaving debts whole and handing the difference to banks.
 - A government's primary budget deficit (before interest payments) now raises its borrowing cost from the first point of deficit, not only past 6% of GDP.
 - AI governments judge a recession on three months of output instead of one, so a single weak month no longer blocks their deficit cuts and a single good month no longer hides a real downturn.
+- A bond-market rout now pushes AI governments to tighten before their rating is cut: the budget reads how far borrowing costs have risen since its first reading of the game.
+- AI donors no longer send bilateral aid to a country they are fighting or sanctioning.
 
 ### Taxes and energy
 
@@ -167,6 +154,10 @@ play, the loader's `launcher.log` and, if you can, the save.
 - If you leave a sanctions coalition you lead, the other members now keep their sanctions and each reviews its own, instead of every member's sanctions ending at once.
 - Sanction tools now lapse when the sender loses the means to apply them (a reserve currency for asset freezes, a technology industry for export controls, about 2% of world output for an equity ban), checked once a month; sanctions seeded at the start are not affected.
 - When all your sanction tools against a country lapse because you lost the leverage they need, you are told you left that regime; when a country sanctioning you loses all of its tools and has no other sanction on you, you are told it lifted its sanctions.
+- AI governments losing the public now listen to it more when choosing laws and budgets, most of all before an election; before, approval never changed what they did.
+- AI governments answer a crime wave with police even when fewer crimes are reported, and find the money for it more readily when crime is costing them approval.
+- AI governments review their budget within a month of a rating shock or a jump in unemployment, instead of waiting up to three months for their quarterly review.
+- AI governments no longer give every protest movement half of its budget demand each month: weak movements get nothing, strong ones get concessions in proportion to their strength and what the budget can bear.
 
 ### War
 
@@ -186,6 +177,10 @@ play, the loader's `launcher.log` and, if you can, the save.
 - An AI country that is both unstable and unpopular no longer counts its weakness twice when deciding on a war.
 - New arms-industry lines cost about one year of their output (was 30%) and take years: 12 to 36 months to expand an existing line (was 6 to 36) and 24 to 48 for a first line (was 6 months for any good). Fewer AI countries can afford new lines.
 - AI countries at war trim their defence target a little (up to 0.4% of GDP) once public debt passes 80% of GDP or their finances come under heavy pressure, fully at 100% debt or in a debt crisis.
+- AI countries weigh their own finances and the sanctions they will face before starting a war or a crisis: indebted, defaulted and open economies start fewer.
+- AI treaty allies weigh the attacker before answering a call to defend a member: a nuclear-armed, much stronger or major trading partner aggressor makes cautious allies support rather than join.
+- An AI country already at war is much less willing to start a second one.
+- A country facing a security crisis now counts the other side as a threat in its defence planning and reviews its defence as the crisis escalates, instead of waiting for war.
 
 ### Intelligence and space
 
@@ -196,6 +191,7 @@ play, the loader's `launcher.log` and, if you can, the save.
 - Refined lunar metal brought back to Earth counts as worth an Earth commodity price (about USD 10 000 a tonne, not USD 80 million) when the AI decides whether a return flight pays; using the metal in module orders keeps the game's value.
 - Lunar solar output is capped by latitude: about half of rated power away from the poles, more near them.
 - A lunar helium-3 mine now yields about 5.5 kg a month, the output of real mining designs, instead of 40 kg.
+- AI states call off sabotage of power grids, plants and fields when they are likely to be caught, as they already did for covert support to foreign groups.
 
 ### Public services
 
@@ -212,6 +208,7 @@ play, the loader's `launcher.log` and, if you can, the save.
 - Cutting public-sector staff now costs the treasury redundancy pay of 2 to 6 months of wages per leaver (more where independent trade unions are allowed), paid as staff leave.
 - The tax office now writes off a small share of its excess backlog each month, so a growing country's tax collection no longer decays from a backlog that piles up for ever.
 - Crime responds to policing and prisons: cutting police capacity by half raises violent crime about 41% and property crime about 19% over time, more as fewer convictions shrink the prison population, and more police lower it.
+- AI governments can hire for schools, administration, police, courts and prisons, and answer lasting health pressure, in the first year of a game; before, these were frozen at their starting staff until day 365.
 
 ### Game text (wording mod)
 

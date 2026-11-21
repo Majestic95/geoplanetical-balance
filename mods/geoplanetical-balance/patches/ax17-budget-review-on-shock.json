@@ -1,0 +1,14 @@
+{
+  "id": "ax17-budget-review-on-shock",
+  "finding": "AX17",
+  "effect": "An AI government now reviews its budget within a month of a fiscal or jobs shock, instead of waiting for its quarterly turn. The budget review ran every month only for a country in default, in distress or with a deficit over 6% of GDP; every other country reviewed one month in three, so a rating cut that raised its fiscal stress band, or a jump in unemployment, waited up to two more months for any budget answer. Measured on a one-year run of this game version: 35 of 84 fiscally stressed AI countries had not reviewed their budget for over a month at day 365. Now the review also runs in an off month (on the country's monthly operations day, one day in 28) when the country's fiscal stress band is 1 or higher and higher than at its last review, or when unemployment is more than 1.5 points above its level at the last review. Each trigger fires once per shock, because the review itself records the new band and unemployment. Real-world behaviour: governments answer a market or rating shock within weeks (the United Kingdom reversed its September 2022 budget in about three weeks; Italy passed the Monti package within a month of the November 2011 bond rout; from memory), and budgets get in-year supplements when unemployment jumps. Day-0 effect: none (only a rise since the last review triggers, and no review has run yet). No new saved state: the comparison uses the last review's own record.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"hebdo.assentiment\"",
+      "near": 1200,
+      "find": "return t.defaulted||K5(t)||(Number(t.deficitNow)||0)>Pjo?!0:Apr(t.key,e.rngSeed0)===ti(e.day||0).month%3}",
+      "replace": "return t.defaulted||K5(t)||(Number(t.deficitNow)||0)>Pjo||__geobalFiscalShock(t)?!0:Apr(t.key,e.rngSeed0)===ti(e.day||0).month%3}function __geobalFiscalShock(t){let o=t?.brain?.economicPolicy?.observation;if(!o)return!1;let b=Number(Zn(t).band),b0=Number(o.band),u=Number(t.unemployment),u0=Number(o.unemploymentPct);return Number.isFinite(b)&&Number.isFinite(b0)&&b>=1&&b>b0||Number.isFinite(u)&&Number.isFinite(u0)&&u-u0>1.5}"
+    }
+  ]
+}

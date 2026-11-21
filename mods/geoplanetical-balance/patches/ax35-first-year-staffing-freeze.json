@@ -1,0 +1,32 @@
+{
+  "id": "ax35-first-year-staffing-freeze",
+  "finding": "AX35",
+  "effect": "AI governments can now raise staffing in schools, administration, police, courts and prisons during the first year of a game, and answer lasting pressure in health. Each of the four AI staffing rules allows one headcount change a year, counted from the day the target was last changed; the game records every service's starting staffing as changed on day 0 (marked 'initial'), so no AI country could hire for schools, administration, police, courts or prisons until day 365, whatever the shortage; health could already hire for a staffing shortfall of 1% or more, but its rule for lasting pressure (six months of waiting lists) was frozen. Found while testing AX22: in a crime-wave test on this game version three AI countries had a police backlog 2.2 to 2.7 times their starting level (the hiring trigger is 1.18), fiscal room, police as the main bottleneck, and still hired no one because 365 days had not passed since day 0. Now the yearly limit counts only from a real change by the government (or the player); a target still at its starting value can change as soon as the rule's other tests pass (shortage, fiscal room, staffing filled, and the review's own cadence, which for police is 91 days and starts at day 91). Real-world behaviour: governments hire and cut within the budget year when a service is short; nothing freezes staffing for the first year of a term. Day-0 effect: none on starting numbers. Measured on seed 12345 by day 200: health's pressure rule fires as a wave around month 6 (34 AI countries raised health staffing in days 180-199, by 5% on average and 9.7% at most), which the game would otherwise have produced after day 365; police, courts and prisons hire where their tests pass (7 court and prison raises by day 200); the yearly limit then applies from that change. No new saved state (the game already records whether a target is still the starting one).",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"healthWage\"",
+      "near": 3300,
+      "find": "if(!u&&r-Ke(n.targetChangedDay)<TGo||",
+      "replace": "if(!u&&n.targetSource!=='initial'&&r-Ke(n.targetChangedDay)<TGo||"
+    },
+    {
+      "anchor": "setPublicHeadcountTarget(\"education\"",
+      "near": 500,
+      "find": "if(r-Ke(o.targetChangedDay)<nWo)return null;",
+      "replace": "if(o.targetSource!=='initial'&&r-Ke(o.targetChangedDay)<nWo)return null;"
+    },
+    {
+      "anchor": "fiscal:\"administration\"",
+      "near": 1400,
+      "find": "Gr(t)<jWo||r-Ke(n.targetChangedDay)<LWo)return null;",
+      "replace": "Gr(t)<jWo||n.targetSource!=='initial'&&r-Ke(n.targetChangedDay)<LWo)return null;"
+    },
+    {
+      "anchor": "roleId:\"internalSecurity\"",
+      "near": 500,
+      "find": "if(!i||o-Ke(i.targetChangedDay)<lLo)return null;",
+      "replace": "if(!i||i.targetSource!=='initial'&&o-Ke(i.targetChangedDay)<lLo)return null;"
+    }
+  ]
+}

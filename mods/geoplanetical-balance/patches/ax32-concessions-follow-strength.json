@@ -1,0 +1,26 @@
+{
+  "id": "ax32-concessions-follow-strength",
+  "finding": "AX32",
+  "effect": "An AI government no longer pays off every protest movement that has a budget demand. When a movement demanded more spending or a tax change, the AI moved that line half of the remaining way to the demand every 30 days until 98% met, whatever the movement's strength, so a weak movement got the same as a mass one; cost was checked only by the budget's own guard. Now the concession depends on the movement's strength, the larger of its mobilisation and its threat to the regime (both 0 to 1): below 0.45 there is no budget concession; above it the step is half the gap x strength / 0.7 (full half-step at 0.7 and above), halved again when the government's fiscal room is below 0.2. Union deals, public-wage offers, peace, civil-liberty and law concessions and the order posture are unchanged. Real-world behaviour: governments concede in proportion to the threat a movement poses and to what they can afford, and wait out weak protests (from memory). Day-0 effect: none (no movement exists at the start; the first opens around day 49 on seed 12345). By day 200, 20 movements carried a budget demand and 7 of them were strong enough to win concessions. No new saved state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "claim?.objectives||[]).filter(g=>g.metricId===\"fiscal_spend\"",
+      "near": 300,
+      "find": "g.metricId===\"fiscal_rate\");if(!l.length)return null;",
+      "replace": "g.metricId===\"fiscal_rate\");if(!l.length||!(__geobalConcedeShare(t,a)>0))return null;"
+    },
+    {
+      "anchor": "\"domestic_concession\"",
+      "near": 400,
+      "find": "f=p+(m-p)*.5,",
+      "replace": "f=p+(m-p)*.5*__geobalConcedeShare(t,a),"
+    },
+    {
+      "anchor": "\"domestic_concession\"",
+      "near": 1800,
+      "find": "function $Uo(e,t,a,r){",
+      "replace": "function __geobalConcedeShare(t,a){let m=Number(a?.mobilization01),q=Number(a?.regimeThreat01),s=Math.max(Number.isFinite(m)?m:0,Number.isFinite(q)?q:0);if(s<.45)return 0;let r=Number(Gr(t));return Math.min(1,s/.7)*(Number.isFinite(r)&&r<.2?.5:1)}function $Uo(e,t,a,r){"
+    }
+  ]
+}

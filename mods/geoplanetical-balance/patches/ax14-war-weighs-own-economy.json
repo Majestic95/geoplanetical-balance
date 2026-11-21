@@ -1,0 +1,26 @@
+{
+  "id": "ax14-war-weighs-own-economy",
+  "finding": "AX14",
+  "effect": "An AI country deciding whether to go to war, or to open a crisis, now weighs whether it can pay for it and the sanctions it will draw. The war planner's cost held relative power, the share of trade with the target, domestic fragility, nuclear risk, legitimacy and the burden of holding new land; nothing about the attacker's own finances, so a defaulted or fiscally stressed state chose war exactly like a solvent one, and it never anticipated the sanctions the game imposes on an aggressor at the start of a war. The game's own nuclear-programme scorer already weighs default (0.7), fiscal pressure (0.35) and expected sanctions x trade openness; the war planner did not. Now the war cost adds 0.3 x the attacker's fiscal pressure (the game's 0 to 1 measure), 0.4 if it is in default, and 0.4 x its trade openness x (1 - the war aim's legitimacy), the expected cost of sanctions for an economy open to trade, highest for an illegitimate war. Opening a crisis is discouraged by 0.35 of the same amount. For scale: a war is declared only when its utility clears 0.52 plus the risk term; a fiscally stressed (pressure 0.5), fairly open (openness 0.4), weakly legitimate (0.3) attacker now pays about 0.26 more. Real-world behaviour: states weigh whether they can finance a war and survive the sanctions (Russia built reserves for that before 2022; Argentina 1982 did not and paid; from memory). Day-0 effect: none on starting numbers; fewer wars and crises opened by indebted, defaulted or open economies. No new saved state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "administrativeBurden01*.24",
+      "near": 1000,
+      "find": "(1-t.legitimacy01)*(.3+r.integrity*.25+r.institutionalist*.18)+n,u=t.allowsWar?",
+      "replace": "(1-t.legitimacy01)*(.3+r.integrity*.25+r.institutionalist*.18)+n+__geobalWarEcon(a,t),u=t.allowsWar?"
+    },
+    {
+      "anchor": "administrativeBurden01*.24",
+      "near": 1000,
+      "find": "-(o?n*.25:0)+d;return{...e,actor:void 0",
+      "replace": "-(o?n*.25:0)-.35*__geobalWarEcon(a,t)+d;return{...e,actor:void 0"
+    },
+    {
+      "anchor": "administrativeBurden01*.24",
+      "near": 1000,
+      "find": "function y9o(e,t){",
+      "replace": "function __geobalWarEcon(a,t){if(!a)return 0;let p=Math.min(1,Math.max(0,Number(Zn(a)?.pressure)||0)),d=a.defaulted?.4:0,g=Math.max(1,Number(a.gdpVol??a.gdp)||1),o=a._trade?.openness!=null?Number(a._trade.openness)/100:((Number(a.exports)||0)+(Number(a.imports)||0))/g/2;o=Number.isFinite(o)?Math.min(1,Math.max(0,o)):0;let l=Number(t?.legitimacy01);l=Number.isFinite(l)?Math.min(1,Math.max(0,l)):1;return .3*p+d+.4*o*(1-l)}function y9o(e,t){"
+    }
+  ]
+}

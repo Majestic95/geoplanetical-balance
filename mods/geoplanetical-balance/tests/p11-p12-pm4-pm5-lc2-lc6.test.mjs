@@ -100,7 +100,10 @@ check(S2P(0.35, 0.3, 0, 0) >= 0.5, 'LC2: at full exhaustion in a long war, a neu
 check(S2V(0.35, 0.3 * 0.96, 1, 0.06) < 0.5, 'LC2 original: exhaustion 96 still refuses (the bug)');
 
 // LC6: the response.
-const P1Q = text => new Function('Dn', 'wl', 'FQ', 'df', `${between(text, 'function W7a(e,t){', 'reasons:g}}')}; return W7a;`)(() => ({ hawkish: 0.6, riskTolerance: 0.5 }), () => false, () => null, () => ({ ok: true }));
+// AX16 (balance 0.7.0) adds two helpers to W7a; with no aggressor nukes, power or trade (GK, Y7t, zl stubbed to 0) they
+// change nothing, so the LC6 checks below keep their meaning.
+const fnText = (text, name) => { const s = text.indexOf(`function ${name}(`); if (s < 0) return ''; let d = 0, i = text.indexOf('{', text.indexOf(')', s)); for (; i < text.length; i++) { if (text[i] === '{') d++; else if (text[i] === '}' && --d === 0) break; } return text.slice(s, i + 1); };
+const P1Q = text => new Function('Dn', 'wl', 'FQ', 'df', 'GK', 'Y7t', 'zl', `${fnText(text, '__geobalTreatyRisk')}${fnText(text, '__geobalTreatyAdj')}${between(text, 'function W7a(e,t){', 'reasons:g}}')}; return W7a;`)(() => ({ hawkish: 0.6, riskTolerance: 0.5 }), () => false, () => null, () => ({ ok: true }), () => ({ value: 0 }), () => 0, () => 0);
 const treaty = (align = { d: 0.6, a: 0.3 }) => ({
   countries: new Map([['m', { key: 'm', treasury: 1 }], ['d', { key: 'd' }], ['a', { key: 'a' }]]),
   militaryTreaties: new Map([['t', { credibility: 0.92 }]]),

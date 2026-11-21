@@ -1,0 +1,20 @@
+{
+  "id": "ax27-bilateral-aid-excludes-enemies",
+  "finding": "AX27",
+  "effect": "An AI donor's bilateral aid no longer goes to a country it is fighting or sanctioning. Each month an AI donor sends a quarter of its aid line directly to its top two recipients, ranked by their funding gap x (0.4 + relations scaled 0 to 1), checking only its diplomatic competency and the caps, so an enemy still scored 0.4 of a friend's weight. Measured on a one-year run of this game version: at day 365, 7 donor-recipient pairs were bilateral aid to a country the donor sanctions or is hostile to, 6 of them aid to North Korea. LC7 closed this for the multilateral split; now the bilateral ranking applies the same test before choosing the two recipients: a country is skipped when the donor is fighting it (the game's own belligerency test: an active conflict in its hostilities phase with the two on opposite sides) or when the donor is a sender in an active sanctions regime against it. The next-ranked country takes its place, so the donor's aid budget is unchanged. The monthly payment of an AI-governed donor's existing bilateral commitments also drops a commitment to such a country (the commitment is removed, so the donor's budget and the recipient's aid income stop counting it), so aid stops the month a donor sanctions or fights it rather than at its next budget review; that month's share is not paid. Commitments of a government the player runs are unchanged. Real-world behaviour: donors suspend or reroute official aid to governments they sanction or fight (OECD DAC practice; aid to Russia and Belarus after 2022, to Myanmar after 2021; from memory). Day-0 effect: measured on day 30 of a new game, no AI donor's top two bilateral recipients is a country it sanctions or fights (0 of 4.65 bn a month), so nothing moves at the start; the rule bites when sanctions or wars begin in play (7 such pairs at day 365 in the audit run). No recalibration: aid is a monthly flow and no starting stock or rating is built from it. No new saved state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "gapBnMo*(.4+",
+      "near": 300,
+      "find": "function $Mo(e,t,a=null){return VMo(e,t,a).filter(r=>BQ(e,t,r.target))",
+      "replace": "function __geobalAidSanctioned(e,d){let D=String(d),s=new Set;for(let x of LB(e))String(x.sender)===D&&s.add(String(x.target));return s}function __geobalAidBarred(e,d,r,S){if(d==null||r==null)return!1;return(S||__geobalAidSanctioned(e,d)).has(String(r))||M7(e,d,r)}function $Mo(e,t,a=null){let __gbS=t?.key!=null?__geobalAidSanctioned(e,t.key):null;return VMo(e,t,a).filter(r=>BQ(e,t,r.target)&&!__geobalAidBarred(e,t?.key,r.target?.key,__gbS))"
+    },
+    {
+      "anchor": "\"bilateral_aid_transfer\"",
+      "near": 600,
+      "find": "let c=i[l];if(!r.aidCommit[c])continue;",
+      "replace": "let c=i[l];if(!r.aidCommit[c])continue;if(e.playerControlsGovernment&&!e.playerControlsGovernment(r)&&__geobalAidBarred(e,r.key,c)){delete r.aidCommit[c];continue}"
+    }
+  ]
+}

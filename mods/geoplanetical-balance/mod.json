@@ -1,7 +1,7 @@
 {
   "id": "geoplanetical-balance",
   "name": "Geoplanetical Balance",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "All Geoplanetical Balance improvements in one mod: corrects inaccurate or broken parts of the economic model, starting with household and financial-system fixes. Single player.",
   "builds": [
     "26734764"
@@ -111,7 +111,19 @@
     "patches/n13-sanction-leverage-recheck.json",
     "patches/en5-ai-sustaining-wells.json",
     "patches/en3-field-lead-times.json",
-    "patches/j1-crime-responds-to-policing.json"
+    "patches/j1-crime-responds-to-policing.json",
+    "patches/ax19-losing-government-listens.json",
+    "patches/ax22-police-see-crime.json",
+    "patches/ax17-budget-review-on-shock.json",
+    "patches/ax18-market-yields-reach-budget.json",
+    "patches/ax27-bilateral-aid-excludes-enemies.json",
+    "patches/ax14-war-weighs-own-economy.json",
+    "patches/ax16-treaty-allies-weigh-aggressor.json",
+    "patches/ax35-first-year-staffing-freeze.json",
+    "patches/ax25-second-war-costs.json",
+    "patches/ax30-sabotage-weighs-detection.json",
+    "patches/ax32-concessions-follow-strength.json",
+    "patches/ax23-threatened-state-prepares.json"
   ],
   "changes": [
     {
@@ -152,7 +164,9 @@
         "A ban on investing in a country no longer withholds the dividends its companies are owed; it only stops new share purchases.",
         "A currency reform now cuts household loans, and their monthly repayments, by the same share as household savings, instead of leaving debts whole and handing the difference to banks.",
         "A government's primary budget deficit (before interest payments) now raises its borrowing cost from the first point of deficit, not only past 6% of GDP.",
-        "AI governments judge a recession on three months of output instead of one, so a single weak month no longer blocks their deficit cuts and a single good month no longer hides a real downturn."
+        "AI governments judge a recession on three months of output instead of one, so a single weak month no longer blocks their deficit cuts and a single good month no longer hides a real downturn.",
+        "A bond-market rout now pushes AI governments to tighten before their rating is cut: the budget reads how far borrowing costs have risen since its first reading of the game.",
+        "AI donors no longer send bilateral aid to a country they are fighting or sanctioning."
       ]
     },
     {
@@ -214,7 +228,11 @@
         "Trade disputes now run 60 days of talks before retaliation (was 30), and small AI economies that sell a quarter or more of their exports to the offender hold back instead of answering a tariff with their own.",
         "If you leave a sanctions coalition you lead, the other members now keep their sanctions and each reviews its own, instead of every member's sanctions ending at once.",
         "Sanction tools now lapse when the sender loses the means to apply them (a reserve currency for asset freezes, a technology industry for export controls, about 2% of world output for an equity ban), checked once a month; sanctions seeded at the start are not affected.",
-        "When all your sanction tools against a country lapse because you lost the leverage they need, you are told you left that regime; when a country sanctioning you loses all of its tools and has no other sanction on you, you are told it lifted its sanctions."
+        "When all your sanction tools against a country lapse because you lost the leverage they need, you are told you left that regime; when a country sanctioning you loses all of its tools and has no other sanction on you, you are told it lifted its sanctions.",
+        "AI governments losing the public now listen to it more when choosing laws and budgets, most of all before an election; before, approval never changed what they did.",
+        "AI governments answer a crime wave with police even when fewer crimes are reported, and find the money for it more readily when crime is costing them approval.",
+        "AI governments review their budget within a month of a rating shock or a jump in unemployment, instead of waiting up to three months for their quarterly review.",
+        "AI governments no longer give every protest movement half of its budget demand each month: weak movements get nothing, strong ones get concessions in proportion to their strength and what the budget can bear."
       ]
     },
     {
@@ -235,7 +253,11 @@
         "An enemy whose support for the war has stayed at zero for 60 days in a row now collapses, ending the war in your victory, instead of fighting on until you propose terms.",
         "An AI country that is both unstable and unpopular no longer counts its weakness twice when deciding on a war.",
         "New arms-industry lines cost about one year of their output (was 30%) and take years: 12 to 36 months to expand an existing line (was 6 to 36) and 24 to 48 for a first line (was 6 months for any good). Fewer AI countries can afford new lines.",
-        "AI countries at war trim their defence target a little (up to 0.4% of GDP) once public debt passes 80% of GDP or their finances come under heavy pressure, fully at 100% debt or in a debt crisis."
+        "AI countries at war trim their defence target a little (up to 0.4% of GDP) once public debt passes 80% of GDP or their finances come under heavy pressure, fully at 100% debt or in a debt crisis.",
+        "AI countries weigh their own finances and the sanctions they will face before starting a war or a crisis: indebted, defaulted and open economies start fewer.",
+        "AI treaty allies weigh the attacker before answering a call to defend a member: a nuclear-armed, much stronger or major trading partner aggressor makes cautious allies support rather than join.",
+        "An AI country already at war is much less willing to start a second one.",
+        "A country facing a security crisis now counts the other side as a threat in its defence planning and reviews its defence as the crisis escalates, instead of waiting for war."
       ]
     },
     {
@@ -247,7 +269,8 @@
         "Adopted UN Security Council sanctions bind every UN member except the target, not only the Council members that voted for them; your country joins only if you voted yes. Countries bound only because of this rule (every member that did not vote yes) are released when the war behind an aggression resolution ends.",
         "Refined lunar metal brought back to Earth counts as worth an Earth commodity price (about USD 10 000 a tonne, not USD 80 million) when the AI decides whether a return flight pays; using the metal in module orders keeps the game's value.",
         "Lunar solar output is capped by latitude: about half of rated power away from the poles, more near them.",
-        "A lunar helium-3 mine now yields about 5.5 kg a month, the output of real mining designs, instead of 40 kg."
+        "A lunar helium-3 mine now yields about 5.5 kg a month, the output of real mining designs, instead of 40 kg.",
+        "AI states call off sabotage of power grids, plants and fields when they are likely to be caught, as they already did for covert support to foreign groups."
       ]
     },
     {
@@ -265,7 +288,8 @@
         "School funding now counts after inflation and per pupil: inflation or a growing number of children no longer improves schools by itself, while real budget increases still do.",
         "Cutting public-sector staff now costs the treasury redundancy pay of 2 to 6 months of wages per leaver (more where independent trade unions are allowed), paid as staff leave.",
         "The tax office now writes off a small share of its excess backlog each month, so a growing country's tax collection no longer decays from a backlog that piles up for ever.",
-        "Crime responds to policing and prisons: cutting police capacity by half raises violent crime about 41% and property crime about 19% over time, more as fewer convictions shrink the prison population, and more police lower it."
+        "Crime responds to policing and prisons: cutting police capacity by half raises violent crime about 41% and property crime about 19% over time, more as fewer convictions shrink the prison population, and more police lower it.",
+        "AI governments can hire for schools, administration, police, courts and prisons, and answer lasting health pressure, in the first year of a game; before, these were frozen at their starting staff until day 365."
       ]
     }
   ]

@@ -1,0 +1,20 @@
+{
+  "id": "ax30-sabotage-weighs-detection",
+  "finding": "AX30",
+  "effect": "An AI state now launches sabotage (cutting a power grid, sabotaging a power plant or an oil or gas field) only when its odds of being caught are acceptable, as it already does for covert support to a foreign group. The AI's state-operations rule launched a step whenever the operation was possible, cost at most 10% of its cash and its readiness was 0.25 or more; it never read the operation's own detection chance, though an attributed sabotage costs the sponsor relations and a security grudge that feeds sanctions and crises. The same AI's proxy-support rule refuses when detection exceeds 0.45, plus or minus 0.1 for a hawkish or dovish leader. Now the three sabotage missions use that same test: launched only when the detection chance is at most 0.45 + (hawkish - 0.5) x 0.2. Preparation steps (reconnaissance, access, networks), intelligence theft and counter-intelligence are unchanged. Real-world behaviour: state sabotage is planned for deniability and called off when exposure is likely (Stuxnet; from memory). Day-0 effect: none. No new saved state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "stateOpsMemory||={lastMajorDay:{},lastActionDay:{}}",
+      "near": 300,
+      "find": "let y=h2r(e,r,f);return!y.quote.ok||",
+      "replace": "let y=h2r(e,r,f);return!y.quote.ok||__geobalSabotageExposed(e,r,y)||"
+    },
+    {
+      "anchor": "stateOpsMemory||={lastMajorDay:{},lastActionDay:{}}",
+      "near": 500,
+      "find": "function g2r(e,t=null){",
+      "replace": "function __geobalSabotageExposed(e,r,y){if(!['disrupt_power_grid','sabotage_plant','sabotage_field'].includes(y?.mission))return!1;let d=Number(y.quote?.detectionProb);if(!Number.isFinite(d))return!1;let h=Number(Dn(e,r)?.hawkish);return d>GBo+((Number.isFinite(h)?h:.5)-.5)*.2}function g2r(e,t=null){"
+    }
+  ]
+}

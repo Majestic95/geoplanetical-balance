@@ -1,0 +1,14 @@
+{
+  "id": "ax25-second-war-costs",
+  "finding": "AX25",
+  "effect": "An AI country already at war is now much less willing to start a second one. The war planner's utility read the target, the balance of forces, the crisis and the costs; whether the attacker was already fighting elsewhere entered only because units already committed drop out of its force count, while the AI's own intervention and treaty rules do charge for an existing war. Now the war utility is 0.35 lower when the attacker is already at war (the game's own at-war flag). For scale: a war is declared only when its utility clears 0.52 plus the risk term, so a second war now needs a much stronger motive or a much weaker target. Crises and coercion are unchanged. Real-world behaviour: states avoid opening a second front while fighting (the classic two-front problem; from memory). Day-0 effect: none (only countries already at war are affected, and only in their war choice). No new saved state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "administrativeBurden01*.24",
+      "near": 1200,
+      "find": "+Kv(e.targetFragility)*.28:-2,",
+      "replace": "+Kv(e.targetFragility)*.28-(a?.atWar?.35:0):-2,"
+    }
+  ]
+}

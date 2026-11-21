@@ -1,0 +1,32 @@
+{
+  "id": "ax23-threatened-state-prepares",
+  "finding": "AX23",
+  "effect": "A country facing a security crisis now treats the other side as a threat in its defence planning and reviews its defence when the crisis escalates. The defence planner's threat list held neighbours, declared rivals and enemies at war, each weighted by a hostility of 1 at war or else the rivalry or relations; being the target of a crisis (red lines, a border mobilisation, a blockade) entered only through the small relations hits of those measures, and the defence review was triggered only when the country entered or left a war. Now the other principal of every active crisis, and any supporter on its side that has itself escalated (rung 1 or more), is on the threat list with a hostility of at least its escalation rung / 3 (the game's own rung, 0 to 3, so a full rung-3 crisis counts like a war), and a change in any opponent's rung against the country triggers its defence review, as a war change does (the review signature lists each opponent above rung 0, so a country with no such opponent keeps the game's own signature; after loading a save from an older version only the countries that face an opponent above rung 0 review their defence once). The threat feeds the game's own defence-budget desire and force plan, which close only part of the gap each quarter and stay bound by the budget rules. A partial call-up of reserves before war is not added (reserves are still called only at war). Real-world behaviour: states under coercion raise readiness and defence spending before a war starts (Israel 1967, Ukraine 2021-22, Taiwan under PLA drills; from memory). Day-0 effect: none (no crisis exists at the start, measured on day 0 of seed 12345; AI crises open in the first weeks, two by day 200); starting numbers are unchanged. No new saved state.",
+  "bundle": "simulation-worker.bundle.js",
+  "edits": [
+    {
+      "anchor": "\"alliedSupportWeight\"",
+      "near": 300,
+      "find": "for(let h of r?.countries||e.countries?.values?.()||[])g8a(e,t.key,h.key,r)&&c.add(h.key);",
+      "replace": "for(let h of r?.countries||e.countries?.values?.()||[])g8a(e,t.key,h.key,r)&&c.add(h.key);for(let h of __geobalCrisisFoes(e,t.key))c.add(h);"
+    },
+    {
+      "anchor": "\"alliedSupportWeight\"",
+      "near": 600,
+      "find": "S=g8a(e,t.key,h,r)?1:Math.max(v,ide(-At(e,t,g)/80,0,1));",
+      "replace": "S=g8a(e,t.key,h,r)?1:Math.max(v,ide(-At(e,t,g)/80,0,1),__geobalCrisisThreat(e,t.key,h));"
+    },
+    {
+      "anchor": "\"alliedSupportWeight\"",
+      "near": 300,
+      "find": "function P1t(e,t,a=null){",
+      "replace": "function __geobalCrisisList(e,k){let K=String(k),o=[];for(let c of e?.securityCrises?.crises?.values?.()||[])c?.status==='active'&&(String(c.openerKey)===K||String(c.targetKey)===K)&&o.push(c);return o}function __geobalCrisisFoeKeys(c,K){let s=String(c.openerKey)===K?'target':'opener',o=[s==='opener'?String(c.openerKey):String(c.targetKey)];for(let[u,v]of Object.entries(c.supporters||{}))v===s&&String(u)!==K&&o.push(String(u));return o}function __geobalCrisisFoes(e,k){let K=String(k),s=new Set;for(let c of __geobalCrisisList(e,k)){let F=__geobalCrisisFoeKeys(c,K);F.forEach((f,i)=>{(i===0||(Number(Fs(c,f))||0)>0)&&s.add(f)})}return[...s].sort()}function __geobalCrisisThreat(e,k,o){let K=String(k),O=String(o),m=0;for(let c of __geobalCrisisList(e,k))__geobalCrisisFoeKeys(c,K).includes(O)&&(m=Math.max(m,Number(Fs(c,O))||0));return Math.min(1,Math.max(0,m/3))}function __geobalCrisisSig(e,k){let K=String(k),m=new Map;for(let c of __geobalCrisisList(e,k))for(let f of __geobalCrisisFoeKeys(c,K)){let r=Number(Fs(c,f))||0;r>0&&m.set(f,Math.max(m.get(f)||0,r))}let s=[...m.keys()].sort().map(f=>f+'='+m.get(f)).join(',');return s?':'+s:''}function P1t(e,t,a=null){"
+    },
+    {
+      "anchor": "warSignature:`",
+      "near": 100,
+      "find": "warSignature:`${t.atWar?1:0}:${r}`",
+      "replace": "warSignature:`${t.atWar?1:0}:${r}${__geobalCrisisSig(e,t.key)}`"
+    }
+  ]
+}
